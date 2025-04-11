@@ -721,6 +721,164 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (ultmtDbtrNm) {
 				xml += "      <UltmtDbtr>\n";
 				xml += `        <Nm>${escapeXml(ultmtDbtrNm)}</Nm>\n`;
+
+				// Dodanie PstlAdr dla Ultimate Debtor
+				const includeUltmtDbtrPstlAdr = document.getElementById(
+					"includeUltmtDbtrPstlAdr"
+				)?.checked;
+				if (includeUltmtDbtrPstlAdr) {
+					let hasAddressData = false;
+					let postalAddressXml = "        <PstlAdr>\n";
+
+					const ultmtDbtrStrtNm =
+						document.getElementById("ultmtDbtrStrtNm").value;
+					if (ultmtDbtrStrtNm) {
+						postalAddressXml += `          <StrtNm>${escapeXml(
+							ultmtDbtrStrtNm
+						)}</StrtNm>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtDbtrBldgNb =
+						document.getElementById("ultmtDbtrBldgNb").value;
+					if (ultmtDbtrBldgNb) {
+						postalAddressXml += `          <BldgNb>${escapeXml(
+							ultmtDbtrBldgNb
+						)}</BldgNb>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtDbtrPstCd =
+						document.getElementById("ultmtDbtrPstCd").value;
+					if (ultmtDbtrPstCd) {
+						postalAddressXml += `          <PstCd>${escapeXml(
+							ultmtDbtrPstCd
+						)}</PstCd>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtDbtrTwnNm =
+						document.getElementById("ultmtDbtrTwnNm").value;
+					if (ultmtDbtrTwnNm) {
+						postalAddressXml += `          <TwnNm>${escapeXml(
+							ultmtDbtrTwnNm
+						)}</TwnNm>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtDbtrCtry = document.getElementById("ultmtDbtrCtry").value;
+					if (ultmtDbtrCtry) {
+						postalAddressXml += `          <Ctry>${escapeXml(
+							ultmtDbtrCtry
+						)}</Ctry>\n`;
+						hasAddressData = true;
+					}
+
+					if (hasAddressData) {
+						postalAddressXml += "        </PstlAdr>\n";
+						xml += postalAddressXml;
+					}
+				}
+
+				// Dodanie Id (OrgId) dla Ultimate Debtor
+				const includeUltmtDbtrId =
+					document.getElementById("includeUltmtDbtrId")?.checked;
+				if (includeUltmtDbtrId) {
+					let hasIdData = false;
+					let idXml = "        <Id>\n          <OrgId>\n";
+
+					// AnyBIC
+					const ultmtDbtrOrgIdAnyBIC = document.getElementById(
+						"ultmtDbtrOrgIdAnyBIC"
+					).value;
+					if (ultmtDbtrOrgIdAnyBIC) {
+						idXml += `            <AnyBIC>${escapeXml(
+							ultmtDbtrOrgIdAnyBIC
+						)}</AnyBIC>\n`;
+						hasIdData = true;
+					}
+
+					// LEI
+					const ultmtDbtrLEI = document.getElementById("ultmtDbtrLEI").value;
+					if (ultmtDbtrLEI) {
+						idXml += `            <LEI>${escapeXml(ultmtDbtrLEI)}</LEI>\n`;
+						hasIdData = true;
+					}
+
+					// Other ID
+					const ultmtDbtrOrgIdOthrId = document.getElementById(
+						"ultmtDbtrOrgIdOthrId"
+					).value;
+					if (ultmtDbtrOrgIdOthrId) {
+						idXml += "            <Othr>\n";
+						idXml += `              <Id>${escapeXml(
+							ultmtDbtrOrgIdOthrId
+						)}</Id>\n`;
+
+						// SchmeNm
+						const ultmtDbtrOrgIdSchemeName = document.getElementById(
+							"ultmtDbtrOrgIdSchemeName"
+						).value;
+						if (ultmtDbtrOrgIdSchemeName) {
+							idXml += "              <SchmeNm>\n";
+
+							if (ultmtDbtrOrgIdSchemeName === "Cd") {
+								const ultmtDbtrOrgIdSchemeCode = document.getElementById(
+									"ultmtDbtrOrgIdSchemeCode"
+								).value;
+								if (ultmtDbtrOrgIdSchemeCode) {
+									idXml += `                <Cd>${escapeXml(
+										ultmtDbtrOrgIdSchemeCode
+									)}</Cd>\n`;
+								}
+							} else if (ultmtDbtrOrgIdSchemeName === "Prtry") {
+								const ultmtDbtrOrgIdSchemePrtry = document.getElementById(
+									"ultmtDbtrOrgIdSchemePrtry"
+								).value;
+								if (ultmtDbtrOrgIdSchemePrtry) {
+									idXml += `                <Prtry>${escapeXml(
+										ultmtDbtrOrgIdSchemePrtry
+									)}</Prtry>\n`;
+								}
+							}
+
+							idXml += "              </SchmeNm>\n";
+						}
+
+						// Issr
+						const ultmtDbtrOrgIdIssr =
+							document.getElementById("ultmtDbtrOrgIdIssr").value;
+						if (ultmtDbtrOrgIdIssr) {
+							idXml += `              <Issr>${escapeXml(
+								ultmtDbtrOrgIdIssr
+							)}</Issr>\n`;
+						}
+
+						idXml += "            </Othr>\n";
+						hasIdData = true;
+					}
+
+					if (hasIdData) {
+						idXml += "          </OrgId>\n";
+						idXml += "        </Id>\n";
+						xml += idXml;
+					}
+				}
+
+				// Dodanie CtryOfRes dla Ultimate Debtor
+				const includeUltmtDbtrCtryOfRes = document.getElementById(
+					"includeUltmtDbtrCtryOfRes"
+				)?.checked;
+				if (includeUltmtDbtrCtryOfRes) {
+					const ultmtDbtrCtryOfRes =
+						document.getElementById("ultmtDbtrCtryOfRes").value;
+					if (ultmtDbtrCtryOfRes) {
+						xml += `        <CtryOfRes>${escapeXml(
+							ultmtDbtrCtryOfRes
+						)}</CtryOfRes>\n`;
+					}
+				}
+
 				xml += "      </UltmtDbtr>\n";
 			}
 		}
@@ -751,6 +909,164 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (ultmtCdtrNm) {
 				xml += "      <UltmtCdtr>\n";
 				xml += `        <Nm>${escapeXml(ultmtCdtrNm)}</Nm>\n`;
+
+				// Dodanie PstlAdr dla Ultimate Creditor
+				const includeUltmtCdtrPstlAdr = document.getElementById(
+					"includeUltmtCdtrPstlAdr"
+				)?.checked;
+				if (includeUltmtCdtrPstlAdr) {
+					let hasAddressData = false;
+					let postalAddressXml = "        <PstlAdr>\n";
+
+					const ultmtCdtrStrtNm =
+						document.getElementById("ultmtCdtrStrtNm").value;
+					if (ultmtCdtrStrtNm) {
+						postalAddressXml += `          <StrtNm>${escapeXml(
+							ultmtCdtrStrtNm
+						)}</StrtNm>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtCdtrBldgNb =
+						document.getElementById("ultmtCdtrBldgNb").value;
+					if (ultmtCdtrBldgNb) {
+						postalAddressXml += `          <BldgNb>${escapeXml(
+							ultmtCdtrBldgNb
+						)}</BldgNb>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtCdtrPstCd =
+						document.getElementById("ultmtCdtrPstCd").value;
+					if (ultmtCdtrPstCd) {
+						postalAddressXml += `          <PstCd>${escapeXml(
+							ultmtCdtrPstCd
+						)}</PstCd>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtCdtrTwnNm =
+						document.getElementById("ultmtCdtrTwnNm").value;
+					if (ultmtCdtrTwnNm) {
+						postalAddressXml += `          <TwnNm>${escapeXml(
+							ultmtCdtrTwnNm
+						)}</TwnNm>\n`;
+						hasAddressData = true;
+					}
+
+					const ultmtCdtrCtry = document.getElementById("ultmtCdtrCtry").value;
+					if (ultmtCdtrCtry) {
+						postalAddressXml += `          <Ctry>${escapeXml(
+							ultmtCdtrCtry
+						)}</Ctry>\n`;
+						hasAddressData = true;
+					}
+
+					if (hasAddressData) {
+						postalAddressXml += "        </PstlAdr>\n";
+						xml += postalAddressXml;
+					}
+				}
+
+				// Dodanie Id (OrgId) dla Ultimate Creditor
+				const includeUltmtCdtrId =
+					document.getElementById("includeUltmtCdtrId")?.checked;
+				if (includeUltmtCdtrId) {
+					let hasIdData = false;
+					let idXml = "        <Id>\n          <OrgId>\n";
+
+					// AnyBIC
+					const ultmtCdtrOrgIdAnyBIC = document.getElementById(
+						"ultmtCdtrOrgIdAnyBIC"
+					).value;
+					if (ultmtCdtrOrgIdAnyBIC) {
+						idXml += `            <AnyBIC>${escapeXml(
+							ultmtCdtrOrgIdAnyBIC
+						)}</AnyBIC>\n`;
+						hasIdData = true;
+					}
+
+					// LEI
+					const ultmtCdtrLEI = document.getElementById("ultmtCdtrLEI").value;
+					if (ultmtCdtrLEI) {
+						idXml += `            <LEI>${escapeXml(ultmtCdtrLEI)}</LEI>\n`;
+						hasIdData = true;
+					}
+
+					// Other ID
+					const ultmtCdtrOrgIdOthrId = document.getElementById(
+						"ultmtCdtrOrgIdOthrId"
+					).value;
+					if (ultmtCdtrOrgIdOthrId) {
+						idXml += "            <Othr>\n";
+						idXml += `              <Id>${escapeXml(
+							ultmtCdtrOrgIdOthrId
+						)}</Id>\n`;
+
+						// SchmeNm
+						const ultmtCdtrOrgIdSchemeName = document.getElementById(
+							"ultmtCdtrOrgIdSchemeName"
+						).value;
+						if (ultmtCdtrOrgIdSchemeName) {
+							idXml += "              <SchmeNm>\n";
+
+							if (ultmtCdtrOrgIdSchemeName === "Cd") {
+								const ultmtCdtrOrgIdSchemeCode = document.getElementById(
+									"ultmtCdtrOrgIdSchemeCode"
+								).value;
+								if (ultmtCdtrOrgIdSchemeCode) {
+									idXml += `                <Cd>${escapeXml(
+										ultmtCdtrOrgIdSchemeCode
+									)}</Cd>\n`;
+								}
+							} else if (ultmtCdtrOrgIdSchemeName === "Prtry") {
+								const ultmtCdtrOrgIdSchemePrtry = document.getElementById(
+									"ultmtCdtrOrgIdSchemePrtry"
+								).value;
+								if (ultmtCdtrOrgIdSchemePrtry) {
+									idXml += `                <Prtry>${escapeXml(
+										ultmtCdtrOrgIdSchemePrtry
+									)}</Prtry>\n`;
+								}
+							}
+
+							idXml += "              </SchmeNm>\n";
+						}
+
+						// Issr
+						const ultmtCdtrOrgIdIssr =
+							document.getElementById("ultmtCdtrOrgIdIssr").value;
+						if (ultmtCdtrOrgIdIssr) {
+							idXml += `              <Issr>${escapeXml(
+								ultmtCdtrOrgIdIssr
+							)}</Issr>\n`;
+						}
+
+						idXml += "            </Othr>\n";
+						hasIdData = true;
+					}
+
+					if (hasIdData) {
+						idXml += "          </OrgId>\n";
+						idXml += "        </Id>\n";
+						xml += idXml;
+					}
+				}
+
+				// Dodanie CtryOfRes dla Ultimate Creditor
+				const includeUltmtCdtrCtryOfRes = document.getElementById(
+					"includeUltmtCdtrCtryOfRes"
+				)?.checked;
+				if (includeUltmtCdtrCtryOfRes) {
+					const ultmtCdtrCtryOfRes =
+						document.getElementById("ultmtCdtrCtryOfRes").value;
+					if (ultmtCdtrCtryOfRes) {
+						xml += `        <CtryOfRes>${escapeXml(
+							ultmtCdtrCtryOfRes
+						)}</CtryOfRes>\n`;
+					}
+				}
+
 				xml += "      </UltmtCdtr>\n";
 			}
 		}
@@ -1451,12 +1767,38 @@ document.addEventListener("DOMContentLoaded", function () {
 				"PL98765432109876543210987654"
 			);
 
-			// 21. Ultimate Debtor - dodane pole
+			// 21. Ultimate Debtor - rozszerzam istniejącą sekcję
 			safeSetFieldValue(
 				"includeUltmtDbtr",
 				"ultmtDbtrNm",
 				"Ultimate Debtor Corp"
 			);
+			safeSetFieldValue(
+				"includeUltmtDbtrCtryOfRes",
+				"ultmtDbtrCtryOfRes",
+				"US"
+			);
+
+			// Ultimate Debtor OrgId
+			document.getElementById("includeUltmtDbtrId").checked = true;
+			document.getElementById("ultmtDbtrOrgIdContainer").style.display =
+				"block";
+			document.getElementById("ultmtDbtrOrgIdAnyBIC").value = "CITYUS33XXX";
+			document.getElementById("ultmtDbtrLEI").value = "ABCDEFGHIJKLMNOPQR11";
+			document.getElementById("ultmtDbtrOrgIdOthrId").value = "98765432109";
+
+			// Ultimate Debtor SchemeNm
+			const ultmtDbtrOrgIdSchemeName = document.getElementById(
+				"ultmtDbtrOrgIdSchemeName"
+			);
+			ultmtDbtrOrgIdSchemeName.value = "Cd";
+			const ultmtDbtrEvent = new Event("change");
+			ultmtDbtrOrgIdSchemeName.dispatchEvent(ultmtDbtrEvent);
+
+			document.getElementById("ultmtDbtrOrgIdSchemeCode").value = "TXID";
+			document.getElementById("ultmtDbtrOrgIdIssr").value = "IRS";
+
+			// Ultimate Debtor Postal Address
 			safeSetFieldValue(
 				"includeUltmtDbtrPstlAdr",
 				"ultmtDbtrStrtNm",
@@ -1470,6 +1812,52 @@ document.addEventListener("DOMContentLoaded", function () {
 				"New York"
 			);
 			safeSetFieldValue("includeUltmtDbtrPstlAdr", "ultmtDbtrCtry", "US");
+
+			// Ultimate Creditor
+			safeSetFieldValue(
+				"includeUltmtCdtr",
+				"ultmtCdtrNm",
+				"Ultimate Creditor GmbH"
+			);
+			safeSetFieldValue(
+				"includeUltmtCdtrCtryOfRes",
+				"ultmtCdtrCtryOfRes",
+				"DE"
+			);
+
+			// Ultimate Creditor OrgId
+			document.getElementById("includeUltmtCdtrId").checked = true;
+			document.getElementById("ultmtCdtrOrgIdContainer").style.display =
+				"block";
+			document.getElementById("ultmtCdtrOrgIdAnyBIC").value = "DEUTDEFFXXX";
+			document.getElementById("ultmtCdtrLEI").value = "ABCDEFGHIJKLMNOPQR22";
+			document.getElementById("ultmtCdtrOrgIdOthrId").value = "123456789DE";
+
+			// Ultimate Creditor SchemeNm
+			const ultmtCdtrOrgIdSchemeName = document.getElementById(
+				"ultmtCdtrOrgIdSchemeName"
+			);
+			ultmtCdtrOrgIdSchemeName.value = "Cd";
+			const ultmtCdtrEvent = new Event("change");
+			ultmtCdtrOrgIdSchemeName.dispatchEvent(ultmtCdtrEvent);
+
+			document.getElementById("ultmtCdtrOrgIdSchemeCode").value = "COID";
+			document.getElementById("ultmtCdtrOrgIdIssr").value = "Deutsche Bank";
+
+			// Ultimate Creditor Postal Address
+			safeSetFieldValue(
+				"includeUltmtCdtrPstlAdr",
+				"ultmtCdtrStrtNm",
+				"Mainzer Landstrasse"
+			);
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrBldgNb", "11-21");
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrPstCd", "60325");
+			safeSetFieldValue(
+				"includeUltmtCdtrPstlAdr",
+				"ultmtCdtrTwnNm",
+				"Frankfurt"
+			);
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrCtry", "DE");
 
 			// 22. Previous Instructing Agent
 			safeSetFieldValue(
@@ -1930,6 +2318,80 @@ document.addEventListener("DOMContentLoaded", function () {
 		includeDbtrId.addEventListener("change", function () {
 			const dbtrOrgIdContainer = document.getElementById("dbtrOrgIdContainer");
 			dbtrOrgIdContainer.style.display = this.checked ? "block" : "none";
+		});
+	}
+
+	// Dodaję obsługę zmiany typu schematu w Organization ID dla Ultimate Debtor
+	const ultmtDbtrOrgIdSchemeName = document.getElementById(
+		"ultmtDbtrOrgIdSchemeName"
+	);
+	if (ultmtDbtrOrgIdSchemeName) {
+		ultmtDbtrOrgIdSchemeName.addEventListener("change", function () {
+			const schemeCodeContainer = document.getElementById(
+				"ultmtDbtrOrgIdSchemeCodeContainer"
+			);
+			const schemePrtryContainer = document.getElementById(
+				"ultmtDbtrOrgIdSchemePrtryContainer"
+			);
+
+			if (this.value === "Cd") {
+				schemeCodeContainer.style.display = "block";
+				schemePrtryContainer.style.display = "none";
+			} else if (this.value === "Prtry") {
+				schemeCodeContainer.style.display = "none";
+				schemePrtryContainer.style.display = "block";
+			} else {
+				schemeCodeContainer.style.display = "none";
+				schemePrtryContainer.style.display = "none";
+			}
+		});
+	}
+
+	// Obsługa włączania/wyłączania pól Organization ID dla Ultimate Debtor
+	const includeUltmtDbtrId = document.getElementById("includeUltmtDbtrId");
+	if (includeUltmtDbtrId) {
+		includeUltmtDbtrId.addEventListener("change", function () {
+			const ultmtDbtrOrgIdContainer = document.getElementById(
+				"ultmtDbtrOrgIdContainer"
+			);
+			ultmtDbtrOrgIdContainer.style.display = this.checked ? "block" : "none";
+		});
+	}
+
+	// Dodaję obsługę zmiany typu schematu w Organization ID dla Ultimate Creditor
+	const ultmtCdtrOrgIdSchemeName = document.getElementById(
+		"ultmtCdtrOrgIdSchemeName"
+	);
+	if (ultmtCdtrOrgIdSchemeName) {
+		ultmtCdtrOrgIdSchemeName.addEventListener("change", function () {
+			const schemeCodeContainer = document.getElementById(
+				"ultmtCdtrOrgIdSchemeCodeContainer"
+			);
+			const schemePrtryContainer = document.getElementById(
+				"ultmtCdtrOrgIdSchemePrtryContainer"
+			);
+
+			if (this.value === "Cd") {
+				schemeCodeContainer.style.display = "block";
+				schemePrtryContainer.style.display = "none";
+			} else if (this.value === "Prtry") {
+				schemeCodeContainer.style.display = "none";
+				schemePrtryContainer.style.display = "block";
+			} else {
+				schemeCodeContainer.style.display = "none";
+				schemePrtryContainer.style.display = "none";
+			}
+		});
+	}
+
+	// Obsługa włączania/wyłączania pól Organization ID dla Ultimate Creditor
+	const includeUltmtCdtrId = document.getElementById("includeUltmtCdtrId");
+	if (includeUltmtCdtrId) {
+		includeUltmtCdtrId.addEventListener("change", function () {
+			const ultmtCdtrOrgIdContainer = document.getElementById(
+				"ultmtCdtrOrgIdContainer"
+			);
+			ultmtCdtrOrgIdContainer.style.display = this.checked ? "block" : "none";
 		});
 	}
 });

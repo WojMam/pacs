@@ -837,6 +837,254 @@
                     </div>
                     <div class="field-description">Nazwa podmiotu będącego pierwotnym dłużnikiem. Maksymalnie 140
                         znaków.</div>
+
+                    <!-- Country Of Residence dla Ultimate Debtor -->
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrCtryOfRes">Country Of Residence (CtryOfRes)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrCtryOfRes" name="ultmtDbtrCtryOfRes" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. PL" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtDbtrCtryOfRes" class="include-field"
+                                data-field="ultmtDbtrCtryOfRes">
+                            <label for="includeUltmtDbtrCtryOfRes">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtDbtr>
+  <CtryOfRes>PL</CtryOfRes>
+</UltmtDbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > CtryOfRes">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju, w którym rezyduje pierwotny dłużnik. Dokładnie 2 znaki
+                        alfabetyczne (ISO).</div>
+
+                    <!-- Identification dla Ultimate Debtor -->
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrOrgId">Organization Identification (OrgId)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtDbtrId" class="include-field"
+                                data-field="ultmtDbtrOrgIdContainer">
+                            <label for="includeUltmtDbtrId">Uwzględnij identyfikację</label>
+                        </div>
+                    </div>
+
+                    <!-- Container dla OrgId dla Ultimate Debtor -->
+                    <div id="ultmtDbtrOrgIdContainer" style="display:none; margin-left: 20px;">
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtDbtrOrgIdAnyBIC">AnyBIC<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtDbtrOrgIdAnyBIC" name="ultmtDbtrOrgIdAnyBIC" maxlength="11"
+                                    pattern="[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtDbtr>
+  <Id>
+    <OrgId>
+      <AnyBIC>ABCDEFGHIJK</AnyBIC>
+    </OrgId>
+  </Id>
+</UltmtDbtr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Id > OrgId > AnyBIC">🌳</span>
+                        </div>
+                        <div class="field-description">Bank Identifier Code (BIC). 8 lub 11 znaków alfanumerycznych.
+                        </div>
+
+                        <!-- LEI dla Ultimate Debtor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtDbtrLEI">LEI<span class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtDbtrLEI" name="ultmtDbtrLEI" maxlength="20"
+                                    pattern="[A-Z0-9]{18,18}[0-9]{2,2}">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtDbtr>
+  <Id>
+    <OrgId>
+      <LEI>1234567890ABCDEFGHI22</LEI>
+    </OrgId>
+  </Id>
+</UltmtDbtr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Id > OrgId > LEI">🌳</span>
+                        </div>
+                        <div class="field-description">Legal Entity Identifier (LEI). Dokładnie 20 znaków
+                            alfanumerycznych.</div>
+
+                        <!-- Othr section dla Ultimate Debtor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtDbtrOrgIdOthrId">Other Identification (Othr/Id)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtDbtrOrgIdOthrId" name="ultmtDbtrOrgIdOthrId"
+                                    maxlength="256">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtDbtr>
+  <Id>
+    <OrgId>
+      <Othr>
+        <Id>123456789</Id>
+      </Othr>
+    </OrgId>
+  </Id>
+</UltmtDbtr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Id > OrgId > Othr > Id">🌳</span>
+                        </div>
+                        <div class="field-description">Inny identyfikator organizacji. Maksymalnie 256 znaków.</div>
+
+                        <!-- SchmeNm section dla Ultimate Debtor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtDbtrOrgIdSchemeName">Scheme Name Type<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="ultmtDbtrOrgIdSchemeName" name="ultmtDbtrOrgIdSchemeName">
+                                    <option value="">-- Wybierz typ schematu --</option>
+                                    <option value="Cd">Code (Cd)</option>
+                                    <option value="Prtry">Proprietary (Prtry)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field-description">Typ nazwy schematu identyfikacyjnego.</div>
+
+                        <!-- Conditional fields based on SchmeNm selection dla Ultimate Debtor -->
+                        <div id="ultmtDbtrOrgIdSchemeCodeContainer" style="display:none; margin-left: 20px;">
+                            <div class="form-row">
+                                <label class="field-label" for="ultmtDbtrOrgIdSchemeCode">Scheme Code (Cd)<span
+                                        class="optional-indicator"> (opcjonalne)</span></label>
+                                <div class="field-input">
+                                    <input type="text" id="ultmtDbtrOrgIdSchemeCode" name="ultmtDbtrOrgIdSchemeCode"
+                                        maxlength="4">
+                                </div>
+                                <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SchmeNm>
+  <Cd>TXID</Cd>
+</SchmeNm>">📋</span>
+                                <span class="tree-icon" title="Pokaż strukturę XML"
+                                    data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Id > OrgId > Othr > SchmeNm > Cd">🌳</span>
+                            </div>
+                            <div class="field-description">Kod schematu identyfikacyjnego. Maksymalnie 4 znaki.</div>
+                        </div>
+
+                        <div id="ultmtDbtrOrgIdSchemePrtryContainer" style="display:none; margin-left: 20px;">
+                            <div class="form-row">
+                                <label class="field-label" for="ultmtDbtrOrgIdSchemePrtry">Scheme Proprietary
+                                    (Prtry)<span class="optional-indicator"> (opcjonalne)</span></label>
+                                <div class="field-input">
+                                    <input type="text" id="ultmtDbtrOrgIdSchemePrtry" name="ultmtDbtrOrgIdSchemePrtry"
+                                        maxlength="35">
+                                </div>
+                                <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SchmeNm>
+  <Prtry>WłasnySchematIdentyfikacji</Prtry>
+</SchmeNm>">📋</span>
+                                <span class="tree-icon" title="Pokaż strukturę XML"
+                                    data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Id > OrgId > Othr > SchmeNm > Prtry">🌳</span>
+                            </div>
+                            <div class="field-description">Własna nazwa schematu identyfikacyjnego. Maksymalnie 35
+                                znaków.</div>
+                        </div>
+
+                        <!-- Issr section dla Ultimate Debtor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtDbtrOrgIdIssr">Issuer (Issr)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtDbtrOrgIdIssr" name="ultmtDbtrOrgIdIssr" maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<Issr>Nazwa Wystawcy</Issr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Id > OrgId > Othr > Issr">🌳</span>
+                        </div>
+                        <div class="field-description">Wystawca identyfikatora. Maksymalnie 35 znaków.</div>
+                    </div>
+                </div>
+
+                <!-- Ultimate Debtor Postal Address -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Ultimate Debtor Postal Address (UltmtDbtrPstlAdr)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrStrtNm">Street Name (StrtNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrStrtNm" name="ultmtDbtrStrtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtDbtrPstlAdr" class="include-field"
+                                data-field="ultmtDbtrStrtNm">
+                            <label for="includeUltmtDbtrPstlAdr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtDbtr>
+  <PstlAdr>
+    <StrtNm>Wall Street</StrtNm>
+  </PstlAdr>
+</UltmtDbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > PstlAdr > StrtNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa ulicy. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrBldgNb">Building Number (BldgNb)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrBldgNb" name="ultmtDbtrBldgNb" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <BldgNb>15</BldgNb>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > PstlAdr > BldgNb">🌳</span>
+                    </div>
+                    <div class="field-description">Numer budynku. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrPstCd">Postal Code (PstCd)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrPstCd" name="ultmtDbtrPstCd" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <PstCd>10005</PstCd>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > PstlAdr > PstCd">🌳</span>
+                    </div>
+                    <div class="field-description">Kod pocztowy. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrTwnNm">Town Name (TwnNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrTwnNm" name="ultmtDbtrTwnNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <TwnNm>New York</TwnNm>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > PstlAdr > TwnNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa miasta. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrCtry">Country (Ctry)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrCtry" name="ultmtDbtrCtry" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. US" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <Ctry>US</Ctry>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > PstlAdr > Ctry">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju. Dokładnie 2 znaki alfabetyczne (ISO).</div>
                 </div>
 
                 <!-- Ultimate Creditor -->
@@ -862,6 +1110,254 @@
                     </div>
                     <div class="field-description">Nazwa podmiotu będącego końcowym wierzycielem. Maksymalnie 140
                         znaków.</div>
+
+                    <!-- Country Of Residence dla Ultimate Creditor -->
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrCtryOfRes">Country Of Residence (CtryOfRes)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrCtryOfRes" name="ultmtCdtrCtryOfRes" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. DE" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtCdtrCtryOfRes" class="include-field"
+                                data-field="ultmtCdtrCtryOfRes">
+                            <label for="includeUltmtCdtrCtryOfRes">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtCdtr>
+  <CtryOfRes>DE</CtryOfRes>
+</UltmtCdtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > CtryOfRes">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju, w którym rezyduje końcowy wierzyciel. Dokładnie 2 znaki
+                        alfabetyczne (ISO).</div>
+
+                    <!-- Identification dla Ultimate Creditor -->
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrOrgId">Organization Identification (OrgId)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtCdtrId" class="include-field"
+                                data-field="ultmtCdtrOrgIdContainer">
+                            <label for="includeUltmtCdtrId">Uwzględnij identyfikację</label>
+                        </div>
+                    </div>
+
+                    <!-- Container dla OrgId dla Ultimate Creditor -->
+                    <div id="ultmtCdtrOrgIdContainer" style="display:none; margin-left: 20px;">
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtCdtrOrgIdAnyBIC">AnyBIC<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtCdtrOrgIdAnyBIC" name="ultmtCdtrOrgIdAnyBIC" maxlength="11"
+                                    pattern="[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtCdtr>
+  <Id>
+    <OrgId>
+      <AnyBIC>DEUTDEFFXXX</AnyBIC>
+    </OrgId>
+  </Id>
+</UltmtCdtr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Id > OrgId > AnyBIC">🌳</span>
+                        </div>
+                        <div class="field-description">Bank Identifier Code (BIC). 8 lub 11 znaków alfanumerycznych.
+                        </div>
+
+                        <!-- LEI dla Ultimate Creditor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtCdtrLEI">LEI<span class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtCdtrLEI" name="ultmtCdtrLEI" maxlength="20"
+                                    pattern="[A-Z0-9]{18,18}[0-9]{2,2}">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtCdtr>
+  <Id>
+    <OrgId>
+      <LEI>ABCDEFGHIJKLMNOPQR01</LEI>
+    </OrgId>
+  </Id>
+</UltmtCdtr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Id > OrgId > LEI">🌳</span>
+                        </div>
+                        <div class="field-description">Legal Entity Identifier (LEI). Dokładnie 20 znaków
+                            alfanumerycznych.</div>
+
+                        <!-- Othr section dla Ultimate Creditor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtCdtrOrgIdOthrId">Other Identification (Othr/Id)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtCdtrOrgIdOthrId" name="ultmtCdtrOrgIdOthrId"
+                                    maxlength="256">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtCdtr>
+  <Id>
+    <OrgId>
+      <Othr>
+        <Id>987654321</Id>
+      </Othr>
+    </OrgId>
+  </Id>
+</UltmtCdtr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Id > OrgId > Othr > Id">🌳</span>
+                        </div>
+                        <div class="field-description">Inny identyfikator organizacji. Maksymalnie 256 znaków.</div>
+
+                        <!-- SchmeNm section dla Ultimate Creditor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtCdtrOrgIdSchemeName">Scheme Name Type<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="ultmtCdtrOrgIdSchemeName" name="ultmtCdtrOrgIdSchemeName">
+                                    <option value="">-- Wybierz typ schematu --</option>
+                                    <option value="Cd">Code (Cd)</option>
+                                    <option value="Prtry">Proprietary (Prtry)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field-description">Typ nazwy schematu identyfikacyjnego.</div>
+
+                        <!-- Conditional fields based on SchmeNm selection dla Ultimate Creditor -->
+                        <div id="ultmtCdtrOrgIdSchemeCodeContainer" style="display:none; margin-left: 20px;">
+                            <div class="form-row">
+                                <label class="field-label" for="ultmtCdtrOrgIdSchemeCode">Scheme Code (Cd)<span
+                                        class="optional-indicator"> (opcjonalne)</span></label>
+                                <div class="field-input">
+                                    <input type="text" id="ultmtCdtrOrgIdSchemeCode" name="ultmtCdtrOrgIdSchemeCode"
+                                        maxlength="4">
+                                </div>
+                                <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SchmeNm>
+  <Cd>COID</Cd>
+</SchmeNm>">📋</span>
+                                <span class="tree-icon" title="Pokaż strukturę XML"
+                                    data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Id > OrgId > Othr > SchmeNm > Cd">🌳</span>
+                            </div>
+                            <div class="field-description">Kod schematu identyfikacyjnego. Maksymalnie 4 znaki.</div>
+                        </div>
+
+                        <div id="ultmtCdtrOrgIdSchemePrtryContainer" style="display:none; margin-left: 20px;">
+                            <div class="form-row">
+                                <label class="field-label" for="ultmtCdtrOrgIdSchemePrtry">Scheme Proprietary
+                                    (Prtry)<span class="optional-indicator"> (opcjonalne)</span></label>
+                                <div class="field-input">
+                                    <input type="text" id="ultmtCdtrOrgIdSchemePrtry" name="ultmtCdtrOrgIdSchemePrtry"
+                                        maxlength="35">
+                                </div>
+                                <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SchmeNm>
+  <Prtry>ProprietaryScheme</Prtry>
+</SchmeNm>">📋</span>
+                                <span class="tree-icon" title="Pokaż strukturę XML"
+                                    data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Id > OrgId > Othr > SchmeNm > Prtry">🌳</span>
+                            </div>
+                            <div class="field-description">Własna nazwa schematu identyfikacyjnego. Maksymalnie 35
+                                znaków.</div>
+                        </div>
+
+                        <!-- Issr section dla Ultimate Creditor -->
+                        <div class="form-row">
+                            <label class="field-label" for="ultmtCdtrOrgIdIssr">Issuer (Issr)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="ultmtCdtrOrgIdIssr" name="ultmtCdtrOrgIdIssr" maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<Issr>Deutsche Bank</Issr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Id > OrgId > Othr > Issr">🌳</span>
+                        </div>
+                        <div class="field-description">Wystawca identyfikatora. Maksymalnie 35 znaków.</div>
+                    </div>
+                </div>
+
+                <!-- Ultimate Creditor Postal Address -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Ultimate Creditor Postal Address (UltmtCdtrPstlAdr)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrStrtNm">Street Name (StrtNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrStrtNm" name="ultmtCdtrStrtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtCdtrPstlAdr" class="include-field"
+                                data-field="ultmtCdtrStrtNm">
+                            <label for="includeUltmtCdtrPstlAdr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtCdtr>
+  <PstlAdr>
+    <StrtNm>Mainzer Landstrasse</StrtNm>
+  </PstlAdr>
+</UltmtCdtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > PstlAdr > StrtNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa ulicy. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrBldgNb">Building Number (BldgNb)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrBldgNb" name="ultmtCdtrBldgNb" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <BldgNb>11-21</BldgNb>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > PstlAdr > BldgNb">🌳</span>
+                    </div>
+                    <div class="field-description">Numer budynku. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrPstCd">Postal Code (PstCd)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrPstCd" name="ultmtCdtrPstCd" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <PstCd>60325</PstCd>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > PstlAdr > PstCd">🌳</span>
+                    </div>
+                    <div class="field-description">Kod pocztowy. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrTwnNm">Town Name (TwnNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrTwnNm" name="ultmtCdtrTwnNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <TwnNm>Frankfurt</TwnNm>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > PstlAdr > TwnNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa miasta. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrCtry">Country (Ctry)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrCtry" name="ultmtCdtrCtry" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. DE" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <Ctry>DE</Ctry>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > PstlAdr > Ctry">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju. Dokładnie 2 znaki alfabetyczne (ISO).</div>
                 </div>
 
                 <!-- Purpose -->
