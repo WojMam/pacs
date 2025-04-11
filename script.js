@@ -558,6 +558,78 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (dbtrNm) {
 			xml += "      <Dbtr>\n";
 			xml += `        <Nm>${escapeXml(dbtrNm)}</Nm>\n`;
+
+			// Dodanie LEI dla Debtor
+			const includeDbtrLEI = document.getElementById("includeDbtrLEI")?.checked;
+			if (includeDbtrLEI) {
+				const dbtrLEI = document.getElementById("dbtrLEI").value;
+				if (dbtrLEI) {
+					xml += `        <LEI>${escapeXml(dbtrLEI)}</LEI>\n`;
+				}
+			}
+
+			// Dodanie PstlAdr dla Debtor
+			const includeDbtrPstlAdr =
+				document.getElementById("includeDbtrPstlAdr")?.checked;
+			if (includeDbtrPstlAdr) {
+				let hasAddressData = false;
+				let postalAddressXml = "        <PstlAdr>\n";
+
+				const dbtrStrtNm = document.getElementById("dbtrStrtNm").value;
+				if (dbtrStrtNm) {
+					postalAddressXml += `          <StrtNm>${escapeXml(
+						dbtrStrtNm
+					)}</StrtNm>\n`;
+					hasAddressData = true;
+				}
+
+				const dbtrBldgNb = document.getElementById("dbtrBldgNb").value;
+				if (dbtrBldgNb) {
+					postalAddressXml += `          <BldgNb>${escapeXml(
+						dbtrBldgNb
+					)}</BldgNb>\n`;
+					hasAddressData = true;
+				}
+
+				const dbtrPstCd = document.getElementById("dbtrPstCd").value;
+				if (dbtrPstCd) {
+					postalAddressXml += `          <PstCd>${escapeXml(
+						dbtrPstCd
+					)}</PstCd>\n`;
+					hasAddressData = true;
+				}
+
+				const dbtrTwnNm = document.getElementById("dbtrTwnNm").value;
+				if (dbtrTwnNm) {
+					postalAddressXml += `          <TwnNm>${escapeXml(
+						dbtrTwnNm
+					)}</TwnNm>\n`;
+					hasAddressData = true;
+				}
+
+				const dbtrCtry = document.getElementById("dbtrCtry").value;
+				if (dbtrCtry) {
+					postalAddressXml += `          <Ctry>${escapeXml(dbtrCtry)}</Ctry>\n`;
+					hasAddressData = true;
+				}
+
+				if (hasAddressData) {
+					postalAddressXml += "        </PstlAdr>\n";
+					xml += postalAddressXml;
+				}
+			}
+
+			// Dodanie CtryOfRes dla Debtor
+			const includeDbtrCtryOfRes = document.getElementById(
+				"includeDbtrCtryOfRes"
+			)?.checked;
+			if (includeDbtrCtryOfRes) {
+				const dbtrCtryOfRes = document.getElementById("dbtrCtryOfRes").value;
+				if (dbtrCtryOfRes) {
+					xml += `        <CtryOfRes>${escapeXml(dbtrCtryOfRes)}</CtryOfRes>\n`;
+				}
+			}
+
 			xml += "      </Dbtr>\n";
 		}
 
@@ -1259,6 +1331,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			// 19. Debtor
 			safeSetFieldValue("includeDbtr", "dbtrNm", "John Doe");
+			safeSetFieldValue("includeDbtrLEI", "dbtrLEI", "1234567890ABCDEFGHI22");
+			safeSetFieldValue("includeDbtrCtryOfRes", "dbtrCtryOfRes", "PL");
 			safeSetFieldValue("includeDbtrPstlAdr", "dbtrStrtNm", "Bankowa");
 			safeSetFieldValue("includeDbtrPstlAdr", "dbtrBldgNb", "14");
 			safeSetFieldValue("includeDbtrPstlAdr", "dbtrPstCd", "00-950");

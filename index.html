@@ -476,6 +476,137 @@
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Nm">🌳</span>
                     </div>
                     <div class="field-description">Nazwa podmiotu płacącego. Maksymalnie 140 znaków.</div>
+
+                    <!-- Dodaję pole LEI dla Debtor -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrLEI">LEI<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrLEI" name="dbtrLEI" maxlength="20"
+                                pattern="[A-Z0-9]{18,18}[0-9]{2,2}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrLEI" class="include-field" data-field="dbtrLEI">
+                            <label for="includeDbtrLEI">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Dbtr>
+  <Nm>Nazwa Dłużnika Sp. z o.o.</Nm>
+  <LEI>1234567890ABCDEFGHI22</LEI>
+</Dbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > LEI">🌳</span>
+                    </div>
+                    <div class="field-description">Legal Entity Identifier (LEI). Dokładnie 20 znaków alfanumerycznych.
+                    </div>
+
+                    <!-- Dodaję pole Country Of Residence dla Debtor -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrCtryOfRes">Country Of Residence (CtryOfRes)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrCtryOfRes" name="dbtrCtryOfRes" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. PL" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrCtryOfRes" class="include-field"
+                                data-field="dbtrCtryOfRes">
+                            <label for="includeDbtrCtryOfRes">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Dbtr>
+  <Nm>Nazwa Dłużnika Sp. z o.o.</Nm>
+  <CtryOfRes>PL</CtryOfRes>
+</Dbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > CtryOfRes">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju, w którym rezyduje dłużnik. Dokładnie 2 znaki alfabetyczne
+                        (ISO).</div>
+                </div>
+
+                <!-- Debtor Postal Address (Dodaję nową sekcję z adresem pocztowym) -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Debtor Postal Address (DbtrPstlAdr)<span class="optional-indicator"> (opcjonalne)</span>
+                        </h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrStrtNm">Street Name (StrtNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrStrtNm" name="dbtrStrtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrPstlAdr" class="include-field"
+                                data-field="dbtrStrtNm">
+                            <label for="includeDbtrPstlAdr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Dbtr>
+  <Nm>Nazwa Dłużnika Sp. z o.o.</Nm>
+  <PstlAdr>
+    <StrtNm>Grzybowska</StrtNm>
+  </PstlAdr>
+</Dbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > PstlAdr > StrtNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa ulicy. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrBldgNb">Building Number (BldgNb)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrBldgNb" name="dbtrBldgNb" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <BldgNb>53/57</BldgNb>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > PstlAdr > BldgNb">🌳</span>
+                    </div>
+                    <div class="field-description">Numer budynku. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrPstCd">Postal Code (PstCd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrPstCd" name="dbtrPstCd" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <PstCd>00-855</PstCd>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > PstlAdr > PstCd">🌳</span>
+                    </div>
+                    <div class="field-description">Kod pocztowy. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrTwnNm">Town Name (TwnNm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrTwnNm" name="dbtrTwnNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <TwnNm>Warszawa</TwnNm>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > PstlAdr > TwnNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa miasta. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrCtry">Country (Ctry)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrCtry" name="dbtrCtry" maxlength="2" pattern="[A-Z]{2,2}"
+                                placeholder="np. PL" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <Ctry>PL</Ctry>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > PstlAdr > Ctry">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju. Dokładnie 2 znaki alfabetyczne (ISO).</div>
                 </div>
 
                 <!-- Debtor Account -->
