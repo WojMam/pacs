@@ -726,24 +726,139 @@
 
                 <!-- Debtor Account -->
                 <div class="form-group">
-                    <div class="form-subheader">
-                        <h3>Debtor Account (DbtrAcct)<span class="required-indicator">*</span></h3>
+                    <div class="form-header">
+                        <h2>Debtor Account (DbtrAcct) <span class="required-indicator">(wymagane)</span></h2>
                     </div>
                     <div class="form-row">
-                        <label class="field-label" for="dbtrAcctId">IBAN (IBAN)<span
-                                class="required-indicator">*</span></label>
+                        <label class="field-label" for="dbtrAcctId">Identification (Id/IBAN)<span
+                                class="required-indicator"> (wymagane)</span></label>
                         <div class="field-input">
-                            <input type="text" id="dbtrAcctId" name="dbtrAcctId" maxlength="34" required>
+                            <input type="text" id="dbtrAcctId" name="dbtrAcctId" required
+                                pattern="[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}">
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAcct>
   <Id>
-    <IBAN>PL21109010140000071219812874</IBAN>
+    <IBAN>PL27114020040000300201355387</IBAN>
   </Id>
 </DbtrAcct>">📋</span>
                         <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Id > IBAN">🌳</span>
                     </div>
-                    <div class="field-description">Numer konta dłużnika w formacie IBAN. Maksymalnie 34 znaki.</div>
+                    <div class="field-description">Numer konta IBAN dłużnika. Maksymalnie 34 znaki.</div>
+
+                    <!-- Debtor Account Type -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAcctTp">Account Type (Tp)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="dbtrAcctTp" name="dbtrAcctTp" disabled>
+                                <option value="">-- Wybierz typ rachunku --</option>
+                                <option value="CACC">Current Account (CACC)</option>
+                                <option value="SVGS">Savings Account (SVGS)</option>
+                                <option value="CASH">Cash Payment (CASH)</option>
+                                <option value="SLRY">Salary Account (SLRY)</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAcctTp" class="include-field" data-field="dbtrAcctTp">
+                            <label for="includeDbtrAcctTp">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAcct>
+  <Tp>
+    <Cd>CACC</Cd>
+  </Tp>
+</DbtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Tp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Typ rachunku dłużnika. Możliwe wartości: CACC - rachunek bieżący,
+                        SVGS - rachunek oszczędnościowy, SLRY - rachunek wynagrodzeń, CASH - płatność gotówkowa.</div>
+
+                    <!-- Debtor Account Currency -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAcctCcy">Currency (Ccy)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAcctCcy" name="dbtrAcctCcy" maxlength="3" pattern="[A-Z]{3,3}"
+                                placeholder="np. PLN" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAcctCcy" class="include-field"
+                                data-field="dbtrAcctCcy">
+                            <label for="includeDbtrAcctCcy">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAcct>
+  <Ccy>PLN</Ccy>
+</DbtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Ccy">🌳</span>
+                    </div>
+                    <div class="field-description">Waluta rachunku dłużnika. Dokładnie 3 znaki alfabetyczne zgodnie z
+                        ISO 4217.</div>
+
+                    <!-- Debtor Account Name -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAcctNm">Name (Nm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAcctNm" name="dbtrAcctNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAcctNm" class="include-field" data-field="dbtrAcctNm">
+                            <label for="includeDbtrAcctNm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAcct>
+  <Nm>Rachunek bieżący Klienta</Nm>
+</DbtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa rachunku dłużnika. Maksymalnie 140 znaków.</div>
+
+                    <!-- Debtor Account Proxy -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAcctProxyTp">Proxy Type (Prxy/Tp)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="dbtrAcctProxyTp" name="dbtrAcctProxyTp" disabled>
+                                <option value="">-- Wybierz typ proxy --</option>
+                                <option value="EMAL">Email</option>
+                                <option value="PHNE">Phone</option>
+                                <option value="NPID">National Personal ID</option>
+                                <option value="SOSE">Social Security Number</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAcctProxyTp" class="include-field"
+                                data-field="dbtrAcctProxyTp">
+                            <label for="includeDbtrAcctProxyTp">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAcct>
+  <Prxy>
+    <Tp>
+      <Cd>EMAL</Cd>
+    </Tp>
+  </Prxy>
+</DbtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Prxy > Tp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Typ identyfikatora zastępczego rachunku dłużnika.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAcctProxyVal">Proxy Value (Prxy/Id)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAcctProxyVal" name="dbtrAcctProxyVal" maxlength="320" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Prxy>
+  <Id>jan.kowalski@example.com</Id>
+</Prxy>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Prxy > Id">🌳</span>
+                    </div>
+                    <div class="field-description">Wartość identyfikatora zastępczego rachunku dłużnika. Maksymalnie 320
+                        znaków.</div>
                 </div>
 
                 <!-- Creditor -->
@@ -768,14 +883,15 @@
 
                 <!-- Creditor Account -->
                 <div class="form-group">
-                    <div class="form-subheader">
-                        <h3>Creditor Account (CdtrAcct)<span class="required-indicator">*</span></h3>
+                    <div class="form-header">
+                        <h2>Creditor Account (CdtrAcct) <span class="required-indicator">(wymagane)</span></h2>
                     </div>
                     <div class="form-row">
-                        <label class="field-label" for="cdtrAcctId">IBAN (IBAN)<span
-                                class="required-indicator">*</span></label>
+                        <label class="field-label" for="cdtrAcctId">Identification (Id/IBAN)<span
+                                class="required-indicator"> (wymagane)</span></label>
                         <div class="field-input">
-                            <input type="text" id="cdtrAcctId" name="cdtrAcctId" maxlength="34" required>
+                            <input type="text" id="cdtrAcctId" name="cdtrAcctId" required
+                                pattern="[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}">
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAcct>
   <Id>
@@ -785,7 +901,121 @@
                         <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Id > IBAN">🌳</span>
                     </div>
-                    <div class="field-description">Numer konta wierzyciela w formacie IBAN. Maksymalnie 34 znaki.</div>
+                    <div class="field-description">Numer konta IBAN wierzyciela. Maksymalnie 34 znaki.</div>
+
+                    <!-- Creditor Account Type -->
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAcctTp">Account Type (Tp)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="cdtrAcctTp" name="cdtrAcctTp" disabled>
+                                <option value="">-- Wybierz typ rachunku --</option>
+                                <option value="CACC">Current Account (CACC)</option>
+                                <option value="SVGS">Savings Account (SVGS)</option>
+                                <option value="CASH">Cash Payment (CASH)</option>
+                                <option value="SLRY">Salary Account (SLRY)</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAcctTp" class="include-field" data-field="cdtrAcctTp">
+                            <label for="includeCdtrAcctTp">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAcct>
+  <Tp>
+    <Cd>CACC</Cd>
+  </Tp>
+</CdtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Tp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Typ rachunku wierzyciela. Możliwe wartości: CACC - rachunek bieżący,
+                        SVGS - rachunek oszczędnościowy, SLRY - rachunek wynagrodzeń, CASH - płatność gotówkowa.</div>
+
+                    <!-- Creditor Account Currency -->
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAcctCcy">Currency (Ccy)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAcctCcy" name="cdtrAcctCcy" maxlength="3" pattern="[A-Z]{3,3}"
+                                placeholder="np. EUR" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAcctCcy" class="include-field"
+                                data-field="cdtrAcctCcy">
+                            <label for="includeCdtrAcctCcy">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAcct>
+  <Ccy>EUR</Ccy>
+</CdtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Ccy">🌳</span>
+                    </div>
+                    <div class="field-description">Waluta rachunku wierzyciela. Dokładnie 3 znaki alfabetyczne zgodnie z
+                        ISO 4217.</div>
+
+                    <!-- Creditor Account Name -->
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAcctNm">Name (Nm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAcctNm" name="cdtrAcctNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAcctNm" class="include-field" data-field="cdtrAcctNm">
+                            <label for="includeCdtrAcctNm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAcct>
+  <Nm>Geschäftskonto</Nm>
+</CdtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa rachunku wierzyciela. Maksymalnie 140 znaków.</div>
+
+                    <!-- Creditor Account Proxy -->
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAcctProxyTp">Proxy Type (Prxy/Tp)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="cdtrAcctProxyTp" name="cdtrAcctProxyTp" disabled>
+                                <option value="">-- Wybierz typ proxy --</option>
+                                <option value="EMAL">Email</option>
+                                <option value="PHNE">Phone</option>
+                                <option value="NPID">National Personal ID</option>
+                                <option value="SOSE">Social Security Number</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAcctProxyTp" class="include-field"
+                                data-field="cdtrAcctProxyTp">
+                            <label for="includeCdtrAcctProxyTp">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAcct>
+  <Prxy>
+    <Tp>
+      <Cd>EMAL</Cd>
+    </Tp>
+  </Prxy>
+</CdtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Prxy > Tp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Typ identyfikatora zastępczego rachunku wierzyciela.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAcctProxyVal">Proxy Value (Prxy/Id)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAcctProxyVal" name="cdtrAcctProxyVal" maxlength="320" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Prxy>
+  <Id>hans.mueller@example.de</Id>
+</Prxy>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Prxy > Id">🌳</span>
+                    </div>
+                    <div class="field-description">Wartość identyfikatora zastępczego rachunku wierzyciela. Maksymalnie
+                        320 znaków.</div>
                 </div>
 
                 <!-- Remittance Information -->
@@ -2748,6 +2978,582 @@
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAgtAcct > Id > IBAN">🌳</span>
                     </div>
                     <div class="field-description">Numer konta IBAN dla agenta wierzyciela.</div>
+                </div>
+
+                <!-- Instructing Agent -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instructing Agent (InstgAgt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtId">BIC<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtId" name="instgAgtId"
+                                pattern="[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstgAgt" class="include-field" data-field="instgAgtId">
+                            <label for="includeInstgAgt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <BICFI>BPKOPLPW</BICFI>
+  </FinInstnId>
+</InstgAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Business Identifier Code (BIC) instytucji nadawczej. 8 lub 11
+                        znaków.</div>
+
+                    <!-- LEI dla Instructing Agent -->
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtLEI">LEI<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtLEI" name="instgAgtLEI" maxlength="20"
+                                pattern="[A-Z0-9]{18,18}[0-9]{2,2}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstgAgtLEI" class="include-field"
+                                data-field="instgAgtLEI">
+                            <label for="includeInstgAgtLEI">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <LEI>1234567890ABCDEFGHI22</LEI>
+  </FinInstnId>
+</InstgAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > LEI">🌳</span>
+                    </div>
+                    <div class="field-description">Legal Entity Identifier (LEI). Dokładnie 20 znaków alfanumerycznych.
+                    </div>
+
+                    <!-- Name dla Instructing Agent -->
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtNm">Name (Nm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtNm" name="instgAgtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstgAgtNm" class="include-field" data-field="instgAgtNm">
+                            <label for="includeInstgAgtNm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <Nm>Bank Polski</Nm>
+  </FinInstnId>
+</InstgAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa instytucji finansowej. Maksymalnie 140 znaków.</div>
+
+                    <!-- Other dla Instructing Agent -->
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtOtherId">Other Identification (Othr/Id)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtOtherId" name="instgAgtOtherId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstgAgtOtherId" class="include-field"
+                                data-field="instgAgtOtherId">
+                            <label for="includeInstgAgtOtherId">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <Othr>
+      <Id>123456789</Id>
+    </Othr>
+  </FinInstnId>
+</InstgAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > Othr > Id">🌳</span>
+                    </div>
+                    <div class="field-description">Inny identyfikator instytucji finansowej. Maksymalnie 35 znaków.
+                    </div>
+
+                    <!-- SchmeNm dla Other Id -->
+                    <div id="instgAgtOthrSchmeNmContainer" style="display:none; margin-left: 20px;">
+                        <div class="form-row">
+                            <label class="field-label" for="instgAgtOthrSchmeNmCd">Scheme Name Code
+                                (Othr/SchmeNm/Cd)<span class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="instgAgtOthrSchmeNmCd" name="instgAgtOthrSchmeNmCd">
+                                    <option value="">-- Wybierz kod --</option>
+                                    <option value="TXID">Tax Identification Number</option>
+                                    <option value="BANK">Bank Proprietary Code</option>
+                                    <option value="CUST">Customer Code</option>
+                                    <option value="DUNS">Data Universal Numbering System</option>
+                                </select>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Othr>
+  <SchmeNm>
+    <Cd>BANK</Cd>
+  </SchmeNm>
+</Othr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > Othr > SchmeNm > Cd">🌳</span>
+                        </div>
+                        <div class="field-description">Kod schematu identyfikacyjnego.</div>
+
+                        <div class="form-row">
+                            <label class="field-label" for="instgAgtOthrSchmeNmPrtry">Scheme Name Proprietary
+                                (Othr/SchmeNm/Prtry)<span class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="instgAgtOthrSchmeNmPrtry" name="instgAgtOthrSchmeNmPrtry"
+                                    maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Othr>
+  <SchmeNm>
+    <Prtry>NBP System</Prtry>
+  </SchmeNm>
+</Othr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > Othr > SchmeNm > Prtry">🌳</span>
+                        </div>
+                        <div class="field-description">Własna nazwa schematu identyfikacyjnego. Maksymalnie 35 znaków.
+                            Wypełnij tylko jedno pole: Cd lub Prtry.</div>
+
+                        <div class="form-row">
+                            <label class="field-label" for="instgAgtOthrIssr">Issuer (Othr/Issr)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="instgAgtOthrIssr" name="instgAgtOthrIssr" maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Othr>
+  <Issr>NBP</Issr>
+</Othr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > Othr > Issr">🌳</span>
+                        </div>
+                        <div class="field-description">Wystawca identyfikatora. Maksymalnie 35 znaków.</div>
+                    </div>
+                </div>
+
+                <!-- Instructing Agent Postal Address -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instructing Agent Postal Address (InstgAgtPstlAdr)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtStrtNm">Street Name (StrtNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtStrtNm" name="instgAgtStrtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstgAgtPstlAdr" class="include-field"
+                                data-field="instgAgtStrtNm">
+                            <label for="includeInstgAgtPstlAdr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <PstlAdr>
+      <StrtNm>Świętokrzyska</StrtNm>
+    </PstlAdr>
+  </FinInstnId>
+</InstgAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > PstlAdr > StrtNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa ulicy. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtBldgNb">Building Number (BldgNb)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtBldgNb" name="instgAgtBldgNb" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <BldgNb>42</BldgNb>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > PstlAdr > BldgNb">🌳</span>
+                    </div>
+                    <div class="field-description">Numer budynku. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtPstCd">Postal Code (PstCd)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtPstCd" name="instgAgtPstCd" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <PstCd>00-950</PstCd>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > PstlAdr > PstCd">🌳</span>
+                    </div>
+                    <div class="field-description">Kod pocztowy. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtTwnNm">Town Name (TwnNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtTwnNm" name="instgAgtTwnNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <TwnNm>Warszawa</TwnNm>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > PstlAdr > TwnNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa miasta. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtCtry">Country (Ctry)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtCtry" name="instgAgtCtry" maxlength="2" pattern="[A-Z]{2,2}"
+                                placeholder="np. PL" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <Ctry>PL</Ctry>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > PstlAdr > Ctry">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju. Dokładnie 2 znaki alfabetyczne (ISO).</div>
+                </div>
+
+                <!-- Instructing Agent Branch -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instructing Agent Branch (InstgAgtBrnchId)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtBrnchId">Branch Identification (Id)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtBrnchId" name="instgAgtBrnchId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstgAgtBrnchId" class="include-field"
+                                data-field="instgAgtBrnchId">
+                            <label for="includeInstgAgtBrnchId">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <BICFI>BPKOPLPW</BICFI>
+  </FinInstnId>
+  <BrnchId>
+    <Id>BRANCH-001</Id>
+  </BrnchId>
+</InstgAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > BrnchId > Id">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator oddziału instytucji finansowej. Maksymalnie 35 znaków.
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instgAgtBrnchNm">Branch Name (Nm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instgAgtBrnchNm" name="instgAgtBrnchNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<BrnchId>
+  <Nm>Centrala</Nm>
+</BrnchId>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > BrnchId > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa oddziału instytucji finansowej. Maksymalnie 140 znaków.</div>
+                </div>
+
+                <!-- Instructed Agent -->
+                <div class="form-group subsection">
+                    <div class="form-subheader">
+                        <h3>Instructed Agent (InstdAgt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtId">BIC<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtId" name="instdAgtId"
+                                pattern="[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAgt" class="include-field" data-field="instdAgtId">
+                            <label for="includeInstdAgt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <BICFI>DEUTDEFFXXX</BICFI>
+  </FinInstnId>
+</InstdAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Business Identifier Code (BIC) instytucji otrzymującej transfer
+                        (BICFI - kod BIC instytucji finansowej).</div>
+
+                    <!-- LEI dla Instructed Agent -->
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtLEI">LEI<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtLEI" name="instdAgtLEI" maxlength="20"
+                                pattern="[A-Z0-9]{18,18}[0-9]{2,2}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAgtLEI" class="include-field"
+                                data-field="instdAgtLEI">
+                            <label for="includeInstdAgtLEI">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <LEI>1234567890ABCDEFGHI22</LEI>
+  </FinInstnId>
+</InstdAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > LEI">🌳</span>
+                    </div>
+                    <div class="field-description">Legal Entity Identifier (LEI). Dokładnie 20 znaków alfanumerycznych.
+                    </div>
+
+                    <!-- Name dla Instructed Agent -->
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtNm">Name (Nm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtNm" name="instdAgtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAgtNm" class="include-field" data-field="instdAgtNm">
+                            <label for="includeInstdAgtNm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <Nm>Nazwa Wierzyciela S.A.</Nm>
+  </FinInstnId>
+</InstdAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa instytucji finansowej. Maksymalnie 140 znaków.</div>
+
+                    <!-- Other dla Instructed Agent -->
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtOtherId">Other Identification (Othr/Id)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtOtherId" name="instdAgtOtherId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAgtOtherId" class="include-field"
+                                data-field="instdAgtOtherId">
+                            <label for="includeInstdAgtOtherId">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <Othr>
+      <Id>123456789</Id>
+    </Othr>
+  </FinInstnId>
+</InstdAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > Othr > Id">🌳</span>
+                    </div>
+                    <div class="field-description">Inny identyfikator instytucji finansowej. Maksymalnie 35 znaków.
+                    </div>
+
+                    <!-- SchmeNm dla Other Id -->
+                    <div id="instdAgtOthrSchmeNmContainer" style="display:none; margin-left: 20px;">
+                        <div class="form-row">
+                            <label class="field-label" for="instdAgtOthrSchmeNmCd">Scheme Name Code
+                                (Othr/SchmeNm/Cd)<span class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="instdAgtOthrSchmeNmCd" name="instdAgtOthrSchmeNmCd">
+                                    <option value="">-- Wybierz kod --</option>
+                                    <option value="TXID">Tax Identification Number</option>
+                                    <option value="BANK">Bank Proprietary Code</option>
+                                    <option value="CUST">Customer Code</option>
+                                    <option value="DUNS">Data Universal Numbering System</option>
+                                </select>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Othr>
+  <SchmeNm>
+    <Cd>BANK</Cd>
+  </SchmeNm>
+</Othr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > Othr > SchmeNm > Cd">🌳</span>
+                        </div>
+                        <div class="field-description">Kod schematu identyfikacyjnego.</div>
+
+                        <div class="form-row">
+                            <label class="field-label" for="instdAgtOthrSchmeNmPrtry">Scheme Name Proprietary
+                                (Othr/SchmeNm/Prtry)<span class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="instdAgtOthrSchmeNmPrtry" name="instdAgtOthrSchmeNmPrtry"
+                                    maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Othr>
+  <SchmeNm>
+    <Prtry>NBP System</Prtry>
+  </SchmeNm>
+</Othr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > Othr > SchmeNm > Prtry">🌳</span>
+                        </div>
+                        <div class="field-description">Własna nazwa schematu identyfikacyjnego. Maksymalnie 35 znaków.
+                            Wypełnij tylko jedno pole: Cd lub Prtry.</div>
+
+                        <div class="form-row">
+                            <label class="field-label" for="instdAgtOthrIssr">Issuer (Othr/Issr)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="instdAgtOthrIssr" name="instdAgtOthrIssr" maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Othr>
+  <Issr>NBP</Issr>
+</Othr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > Othr > Issr">🌳</span>
+                        </div>
+                        <div class="field-description">Wystawca identyfikatora. Maksymalnie 35 znaków.</div>
+                    </div>
+                </div>
+
+                <!-- Instructed Agent Postal Address -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instructed Agent Postal Address (InstdAgtPstlAdr)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtStrtNm">Street Name (StrtNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtStrtNm" name="instdAgtStrtNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAgtPstlAdr" class="include-field"
+                                data-field="instdAgtStrtNm">
+                            <label for="includeInstdAgtPstlAdr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <PstlAdr>
+      <StrtNm>Grzybowska</StrtNm>
+    </PstlAdr>
+  </FinInstnId>
+</InstdAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > PstlAdr > StrtNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa ulicy. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtBldgNb">Building Number (BldgNb)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtBldgNb" name="instdAgtBldgNb" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <BldgNb>53/57</BldgNb>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > PstlAdr > BldgNb">🌳</span>
+                    </div>
+                    <div class="field-description">Numer budynku. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtPstCd">Postal Code (PstCd)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtPstCd" name="instdAgtPstCd" maxlength="16" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <PstCd>00-855</PstCd>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > PstlAdr > PstCd">🌳</span>
+                    </div>
+                    <div class="field-description">Kod pocztowy. Maksymalnie 16 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtTwnNm">Town Name (TwnNm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtTwnNm" name="instdAgtTwnNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <TwnNm>Warszawa</TwnNm>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > PstlAdr > TwnNm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa miasta. Maksymalnie 140 znaków.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtCtry">Country (Ctry)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtCtry" name="instdAgtCtry" maxlength="2" pattern="[A-Z]{2,2}"
+                                placeholder="np. PL" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PstlAdr>
+  <Ctry>PL</Ctry>
+</PstlAdr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > FinInstnId > PstlAdr > Ctry">🌳</span>
+                    </div>
+                    <div class="field-description">Kod kraju. Dokładnie 2 znaki alfabetyczne (ISO).</div>
+                </div>
+
+                <!-- Instructed Agent Branch -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instructed Agent Branch (InstdAgtBrnchId)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtBrnchId">Branch Identification (Id)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtBrnchId" name="instdAgtBrnchId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAgtBrnchId" class="include-field"
+                                data-field="instdAgtBrnchId">
+                            <label for="includeInstdAgtBrnchId">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <BICFI>DEUTDEFFXXX</BICFI>
+  </FinInstnId>
+  <BrnchId>
+    <Id>BRANCH-001</Id>
+  </BrnchId>
+</InstdAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > BrnchId > Id">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator oddziału instytucji finansowej. Maksymalnie 35 znaków.
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="instdAgtBrnchNm">Branch Name (Nm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instdAgtBrnchNm" name="instdAgtBrnchNm" maxlength="140" disabled>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<BrnchId>
+  <Nm>Centrala</Nm>
+</BrnchId>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > BrnchId > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa oddziału instytucji finansowej. Maksymalnie 140 znaków.</div>
                 </div>
             </div>
         </form>

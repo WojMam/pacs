@@ -299,29 +299,325 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		// InstgAgt (opcjonalne)
-		const includeInstgAgt = document.getElementById("includeInstgAgt").checked;
+		const includeInstgAgt = document.getElementById("includeInstgAgt")?.checked;
 		if (includeInstgAgt) {
-			const instgAgtBicfi = document.getElementById("instgAgtBicfi").value;
-			if (instgAgtBicfi) {
-				xml += "      <InstgAgt>\n";
-				xml += "        <FinInstnId>\n";
-				xml += `          <BICFI>${instgAgtBicfi}</BICFI>\n`;
-				xml += "        </FinInstnId>\n";
-				xml += "      </InstgAgt>\n";
+			xml += "    <InstgAgt>\n";
+			xml += "      <FinInstnId>\n";
+
+			const instgAgtId = document.getElementById("instgAgtId").value;
+			if (instgAgtId) {
+				xml += `        <BICFI>${escapeXml(instgAgtId)}</BICFI>\n`;
 			}
+
+			// LEI
+			const includeInstgAgtLEI =
+				document.getElementById("includeInstgAgtLEI")?.checked;
+			if (includeInstgAgtLEI) {
+				const instgAgtLEI = document.getElementById("instgAgtLEI").value;
+				if (instgAgtLEI) {
+					xml += `        <LEI>${escapeXml(instgAgtLEI)}</LEI>\n`;
+				}
+			}
+
+			// Name
+			const includeInstgAgtNm =
+				document.getElementById("includeInstgAgtNm")?.checked;
+			if (includeInstgAgtNm) {
+				const instgAgtNm = document.getElementById("instgAgtNm").value;
+				if (instgAgtNm) {
+					xml += `        <Nm>${escapeXml(instgAgtNm)}</Nm>\n`;
+				}
+			}
+
+			// Postal Address
+			const includeInstgAgtPstlAdr = document.getElementById(
+				"includeInstgAgtPstlAdr"
+			)?.checked;
+			if (includeInstgAgtPstlAdr) {
+				let hasAddressData = false;
+				let postalAddressXml = "        <PstlAdr>\n";
+
+				const instgAgtStrtNm = document.getElementById("instgAgtStrtNm").value;
+				if (instgAgtStrtNm) {
+					postalAddressXml += `          <StrtNm>${escapeXml(
+						instgAgtStrtNm
+					)}</StrtNm>\n`;
+					hasAddressData = true;
+				}
+
+				const instgAgtBldgNb = document.getElementById("instgAgtBldgNb").value;
+				if (instgAgtBldgNb) {
+					postalAddressXml += `          <BldgNb>${escapeXml(
+						instgAgtBldgNb
+					)}</BldgNb>\n`;
+					hasAddressData = true;
+				}
+
+				const instgAgtPstCd = document.getElementById("instgAgtPstCd").value;
+				if (instgAgtPstCd) {
+					postalAddressXml += `          <PstCd>${escapeXml(
+						instgAgtPstCd
+					)}</PstCd>\n`;
+					hasAddressData = true;
+				}
+
+				const instgAgtTwnNm = document.getElementById("instgAgtTwnNm").value;
+				if (instgAgtTwnNm) {
+					postalAddressXml += `          <TwnNm>${escapeXml(
+						instgAgtTwnNm
+					)}</TwnNm>\n`;
+					hasAddressData = true;
+				}
+
+				const instgAgtCtry = document.getElementById("instgAgtCtry").value;
+				if (instgAgtCtry) {
+					postalAddressXml += `          <Ctry>${escapeXml(
+						instgAgtCtry
+					)}</Ctry>\n`;
+					hasAddressData = true;
+				}
+
+				if (hasAddressData) {
+					postalAddressXml += "        </PstlAdr>\n";
+					xml += postalAddressXml;
+				}
+			}
+
+			// Other
+			const includeInstgAgtOtherId = document.getElementById(
+				"includeInstgAgtOtherId"
+			)?.checked;
+			if (includeInstgAgtOtherId) {
+				const instgAgtOtherId =
+					document.getElementById("instgAgtOtherId").value;
+				if (instgAgtOtherId) {
+					xml += "        <Othr>\n";
+					xml += `          <Id>${escapeXml(instgAgtOtherId)}</Id>\n`;
+
+					// SchmeNm
+					const instgAgtOthrSchmeNmCd = document.getElementById(
+						"instgAgtOthrSchmeNmCd"
+					).value;
+					const instgAgtOthrSchmeNmPrtry = document.getElementById(
+						"instgAgtOthrSchmeNmPrtry"
+					).value;
+
+					if (instgAgtOthrSchmeNmCd || instgAgtOthrSchmeNmPrtry) {
+						xml += "          <SchmeNm>\n";
+
+						if (instgAgtOthrSchmeNmCd) {
+							xml += `            <Cd>${escapeXml(
+								instgAgtOthrSchmeNmCd
+							)}</Cd>\n`;
+						} else if (instgAgtOthrSchmeNmPrtry) {
+							xml += `            <Prtry>${escapeXml(
+								instgAgtOthrSchmeNmPrtry
+							)}</Prtry>\n`;
+						}
+
+						xml += "          </SchmeNm>\n";
+					}
+
+					// Issr
+					const instgAgtOthrIssr =
+						document.getElementById("instgAgtOthrIssr").value;
+					if (instgAgtOthrIssr) {
+						xml += `          <Issr>${escapeXml(instgAgtOthrIssr)}</Issr>\n`;
+					}
+
+					xml += "        </Othr>\n";
+				}
+			}
+
+			xml += "      </FinInstnId>\n";
+
+			// Branch
+			const includeInstgAgtBrnchId = document.getElementById(
+				"includeInstgAgtBrnchId"
+			)?.checked;
+			if (includeInstgAgtBrnchId) {
+				const instgAgtBrnchId =
+					document.getElementById("instgAgtBrnchId").value;
+				const instgAgtBrnchNm =
+					document.getElementById("instgAgtBrnchNm").value;
+
+				if (instgAgtBrnchId || instgAgtBrnchNm) {
+					xml += "      <BrnchId>\n";
+
+					if (instgAgtBrnchId) {
+						xml += `        <Id>${escapeXml(instgAgtBrnchId)}</Id>\n`;
+					}
+
+					if (instgAgtBrnchNm) {
+						xml += `        <Nm>${escapeXml(instgAgtBrnchNm)}</Nm>\n`;
+					}
+
+					xml += "      </BrnchId>\n";
+				}
+			}
+
+			xml += "    </InstgAgt>\n";
 		}
 
 		// InstdAgt (opcjonalne)
-		const includeInstdAgt = document.getElementById("includeInstdAgt").checked;
+		const includeInstdAgt = document.getElementById("includeInstdAgt")?.checked;
 		if (includeInstdAgt) {
-			const instdAgtBicfi = document.getElementById("instdAgtBicfi").value;
-			if (instdAgtBicfi) {
-				xml += "      <InstdAgt>\n";
-				xml += "        <FinInstnId>\n";
-				xml += `          <BICFI>${instdAgtBicfi}</BICFI>\n`;
-				xml += "        </FinInstnId>\n";
-				xml += "      </InstdAgt>\n";
+			xml += "    <InstdAgt>\n";
+			xml += "      <FinInstnId>\n";
+
+			const instdAgtId = document.getElementById("instdAgtId").value;
+			if (instdAgtId) {
+				xml += `        <BICFI>${escapeXml(instdAgtId)}</BICFI>\n`;
 			}
+
+			// LEI
+			const includeInstdAgtLEI =
+				document.getElementById("includeInstdAgtLEI")?.checked;
+			if (includeInstdAgtLEI) {
+				const instdAgtLEI = document.getElementById("instdAgtLEI").value;
+				if (instdAgtLEI) {
+					xml += `        <LEI>${escapeXml(instdAgtLEI)}</LEI>\n`;
+				}
+			}
+
+			// Name
+			const includeInstdAgtNm =
+				document.getElementById("includeInstdAgtNm")?.checked;
+			if (includeInstdAgtNm) {
+				const instdAgtNm = document.getElementById("instdAgtNm").value;
+				if (instdAgtNm) {
+					xml += `        <Nm>${escapeXml(instdAgtNm)}</Nm>\n`;
+				}
+			}
+
+			// Postal Address
+			const includeInstdAgtPstlAdr = document.getElementById(
+				"includeInstdAgtPstlAdr"
+			)?.checked;
+			if (includeInstdAgtPstlAdr) {
+				let hasAddressData = false;
+				let postalAddressXml = "        <PstlAdr>\n";
+
+				const instdAgtStrtNm = document.getElementById("instdAgtStrtNm").value;
+				if (instdAgtStrtNm) {
+					postalAddressXml += `          <StrtNm>${escapeXml(
+						instdAgtStrtNm
+					)}</StrtNm>\n`;
+					hasAddressData = true;
+				}
+
+				const instdAgtBldgNb = document.getElementById("instdAgtBldgNb").value;
+				if (instdAgtBldgNb) {
+					postalAddressXml += `          <BldgNb>${escapeXml(
+						instdAgtBldgNb
+					)}</BldgNb>\n`;
+					hasAddressData = true;
+				}
+
+				const instdAgtPstCd = document.getElementById("instdAgtPstCd").value;
+				if (instdAgtPstCd) {
+					postalAddressXml += `          <PstCd>${escapeXml(
+						instdAgtPstCd
+					)}</PstCd>\n`;
+					hasAddressData = true;
+				}
+
+				const instdAgtTwnNm = document.getElementById("instdAgtTwnNm").value;
+				if (instdAgtTwnNm) {
+					postalAddressXml += `          <TwnNm>${escapeXml(
+						instdAgtTwnNm
+					)}</TwnNm>\n`;
+					hasAddressData = true;
+				}
+
+				const instdAgtCtry = document.getElementById("instdAgtCtry").value;
+				if (instdAgtCtry) {
+					postalAddressXml += `          <Ctry>${escapeXml(
+						instdAgtCtry
+					)}</Ctry>\n`;
+					hasAddressData = true;
+				}
+
+				if (hasAddressData) {
+					postalAddressXml += "        </PstlAdr>\n";
+					xml += postalAddressXml;
+				}
+			}
+
+			// Other
+			const includeInstdAgtOtherId = document.getElementById(
+				"includeInstdAgtOtherId"
+			)?.checked;
+			if (includeInstdAgtOtherId) {
+				const instdAgtOtherId =
+					document.getElementById("instdAgtOtherId").value;
+				if (instdAgtOtherId) {
+					xml += "        <Othr>\n";
+					xml += `          <Id>${escapeXml(instdAgtOtherId)}</Id>\n`;
+
+					// SchmeNm
+					const instdAgtOthrSchmeNmCd = document.getElementById(
+						"instdAgtOthrSchmeNmCd"
+					).value;
+					const instdAgtOthrSchmeNmPrtry = document.getElementById(
+						"instdAgtOthrSchmeNmPrtry"
+					).value;
+
+					if (instdAgtOthrSchmeNmCd || instdAgtOthrSchmeNmPrtry) {
+						xml += "          <SchmeNm>\n";
+
+						if (instdAgtOthrSchmeNmCd) {
+							xml += `            <Cd>${escapeXml(
+								instdAgtOthrSchmeNmCd
+							)}</Cd>\n`;
+						} else if (instdAgtOthrSchmeNmPrtry) {
+							xml += `            <Prtry>${escapeXml(
+								instdAgtOthrSchmeNmPrtry
+							)}</Prtry>\n`;
+						}
+
+						xml += "          </SchmeNm>\n";
+					}
+
+					// Issr
+					const instdAgtOthrIssr =
+						document.getElementById("instdAgtOthrIssr").value;
+					if (instdAgtOthrIssr) {
+						xml += `          <Issr>${escapeXml(instdAgtOthrIssr)}</Issr>\n`;
+					}
+
+					xml += "        </Othr>\n";
+				}
+			}
+
+			xml += "      </FinInstnId>\n";
+
+			// Branch
+			const includeInstdAgtBrnchId = document.getElementById(
+				"includeInstdAgtBrnchId"
+			)?.checked;
+			if (includeInstdAgtBrnchId) {
+				const instdAgtBrnchId =
+					document.getElementById("instdAgtBrnchId").value;
+				const instdAgtBrnchNm =
+					document.getElementById("instdAgtBrnchNm").value;
+
+				if (instdAgtBrnchId || instdAgtBrnchNm) {
+					xml += "      <BrnchId>\n";
+
+					if (instdAgtBrnchId) {
+						xml += `        <Id>${escapeXml(instdAgtBrnchId)}</Id>\n`;
+					}
+
+					if (instdAgtBrnchNm) {
+						xml += `        <Nm>${escapeXml(instdAgtBrnchNm)}</Nm>\n`;
+					}
+
+					xml += "      </BrnchId>\n";
+				}
+			}
+
+			xml += "    </InstdAgt>\n";
 		}
 
 		// Tutaj będzie kod dodawany dla pozostałych pól GrpHdr
@@ -703,13 +999,66 @@ document.addEventListener("DOMContentLoaded", function () {
 			xml += "      </Dbtr>\n";
 		}
 
-		// DbtrAcct (Debtor Account) - wymagane
+		// DbtrAcct (wymagane)
 		const dbtrAcctId = document.getElementById("dbtrAcctId").value;
 		if (dbtrAcctId) {
 			xml += "      <DbtrAcct>\n";
 			xml += "        <Id>\n";
 			xml += `          <IBAN>${escapeXml(dbtrAcctId)}</IBAN>\n`;
 			xml += "        </Id>\n";
+
+			// Type
+			const includeDbtrAcctTp =
+				document.getElementById("includeDbtrAcctTp")?.checked;
+			if (includeDbtrAcctTp) {
+				const dbtrAcctTp = document.getElementById("dbtrAcctTp").value;
+				if (dbtrAcctTp) {
+					xml += "        <Tp>\n";
+					xml += `          <Cd>${escapeXml(dbtrAcctTp)}</Cd>\n`;
+					xml += "        </Tp>\n";
+				}
+			}
+
+			// Currency
+			const includeDbtrAcctCcy =
+				document.getElementById("includeDbtrAcctCcy")?.checked;
+			if (includeDbtrAcctCcy) {
+				const dbtrAcctCcy = document.getElementById("dbtrAcctCcy").value;
+				if (dbtrAcctCcy) {
+					xml += `        <Ccy>${escapeXml(dbtrAcctCcy)}</Ccy>\n`;
+				}
+			}
+
+			// Name
+			const includeDbtrAcctNm =
+				document.getElementById("includeDbtrAcctNm")?.checked;
+			if (includeDbtrAcctNm) {
+				const dbtrAcctNm = document.getElementById("dbtrAcctNm").value;
+				if (dbtrAcctNm) {
+					xml += `        <Nm>${escapeXml(dbtrAcctNm)}</Nm>\n`;
+				}
+			}
+
+			// Proxy
+			const includeDbtrAcctProxyTp = document.getElementById(
+				"includeDbtrAcctProxyTp"
+			)?.checked;
+			if (includeDbtrAcctProxyTp) {
+				const dbtrAcctProxyTp =
+					document.getElementById("dbtrAcctProxyTp").value;
+				const dbtrAcctProxyVal =
+					document.getElementById("dbtrAcctProxyVal").value;
+
+				if (dbtrAcctProxyTp && dbtrAcctProxyVal) {
+					xml += "        <Prxy>\n";
+					xml += "          <Tp>\n";
+					xml += `            <Cd>${escapeXml(dbtrAcctProxyTp)}</Cd>\n`;
+					xml += "          </Tp>\n";
+					xml += `          <Id>${escapeXml(dbtrAcctProxyVal)}</Id>\n`;
+					xml += "        </Prxy>\n";
+				}
+			}
+
 			xml += "      </DbtrAcct>\n";
 		}
 
@@ -898,6 +1247,59 @@ document.addEventListener("DOMContentLoaded", function () {
 			xml += "        <Id>\n";
 			xml += `          <IBAN>${escapeXml(cdtrAcctId)}</IBAN>\n`;
 			xml += "        </Id>\n";
+
+			// Type
+			const includeCdtrAcctTp =
+				document.getElementById("includeCdtrAcctTp")?.checked;
+			if (includeCdtrAcctTp) {
+				const cdtrAcctTp = document.getElementById("cdtrAcctTp").value;
+				if (cdtrAcctTp) {
+					xml += "        <Tp>\n";
+					xml += `          <Cd>${escapeXml(cdtrAcctTp)}</Cd>\n`;
+					xml += "        </Tp>\n";
+				}
+			}
+
+			// Currency
+			const includeCdtrAcctCcy =
+				document.getElementById("includeCdtrAcctCcy")?.checked;
+			if (includeCdtrAcctCcy) {
+				const cdtrAcctCcy = document.getElementById("cdtrAcctCcy").value;
+				if (cdtrAcctCcy) {
+					xml += `        <Ccy>${escapeXml(cdtrAcctCcy)}</Ccy>\n`;
+				}
+			}
+
+			// Name
+			const includeCdtrAcctNm =
+				document.getElementById("includeCdtrAcctNm")?.checked;
+			if (includeCdtrAcctNm) {
+				const cdtrAcctNm = document.getElementById("cdtrAcctNm").value;
+				if (cdtrAcctNm) {
+					xml += `        <Nm>${escapeXml(cdtrAcctNm)}</Nm>\n`;
+				}
+			}
+
+			// Proxy
+			const includeCdtrAcctProxyTp = document.getElementById(
+				"includeCdtrAcctProxyTp"
+			)?.checked;
+			if (includeCdtrAcctProxyTp) {
+				const cdtrAcctProxyTp =
+					document.getElementById("cdtrAcctProxyTp").value;
+				const cdtrAcctProxyVal =
+					document.getElementById("cdtrAcctProxyVal").value;
+
+				if (cdtrAcctProxyTp && cdtrAcctProxyVal) {
+					xml += "        <Prxy>\n";
+					xml += "          <Tp>\n";
+					xml += `            <Cd>${escapeXml(cdtrAcctProxyTp)}</Cd>\n`;
+					xml += "          </Tp>\n";
+					xml += `          <Id>${escapeXml(cdtrAcctProxyVal)}</Id>\n`;
+					xml += "        </Prxy>\n";
+				}
+			}
+
 			xml += "      </CdtrAcct>\n";
 		}
 
@@ -1710,44 +2112,119 @@ document.addEventListener("DOMContentLoaded", function () {
 			);
 
 			// 17. Instructing Agent
-			safeSetFieldValue("includeInstgAgt", "instgAgtBicfi", "BICFIABCXXX");
-
-			// 18. Instructed Agent - poprawka ID
-			safeSetFieldValue("includeInstdAgt", "instdAgtBicfi", "BICFIXYZXXX");
-
-			// 19. Debtor
-			safeSetFieldValue("includeDbtr", "dbtrNm", "John Doe");
-			safeSetFieldValue("includeDbtrLEI", "dbtrLEI", "1234567890ABCDEFGHI22");
-			safeSetFieldValue("includeDbtrCtryOfRes", "dbtrCtryOfRes", "PL");
-
-			// Organization Identification
-			document.getElementById("includeDbtrId").checked = true;
-			document.getElementById("dbtrOrgIdContainer").style.display = "block";
-			document.getElementById("dbtrOrgIdAnyBIC").value = "NBPLPLPWXXX";
-			document.getElementById("dbtrOrgIdOthrId").value = "12345678901";
-
-			// Scheme Name
-			const dbtrOrgIdSchemeName = document.getElementById(
-				"dbtrOrgIdSchemeName"
-			);
-			dbtrOrgIdSchemeName.value = "Cd";
-			// Wyzwól event change, aby pokazać odpowiednie pola
-			const event = new Event("change");
-			dbtrOrgIdSchemeName.dispatchEvent(event);
-
-			document.getElementById("dbtrOrgIdSchemeCode").value = "TXID";
-			document.getElementById("dbtrOrgIdIssr").value = "NBP";
-
-			// Postal Address
-			safeSetFieldValue("includeDbtrPstlAdr", "dbtrStrtNm", "Bankowa");
-			safeSetFieldValue("includeDbtrPstlAdr", "dbtrBldgNb", "14");
-			safeSetFieldValue("includeDbtrPstlAdr", "dbtrPstCd", "00-950");
-			safeSetFieldValue("includeDbtrPstlAdr", "dbtrTwnNm", "Warsaw");
-			safeSetFieldValue("includeDbtrPstlAdr", "dbtrCtry", "PL");
+			safeSetFieldValue("includeInstgAgt", "instgAgtId", "BPKOPLPW");
 			safeSetFieldValue(
-				"includeDbtrAcct",
-				"dbtrAcctId",
-				"PL12345678901234567890123456"
+				"includeInstgAgtLEI",
+				"instgAgtLEI",
+				"9598001FJTIEDE3QB472"
+			);
+			safeSetFieldValue("includeInstgAgtNm", "instgAgtNm", "Bank Polski");
+
+			// Instructing Agent Other
+			safeSetFieldValue(
+				"includeInstgAgtOtherId",
+				"instgAgtOtherId",
+				"87654321"
+			);
+			document.getElementById("instgAgtOthrSchmeNmContainer").style.display =
+				"block";
+			document.getElementById("instgAgtOthrSchmeNmCd").value = "BANK";
+			document.getElementById("instgAgtOthrIssr").value = "NBP";
+
+			// Instructing Agent Address
+			safeSetFieldValue(
+				"includeInstgAgtPstlAdr",
+				"instgAgtStrtNm",
+				"Świętokrzyska"
+			);
+			safeSetFieldValue("includeInstgAgtPstlAdr", "instgAgtBldgNb", "42");
+			safeSetFieldValue("includeInstgAgtPstlAdr", "instgAgtPstCd", "00-950");
+			safeSetFieldValue("includeInstgAgtPstlAdr", "instgAgtTwnNm", "Warszawa");
+			safeSetFieldValue("includeInstgAgtPstlAdr", "instgAgtCtry", "PL");
+
+			// Instructing Agent Branch
+			safeSetFieldValue(
+				"includeInstgAgtBrnchId",
+				"instgAgtBrnchId",
+				"BRANCH-001"
+			);
+			safeSetFieldValue(
+				"includeInstgAgtBrnchId",
+				"instgAgtBrnchNm",
+				"Centrala"
+			);
+
+			// 18. Instructed Agent - dodane pola
+			safeSetFieldValue("includeInstdAgt", "instdAgtId", "DEUTDEFFXXX");
+			safeSetFieldValue(
+				"includeInstdAgtLEI",
+				"instdAgtLEI",
+				"7LTWFZYICNSX8D621K86"
+			);
+			safeSetFieldValue("includeInstdAgtNm", "instdAgtNm", "Deutsche Bank");
+
+			// Instructed Agent Other
+			safeSetFieldValue(
+				"includeInstdAgtOtherId",
+				"instdAgtOtherId",
+				"12345678"
+			);
+			document.getElementById("instdAgtOthrSchmeNmContainer").style.display =
+				"block";
+			document.getElementById("instdAgtOthrSchmeNmCd").value = "BANK";
+			document.getElementById("instdAgtOthrIssr").value = "Bundesbank";
+
+			// Instructed Agent Address
+			safeSetFieldValue(
+				"includeInstdAgtPstlAdr",
+				"instdAgtStrtNm",
+				"Taunusanlage"
+			);
+			safeSetFieldValue("includeInstdAgtPstlAdr", "instdAgtBldgNb", "12");
+			safeSetFieldValue("includeInstdAgtPstlAdr", "instdAgtPstCd", "60325");
+			safeSetFieldValue(
+				"includeInstdAgtPstlAdr",
+				"instdAgtTwnNm",
+				"Frankfurt am Main"
+			);
+			safeSetFieldValue("includeInstdAgtPstlAdr", "instdAgtCtry", "DE");
+
+			// Instructed Agent Branch
+			safeSetFieldValue(
+				"includeInstdAgtBrnchId",
+				"instdAgtBrnchId",
+				"BRANCH-101"
+			);
+			safeSetFieldValue(
+				"includeInstdAgtBrnchId",
+				"instdAgtBrnchNm",
+				"Hauptsitz"
+			);
+
+			// 25. Debtor Account dodatkowe pola
+			safeSetFieldValue("includeDbtrAcctTp", "dbtrAcctTp", "CACC");
+			safeSetFieldValue("includeDbtrAcctCcy", "dbtrAcctCcy", "PLN");
+			safeSetFieldValue(
+				"includeDbtrAcctNm",
+				"dbtrAcctNm",
+				"Rachunek bieżący Klienta"
+			);
+			safeSetFieldValue("includeDbtrAcctProxyTp", "dbtrAcctProxyTp", "EMAL");
+			safeSetFieldValue(
+				"includeDbtrAcctProxyTp",
+				"dbtrAcctProxyVal",
+				"jan.kowalski@example.com"
+			);
+
+			// 26. Creditor Account dodatkowe pola
+			safeSetFieldValue("includeCdtrAcctTp", "cdtrAcctTp", "CACC");
+			safeSetFieldValue("includeCdtrAcctCcy", "cdtrAcctCcy", "EUR");
+			safeSetFieldValue("includeCdtrAcctNm", "cdtrAcctNm", "Geschäftskonto");
+			safeSetFieldValue("includeCdtrAcctProxyTp", "cdtrAcctProxyTp", "EMAL");
+			safeSetFieldValue(
+				"includeCdtrAcctProxyTp",
+				"cdtrAcctProxyVal",
+				"hans.mueller@example.de"
 			);
 
 			// 20. Debtor Agent
@@ -2392,6 +2869,58 @@ document.addEventListener("DOMContentLoaded", function () {
 				"ultmtCdtrOrgIdContainer"
 			);
 			ultmtCdtrOrgIdContainer.style.display = this.checked ? "block" : "none";
+		});
+	}
+
+	// Obsługa włączania/wyłączania pól Other w Instructing Agent
+	const includeInstgAgtOtherId = document.getElementById(
+		"includeInstgAgtOtherId"
+	);
+	if (includeInstgAgtOtherId) {
+		includeInstgAgtOtherId.addEventListener("change", function () {
+			const instgAgtOthrSchmeNmContainer = document.getElementById(
+				"instgAgtOthrSchmeNmContainer"
+			);
+			instgAgtOthrSchmeNmContainer.style.display = this.checked
+				? "block"
+				: "none";
+		});
+	}
+
+	// Obsługa włączania/wyłączania pól Other w Instructed Agent
+	const includeInstdAgtOtherId = document.getElementById(
+		"includeInstdAgtOtherId"
+	);
+	if (includeInstdAgtOtherId) {
+		includeInstdAgtOtherId.addEventListener("change", function () {
+			const instdAgtOthrSchmeNmContainer = document.getElementById(
+				"instdAgtOthrSchmeNmContainer"
+			);
+			instdAgtOthrSchmeNmContainer.style.display = this.checked
+				? "block"
+				: "none";
+		});
+	}
+
+	// Obsługa włączania/wyłączania pola Proxy Value dla Debtor Account
+	const includeDbtrAcctProxyTp = document.getElementById(
+		"includeDbtrAcctProxyTp"
+	);
+	if (includeDbtrAcctProxyTp) {
+		includeDbtrAcctProxyTp.addEventListener("change", function () {
+			const dbtrAcctProxyVal = document.getElementById("dbtrAcctProxyVal");
+			dbtrAcctProxyVal.disabled = !this.checked;
+		});
+	}
+
+	// Obsługa włączania/wyłączania pola Proxy Value dla Creditor Account
+	const includeCdtrAcctProxyTp = document.getElementById(
+		"includeCdtrAcctProxyTp"
+	);
+	if (includeCdtrAcctProxyTp) {
+		includeCdtrAcctProxyTp.addEventListener("change", function () {
+			const cdtrAcctProxyVal = document.getElementById("cdtrAcctProxyVal");
+			cdtrAcctProxyVal.disabled = !this.checked;
 		});
 	}
 });
