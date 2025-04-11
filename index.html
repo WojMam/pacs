@@ -2366,52 +2366,193 @@
       <Nb>INVOICE-2024-005</Nb>
       <RltdDt>2024-06-01</RltdDt>
     </RfrdDocInf>
-    <RfrdDocAmt>
-      <DuePyblAmt Ccy=&quot;EUR&quot;>1000.00</DuePyblAmt>
-                            </RfrdDocAmt>
-                            </Strd>
-                            </RmtInf>">📋</span>
+  </Strd>
+</RmtInf>">📋</span>
                         <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > RfrdDocInf > Nb">🌳</span>
                     </div>
+                    <div class="field-description">Numer referencyjny dokumentu (np. numer faktury). Maksymalnie 35
+                        znaków.</div>
+
                     <div class="form-row">
                         <label class="field-label" for="rmtInfStrdRefInfRltdDt">Related Date (RltdDt)<span
                                 class="optional-indicator"> (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="date" id="rmtInfStrdRefInfRltdDt" name="rmtInfStrdRefInfRltdDt" disabled>
                         </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrdRefInfRltdDt" class="include-field"
+                                data-field="rmtInfStrdRefInfRltdDt">
+                            <label for="includeRmtInfStrdRefInfRltdDt">Uwzględnij</label>
+                        </div>
                     </div>
-                    <div class="field-description">Ustrukturyzowane informacje o przelewie, związane z dokumentami
-                        referencyjnymi, np. faktury, noty kredytowe.</div>
-                </div>
+                    <div class="field-description">Data powiązana z dokumentem referencyjnym (np. data wystawienia
+                        faktury).</div>
 
-                <!-- Supplementary Data -->
-                <div class="form-group">
-                    <div class="form-subheader">
-                        <h3>Supplementary Data (SplmtryData)<span class="optional-indicator"> (opcjonalne)</span></h3>
-                    </div>
+                    <!-- Document Type section -->
                     <div class="form-row">
-                        <label class="field-label" for="splmtryData">Data (Data)<span class="optional-indicator">
-                                (opcjonalne)</span></label>
+                        <label class="field-label" for="rmtInfStrdTpCd">Document Type Code (Tp/Cd)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
                         <div class="field-input">
-                            <textarea id="splmtryData" name="splmtryData" maxlength="1000" disabled></textarea>
+                            <select id="rmtInfStrdTpCd" name="rmtInfStrdTpCd" disabled>
+                                <option value="MSIN">MSIN - Faktura handlowa</option>
+                                <option value="CNFA">CNFA - Nota kredytowa - korekta faktury</option>
+                                <option value="DNFA">DNFA - Nota debetowa - korekta faktury</option>
+                                <option value="CINV">CINV - Faktura handlowa z korektą</option>
+                                <option value="CREN">CREN - Nota kredytowa</option>
+                                <option value="DEBN">DEBN - Nota debetowa</option>
+                                <option value="SOAC">SOAC - Zestawienie rachunków</option>
+                                <option value="DISP">DISP - Nota dispatch</option>
+                            </select>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeSplmtryData" class="include-field"
-                                data-field="splmtryData">
-                            <label for="includeSplmtryData">Uwzględnij</label>
+                            <input type="checkbox" id="includeRmtInfStrdTpCd" class="include-field"
+                                data-field="rmtInfStrdTpCd">
+                            <label for="includeRmtInfStrdTpCd">Uwzględnij</label>
                         </div>
-                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SplmtryData>
-  <PlcAndNm>TransactionDetails</PlcAndNm>
-  <Envlp>
-    <AdditionalData>Dodatkowe informacje dla banku odbiorcy</AdditionalData>
-  </Envlp>
-</SplmtryData>">📋</span>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RmtInf>
+  <Strd>
+    <RfrdDocInf>
+      <Tp>
+        <Cd>CINV</Cd>
+      </Tp>
+    </RfrdDocInf>
+  </Strd>
+</RmtInf>">📋</span>
                         <span class="tree-icon" title="Pokaż strukturę XML"
-                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SplmtryData">🌳</span>
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > RfrdDocInf > Tp > Cd">🌳</span>
                     </div>
-                    <div class="field-description">Dodatkowe informacje, które nie mogą być uwzględnione w
-                        ustrukturyzowanych elementach komunikatu. Maksymalnie 1000 znaków.</div>
+                    <div class="field-description">Typ dokumentu referencyjnego. Określa rodzaj faktury lub innego
+                        dokumentu.</div>
+
+                    <!-- Referred Document Amount section -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Referred Document Amount (RfrdDocAmt)</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdDuePyblAmt">Due Payable Amount (DuePyblAmt)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="rmtInfStrdDuePyblAmt" name="rmtInfStrdDuePyblAmt" step="0.01"
+                                min="0" disabled>
+                            <select id="rmtInfStrdDuePyblAmtCcy" name="rmtInfStrdDuePyblAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrdDuePyblAmt" class="include-field"
+                                data-field="rmtInfStrdDuePyblAmt" data-related-field="rmtInfStrdDuePyblAmtCcy">
+                            <label for="includeRmtInfStrdDuePyblAmt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RfrdDocAmt>
+  <DuePyblAmt Ccy=&quot;EUR&quot;>1000.00</DuePyblAmt>
+</RfrdDocAmt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > RfrdDocAmt > DuePyblAmt">🌳</span>
+                    </div>
+                    <div class="field-description">Kwota do zapłaty wynikająca z dokumentu referencyjnego.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdRmtdAmt">Remitted Amount (RmtdAmt)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="rmtInfStrdRmtdAmt" name="rmtInfStrdRmtdAmt" step="0.01" min="0"
+                                disabled>
+                            <select id="rmtInfStrdRmtdAmtCcy" name="rmtInfStrdRmtdAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrdRmtdAmt" class="include-field"
+                                data-field="rmtInfStrdRmtdAmt" data-related-field="rmtInfStrdRmtdAmtCcy">
+                            <label for="includeRmtInfStrdRmtdAmt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RfrdDocAmt>
+  <RmtdAmt Ccy=&quot;EUR&quot;>1000.00</RmtdAmt>
+</RfrdDocAmt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > RfrdDocAmt > RmtdAmt">🌳</span>
+                    </div>
+                    <div class="field-description">Faktyczna kwota przekazana w tej transakcji. Może się różnić od kwoty
+                        do zapłaty.</div>
+
+                    <!-- Creditor Reference Information -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Creditor Reference Information (CdtrRefInf)</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdCdtrRefInfTp">Reference Type (Tp)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="rmtInfStrdCdtrRefInfTp" name="rmtInfStrdCdtrRefInfTp" disabled>
+                                <option value="SCOR">SCOR - Referencja strukturalna</option>
+                                <option value="RADM">RADM - Numer referencyjny</option>
+                                <option value="RPIN">RPIN - Numer faktury</option>
+                                <option value="PUOR">PUOR - Numer zamówienia zakupu</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrdCdtrRefInf" class="include-field"
+                                data-field="rmtInfStrdCdtrRefInfTp">
+                            <label for="includeRmtInfStrdCdtrRefInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrRefInf>
+  <Tp>
+    <Cd>SCOR</Cd>
+  </Tp>
+  <Ref>RF19HX123456789</Ref>
+</CdtrRefInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > CdtrRefInf > Tp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Typ referencji wierzyciela, określający rodzaj referencji.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdCdtrRefInfRef">Reference (Ref)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="rmtInfStrdCdtrRefInfRef" name="rmtInfStrdCdtrRefInfRef"
+                                maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrdCdtrRefInfRef" class="include-field"
+                                data-field="rmtInfStrdCdtrRefInfRef">
+                            <label for="includeRmtInfStrdCdtrRefInfRef">Uwzględnij</label>
+                        </div>
+                    </div>
+                    <div class="field-description">Unikalna referencja wierzyciela, np. numer referencyjny faktury.
+                        Maksymalnie 35 znaków.</div>
+
+                    <!-- Additional Remittance Information -->
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdAddtlRmtInf">Additional Remittance Information
+                            (AddtlRmtInf)<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <textarea id="rmtInfStrdAddtlRmtInf" name="rmtInfStrdAddtlRmtInf" maxlength="140"
+                                disabled></textarea>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrdAddtlRmtInf" class="include-field"
+                                data-field="rmtInfStrdAddtlRmtInf">
+                            <label for="includeRmtInfStrdAddtlRmtInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<AddtlRmtInf>Dodatkowe informacje dotyczące przelewu</AddtlRmtInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > AddtlRmtInf">🌳</span>
+                    </div>
+                    <div class="field-description">Dodatkowe informacje dotyczące przelewu, które nie mogą być
+                        przekazane w strukturalny sposób. Maksymalnie 140 znaków.</div>
                 </div>
 
                 <!-- Dodanie prioritetu rozliczenia (SttlmPrty) w sekcji CdtTrfTxInf - po polu SttlmDt -->
@@ -2921,9 +3062,9 @@
                             <label for="includeDbtrAgtAcct">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAgtAcct>
-  <Id>
+    <Id>
     <IBAN>PL98765432109876543210987654</IBAN>
-  </Id>
+    </Id>
 </DbtrAgtAcct>">📋</span>
                         <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAgtAcct > Id > IBAN">🌳</span>
@@ -3554,6 +3695,175 @@
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAgt > BrnchId > Nm">🌳</span>
                     </div>
                     <div class="field-description">Nazwa oddziału instytucji finansowej. Maksymalnie 140 znaków.</div>
+                </div>
+
+                <!-- Transaction Payment Type Information -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Payment Type Information (PmtTpInf)<span class="optional-indicator"> (opcjonalne)</span>
+                        </h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="txPmtTpInf">Payment Type Information<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTxPmtTpInf" class="include-field"
+                                data-field="txPmtTpInfContainer">
+                            <label for="includeTxPmtTpInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PmtTpInf>
+  <InstrPrty>HIGH</InstrPrty>
+  <SvcLvl>
+    <Cd>SEPA</Cd>
+  </SvcLvl>
+  <LclInstrm>
+    <Cd>INST</Cd>
+  </LclInstrm>
+  <CtgyPurp>
+    <Cd>SUPP</Cd>
+  </CtgyPurp>
+</PmtTpInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf">🌳</span>
+                    </div>
+                    <div class="field-description">Zbiór elementów dających dodatkowe szczegóły dotyczące typu płatności
+                        dla tej transakcji.</div>
+
+                    <div id="txPmtTpInfContainer" style="display:none; margin-left: 20px;">
+                        <!-- Instruction Priority -->
+                        <div class="form-row">
+                            <label class="field-label" for="txInstrPrty">Instruction Priority (InstrPrty)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="txInstrPrty" name="txInstrPrty">
+                                    <option value="HIGH">HIGH - Wysoki priorytet</option>
+                                    <option value="NORM">NORM - Normalny priorytet</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeTxInstrPrty" class="include-field"
+                                    data-field="txInstrPrty">
+                                <label for="includeTxInstrPrty">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<InstrPrty>HIGH</InstrPrty>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > InstrPrty">🌳</span>
+                        </div>
+                        <div class="field-description">Wskazuje stopień ważności lub pilności, który nadawca chce
+                            zastosować do przetwarzania instrukcji.</div>
+
+                        <!-- Clearing Channel -->
+                        <div class="form-row">
+                            <label class="field-label" for="txClrChanl">Clearing Channel (ClrChanl)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="txClrChanl" name="txClrChanl">
+                                    <option value="RTGS">RTGS - System rozliczeń brutto w czasie rzeczywistym</option>
+                                    <option value="RTNS">RTNS - System rozliczeń netto w czasie rzeczywistym</option>
+                                    <option value="MPNS">MPNS - System rozliczeń netto wielostronnych</option>
+                                    <option value="BOOK">BOOK - Księgowanie wewnętrzne</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeTxClrChanl" class="include-field"
+                                    data-field="txClrChanl">
+                                <label for="includeTxClrChanl">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<ClrChanl>RTGS</ClrChanl>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > ClrChanl">🌳</span>
+                        </div>
+                        <div class="field-description">Kanał rozliczeniowy określający system używany do rozliczeń
+                            transakcji.</div>
+
+                        <!-- Service Level -->
+                        <div class="form-row">
+                            <label class="field-label" for="txSvcLvlCd">Service Level (SvcLvl)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="txSvcLvlCd" name="txSvcLvlCd">
+                                    <option value="SEPA">SEPA - Single Euro Payments Area</option>
+                                    <option value="SDVA">SDVA - Same Day Value</option>
+                                    <option value="PRPT">PRPT - EBA Priority Service</option>
+                                    <option value="URGT">URGT - Urgent Payment</option>
+                                    <option value="NURG">NURG - Non-Urgent Payment</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeTxSvcLvl" class="include-field"
+                                    data-field="txSvcLvlCd">
+                                <label for="includeTxSvcLvl">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SvcLvl>
+  <Cd>SEPA</Cd>
+</SvcLvl>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > SvcLvl > Cd">🌳</span>
+                        </div>
+                        <div class="field-description">Uzgodnienie lub zasady, zgodnie z którymi ma być obsługiwana
+                            transakcja.</div>
+
+                        <!-- Local Instrument -->
+                        <div class="form-row">
+                            <label class="field-label" for="txLclInstrmCd">Local Instrument (LclInstrm)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="txLclInstrmCd" name="txLclInstrmCd">
+                                    <option value="INST">INST - Instant Payment</option>
+                                    <option value="ELIXIR">ELIXIR - Polish Clearing System</option>
+                                    <option value="SORBNET">SORBNET - Polish RTGS System</option>
+                                    <option value="EXPRESS">EXPRESS - Express Transfer</option>
+                                    <option value="INTERNAL">INTERNAL - Bank-Internal Transfer</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeTxLclInstrm" class="include-field"
+                                    data-field="txLclInstrmCd">
+                                <label for="includeTxLclInstrm">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<LclInstrm>
+  <Cd>INST</Cd>
+</LclInstrm>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > LclInstrm > Cd">🌳</span>
+                        </div>
+                        <div class="field-description">Instrument specyficzny dla społeczności użytkowników, określa
+                            lokalny instrument płatniczy lub usługę.</div>
+
+                        <!-- Category Purpose -->
+                        <div class="form-row">
+                            <label class="field-label" for="txCtgyPurpCd">Category Purpose (CtgyPurp)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="txCtgyPurpCd" name="txCtgyPurpCd">
+                                    <option value="CASH">CASH - Cash Management Transfer</option>
+                                    <option value="CORT">CORT - Trade Settlement Payment</option>
+                                    <option value="DIVI">DIVI - Dividend Payment</option>
+                                    <option value="GOVT">GOVT - Government Payment</option>
+                                    <option value="INTC">INTC - Intra-Company Payment</option>
+                                    <option value="PENS">PENS - Pension Payment</option>
+                                    <option value="SALA">SALA - Salary Payment</option>
+                                    <option value="SUPP">SUPP - Supplier Payment</option>
+                                    <option value="TAXS">TAXS - Tax Payment</option>
+                                    <option value="TREA">TREA - Treasury Payment</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeTxCtgyPurp" class="include-field"
+                                    data-field="txCtgyPurpCd">
+                                <label for="includeTxCtgyPurp">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CtgyPurp>
+  <Cd>SUPP</Cd>
+</CtgyPurp>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > CtgyPurp > Cd">🌳</span>
+                        </div>
+                        <div class="field-description">Określa cel płatności na podstawie zbioru wcześniej uzgodnionych
+                            kategorii.</div>
+                    </div>
                 </div>
             </div>
         </form>

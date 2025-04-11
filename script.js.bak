@@ -1,0 +1,1474 @@
+document.addEventListener("DOMContentLoaded", function () {
+	// Referencje do elementów DOM
+	const pacsForm = document.getElementById("pacsForm");
+	const fillRequiredFieldsBtn = document.getElementById("fillRequiredFields");
+	const fillOptionalFieldsBtn = document.getElementById("fillOptionalFields");
+	const generateXmlBtn = document.getElementById("generateXml");
+	const downloadXmlBtn = document.getElementById("downloadXml");
+	const xmlOutput = document.getElementById("xmlOutput");
+	const xmlTooltip = document.getElementById("xmlTooltip");
+	const xmlTooltipContent = document.getElementById("xmlTooltipContent");
+	const treeTooltip = document.getElementById("treeTooltip");
+	const treeTooltipContent = document.getElementById("treeTooltipContent");
+	const copyNotification = document.getElementById("copyNotification");
+	const toggleThemeBtn = document.getElementById("toggleTheme");
+	const toggleThemeText = toggleThemeBtn.querySelector(".toggle-text");
+	const includePmtTpInf = document.getElementById("includePmtTpInf");
+	const pmtTpInfContainer = document.getElementById("pmtTpInfContainer");
+
+	// Inicjalizacja trybu kolorystycznego
+	initTheme();
+
+	// Obsługa przełącznika trybu jasnego/ciemnego
+	toggleThemeBtn.addEventListener("click", function () {
+		document.documentElement.classList.toggle("dark-mode");
+		updateThemeText();
+		saveThemePreference();
+	});
+
+	// Funkcja inicjalizująca tryb kolorystyczny na podstawie zapisanych preferencji
+	function initTheme() {
+		const darkModePreferred = localStorage.getItem("darkMode") === "true";
+		if (darkModePreferred) {
+			document.documentElement.classList.add("dark-mode");
+		} else {
+			document.documentElement.classList.remove("dark-mode");
+		}
+		updateThemeText();
+	}
+
+	// Funkcja aktualizująca tekst przycisku przełącznika
+	function updateThemeText() {
+		const isDarkMode = document.documentElement.classList.contains("dark-mode");
+		toggleThemeText.textContent = isDarkMode ? "Tryb jasny" : "Tryb ciemny";
+	}
+
+	// Funkcja zapisująca preferencje trybu
+	function saveThemePreference() {
+		const isDarkMode = document.documentElement.classList.contains("dark-mode");
+		localStorage.setItem("darkMode", isDarkMode);
+	}
+
+	// Obsługa tooltipów XML (najechanie)
+	document.addEventListener("mouseover", function (e) {
+		if (e.target.classList.contains("xml-icon")) {
+			const xmlExample = e.target.getAttribute("data-xml");
+			xmlTooltipContent.textContent = xmlExample;
+
+			const rect = e.target.getBoundingClientRect();
+			xmlTooltip.style.top = rect.bottom + window.scrollY + 10 + "px";
+			xmlTooltip.style.left = rect.left + "px";
+			xmlTooltip.style.display = "block";
+		} else if (e.target.classList.contains("tree-icon")) {
+			const treeStructure = e.target.getAttribute("data-tree");
+			treeTooltipContent.textContent = treeStructure;
+
+			const rect = e.target.getBoundingClientRect();
+			treeTooltip.style.top = rect.bottom + window.scrollY + 10 + "px";
+			treeTooltip.style.left = rect.left + "px";
+			treeTooltip.style.display = "block";
+		}
+	});
+
+	// Ukrywanie tooltipów (zjechanie myszą)
+	document.addEventListener("mouseout", function (e) {
+		if (e.target.classList.contains("xml-icon")) {
+			xmlTooltip.style.display = "none";
+		} else if (e.target.classList.contains("tree-icon")) {
+			treeTooltip.style.display = "none";
+		}
+	});
+
+	// Obsługa kopiowania XML do schowka (kliknięcie)
+	document.addEventListener("click", function (e) {
+		if (e.target.classList.contains("xml-icon")) {
+			const xmlExample = e.target.getAttribute("data-xml");
+
+			// Kopiowanie do schowka
+			navigator.clipboard.writeText(xmlExample).then(
+				function () {
+					// Powiadomienie o skopiowaniu
+					showCopyNotification();
+				},
+				function (err) {
+					console.error("Nie udało się skopiować: ", err);
+				}
+			);
+		}
+	});
+
+	// Funkcja wyświetlająca powiadomienie o skopiowaniu do schowka
+	function showCopyNotification() {
+		copyNotification.style.display = "block";
+		setTimeout(function () {
+			copyNotification.style.display = "none";
+		}, 2500);
+	}
+
+	// Funkcja do wypełniania pól wymaganych
+	fillRequiredFieldsBtn.addEventListener("click", function (e) {
+		e.preventDefault();
+		fillRequiredFields();
+	});
+
+	// Funkcja do wypełniania pól opcjonalnych
+	fillOptionalFieldsBtn.addEventListener("click", function (e) {
+		e.preventDefault();
+		fillOptionalFields();
+	});
+
+	// Funkcja do generowania XML
+	generateXmlBtn.addEventListener("click", function (e) {
+		e.preventDefault();
+		const xml = generateXML();
+		displayXML(xml);
+
+		// Przewinięcie do wyniku XML
+		const xmlOutputElement = document.querySelector(".xml-output");
+		if (xmlOutputElement) {
+			xmlOutputElement.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	});
+
+	// Funkcja do pobierania XML jako pliku
+	downloadXmlBtn.addEventListener("click", function (e) {
+		e.preventDefault();
+		const xml = generateXML();
+		downloadXML(xml);
+	});
+
+	// Funkcja do obsługi checkboxów opcjonalnych pól
+	document.addEventListener("change", function (e) {
+		if (e.target.classList.contains("include-field")) {
+			const fieldId = e.target.getAttribute("data-field");
+			const fieldInput = document.getElementById(fieldId);
+
+			// Sprawdzenie czy istnieje powiązane pole (np. dla waluty)
+			const relatedFieldId = e.target.getAttribute("data-related-field");
+			const relatedField = relatedFieldId
+				? document.getElementById(relatedFieldId)
+				: null;
+
+			if (fieldInput) {
+				fieldInput.disabled = !e.target.checked;
+				if (e.target.checked) {
+					fieldInput.focus();
+				}
+			}
+
+			// Aktywacja/dezaktywacja powiązanego pola
+			if (relatedField) {
+				relatedField.disabled = !e.target.checked;
+			}
+		}
+
+		// Obsługa pokazywania/ukrywania kontenera PmtTpInf
+		if (e.target.id === "includePmtTpInf") {
+			pmtTpInfContainer.style.display = e.target.checked ? "block" : "none";
+		}
+	});
+
+	// Funkcja generująca XML na podstawie danych z formularza
+	function generateXML() {
+		// Generowanie UETR (Unique End-to-End Transaction Reference) - format UUID
+		const uetr = generateUETR();
+
+		let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+		xml +=
+			'<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.13" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n';
+		xml += "  <FIToFICstmrCdtTrf>\n";
+
+		// GrpHdr
+		xml += "    <GrpHdr>\n";
+
+		// MsgId
+		const msgId = document.getElementById("msgId").value;
+		if (msgId) {
+			xml += `      <MsgId>${escapeXml(msgId)}</MsgId>\n`;
+		}
+
+		// CreDtTm
+		const creDtTm = document.getElementById("creDtTm").value;
+		if (creDtTm) {
+			// Przekształcenie formatu datetime-local na ISO String
+			const dateObj = new Date(creDtTm);
+			const isoString = dateObj.toISOString().replace(/\.\d{3}Z$/, "");
+			xml += `      <CreDtTm>${isoString}</CreDtTm>\n`;
+		}
+
+		// XpryDtTm (opcjonalne)
+		const includeXpryDtTm = document.getElementById("includeXpryDtTm").checked;
+		if (includeXpryDtTm) {
+			const xpryDtTm = document.getElementById("xpryDtTm").value;
+			if (xpryDtTm) {
+				const dateObj = new Date(xpryDtTm);
+				const isoString = dateObj.toISOString().replace(/\.\d{3}Z$/, "");
+				xml += `      <XpryDtTm>${isoString}</XpryDtTm>\n`;
+			}
+		}
+
+		// BtchBookg (opcjonalne)
+		const includeBtchBookg =
+			document.getElementById("includeBtchBookg").checked;
+		if (includeBtchBookg) {
+			const btchBookg = document.getElementById("btchBookg").value;
+			xml += `      <BtchBookg>${btchBookg}</BtchBookg>\n`;
+		}
+
+		// NbOfTxs
+		const nbOfTxs = document.getElementById("nbOfTxs").value;
+		if (nbOfTxs) {
+			xml += `      <NbOfTxs>${escapeXml(nbOfTxs)}</NbOfTxs>\n`;
+		}
+
+		// CtrlSum (opcjonalne)
+		const includeCtrlSum = document.getElementById("includeCtrlSum").checked;
+		if (includeCtrlSum) {
+			const ctrlSum = document.getElementById("ctrlSum").value;
+			if (ctrlSum) {
+				xml += `      <CtrlSum>${ctrlSum}</CtrlSum>\n`;
+			}
+		}
+
+		// TtlIntrBkSttlmAmt (opcjonalne)
+		const includeTtlIntrBkSttlmAmt = document.getElementById(
+			"includeTtlIntrBkSttlmAmt"
+		).checked;
+		if (includeTtlIntrBkSttlmAmt) {
+			const ttlIntrBkSttlmAmt =
+				document.getElementById("ttlIntrBkSttlmAmt").value;
+			const currency = document.getElementById("ttlIntrBkSttlmAmtCcy").value;
+			if (ttlIntrBkSttlmAmt && currency) {
+				xml += `      <TtlIntrBkSttlmAmt Ccy="${currency}">${ttlIntrBkSttlmAmt}</TtlIntrBkSttlmAmt>\n`;
+			}
+		}
+
+		// IntrBkSttlmDt (opcjonalne)
+		const includeIntrBkSttlmDt = document.getElementById(
+			"includeIntrBkSttlmDt"
+		).checked;
+		if (includeIntrBkSttlmDt) {
+			const intrBkSttlmDt = document.getElementById("intrBkSttlmDt").value;
+			if (intrBkSttlmDt) {
+				xml += `      <IntrBkSttlmDt>${intrBkSttlmDt}</IntrBkSttlmDt>\n`;
+			}
+		}
+
+		// SttlmInf (wymagane)
+		xml += "      <SttlmInf>\n";
+
+		// SttlmMtd (wymagane)
+		const sttlmMtd = document.getElementById("sttlmMtd").value;
+		if (sttlmMtd) {
+			xml += `        <SttlmMtd>${sttlmMtd}</SttlmMtd>\n`;
+		}
+
+		// ClrSys (opcjonalne)
+		const includeClrSys = document.getElementById("includeClrSys").checked;
+		if (includeClrSys) {
+			const clrSysCd = document.getElementById("clrSysCd").value;
+			if (clrSysCd) {
+				xml += "        <ClrSys>\n";
+				xml += `          <Cd>${clrSysCd}</Cd>\n`;
+				xml += "        </ClrSys>\n";
+			}
+		}
+
+		// Tutaj będą dodawane opcjonalne elementy SttlmInf
+
+		xml += "      </SttlmInf>\n";
+
+		// PmtTpInf (opcjonalne)
+		const includePmtTpInf = document.getElementById("includePmtTpInf").checked;
+		if (includePmtTpInf) {
+			xml += "      <PmtTpInf>\n";
+
+			// InstrPrty (opcjonalne)
+			const includeInstrPrty =
+				document.getElementById("includeInstrPrty").checked;
+			if (includeInstrPrty) {
+				const instrPrty = document.getElementById("instrPrty").value;
+				if (instrPrty) {
+					xml += `        <InstrPrty>${instrPrty}</InstrPrty>\n`;
+				}
+			}
+
+			// Tutaj będą dodawane inne opcjonalne elementy PmtTpInf
+
+			xml += "      </PmtTpInf>\n";
+		}
+
+		// InstgAgt (opcjonalne)
+		const includeInstgAgt = document.getElementById("includeInstgAgt").checked;
+		if (includeInstgAgt) {
+			const instgAgtBicfi = document.getElementById("instgAgtBicfi").value;
+			if (instgAgtBicfi) {
+				xml += "      <InstgAgt>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${instgAgtBicfi}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </InstgAgt>\n";
+			}
+		}
+
+		// InstdAgt (opcjonalne)
+		const includeInstdAgt = document.getElementById("includeInstdAgt").checked;
+		if (includeInstdAgt) {
+			const instdAgtBicfi = document.getElementById("instdAgtBicfi").value;
+			if (instdAgtBicfi) {
+				xml += "      <InstdAgt>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${instdAgtBicfi}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </InstdAgt>\n";
+			}
+		}
+
+		// Tutaj będzie kod dodawany dla pozostałych pól GrpHdr
+
+		xml += "    </GrpHdr>\n";
+
+		// CdtTrfTxInf
+		xml += "    <CdtTrfTxInf>\n";
+
+		// PmtId (Payment Identification) - wymagane
+		xml += "      <PmtId>\n";
+
+		// InstrId (opcjonalne)
+		const includeInstrId = document.getElementById("includeInstrId")?.checked;
+		if (includeInstrId) {
+			const instrId = document.getElementById("instrId").value;
+			if (instrId) {
+				xml += `        <InstrId>${escapeXml(instrId)}</InstrId>\n`;
+			}
+		}
+
+		// EndToEndId (opcjonalne)
+		const includeEndToEndId =
+			document.getElementById("includeEndToEndId")?.checked;
+		if (includeEndToEndId) {
+			const endToEndId = document.getElementById("endToEndId").value;
+			if (endToEndId) {
+				xml += `        <EndToEndId>${escapeXml(endToEndId)}</EndToEndId>\n`;
+			}
+		} else {
+			// Standardowa wartość EndToEndId jeśli nie jest zaznaczone jako opcjonalne
+			const endToEndId = document.getElementById("endToEndId").value;
+			if (endToEndId) {
+				xml += `        <EndToEndId>${escapeXml(endToEndId)}</EndToEndId>\n`;
+			}
+		}
+
+		// UETR (wymagane)
+		xml += `        <UETR>${uetr}</UETR>\n`;
+
+		// TxId (Transaction ID) - opcjonalne
+		const includeTxId = document.getElementById("includeTxId")?.checked;
+		if (includeTxId) {
+			const txId = document.getElementById("txId").value;
+			if (txId) {
+				xml += `        <TxId>${escapeXml(txId)}</TxId>\n`;
+			}
+		}
+
+		xml += "      </PmtId>\n";
+
+		// PmtTpInf (Payment Type Information) including SplmtryInf if needed - opcjonalne
+		const includeSplmtryInf =
+			document.getElementById("includeSplmtryInf")?.checked;
+		if (includeSplmtryInf) {
+			const splmtryInf = document.getElementById("splmtryInf").value;
+			if (splmtryInf) {
+				xml += "      <PmtTpInf>\n";
+				xml += `        <SplmtryInf>${escapeXml(splmtryInf)}</SplmtryInf>\n`;
+				xml += "      </PmtTpInf>\n";
+			}
+		}
+
+		// IntrBkSttlmAmt (Interbank Settlement Amount) - wymagane
+		const intrBkSttlmAmt = document.getElementById("intrBkSttlmAmt").value;
+		const intrBkSttlmAmtCcy =
+			document.getElementById("intrBkSttlmAmtCcy").value;
+		if (intrBkSttlmAmt && intrBkSttlmAmtCcy) {
+			xml += `      <IntrBkSttlmAmt Ccy="${intrBkSttlmAmtCcy}">${intrBkSttlmAmt}</IntrBkSttlmAmt>\n`;
+		}
+
+		// ChrgBr (Charge Bearer) - wymagane
+		const chrgBr = document.getElementById("chrgBr").value;
+		if (chrgBr) {
+			xml += `      <ChrgBr>${chrgBr}</ChrgBr>\n`;
+		}
+
+		// PmtSgntr (Payment Signature) - opcjonalne
+		const includePmtSgntr = document.getElementById("includePmtSgntr").checked;
+		if (includePmtSgntr) {
+			const pmtSgntrCd = document.getElementById("pmtSgntrCd").value;
+			if (pmtSgntrCd) {
+				xml += "      <PmtSgntr>\n";
+				xml += `        <Cd>${escapeXml(pmtSgntrCd)}</Cd>\n`;
+				xml += "      </PmtSgntr>\n";
+			}
+		}
+
+		// MndtRltdInf (Mandate Related Information) - opcjonalne
+		const includeMndtRltdInf =
+			document.getElementById("includeMndtRltdInf").checked;
+		const includeDtOfSgntr =
+			document.getElementById("includeDtOfSgntr").checked;
+
+		// Sprawdzenie, czy potrzebujemy dodać sekcję MndtRltdInf
+		if (includeMndtRltdInf || includeDtOfSgntr) {
+			xml += "      <MndtRltdInf>\n";
+
+			// MndtId (Mandate Identification) - opcjonalne
+			if (includeMndtRltdInf) {
+				const mndtId = document.getElementById("mndtId").value;
+				if (mndtId) {
+					xml += `        <MndtId>${escapeXml(mndtId)}</MndtId>\n`;
+				}
+			}
+
+			// DtOfSgntr (Date of Signature) - opcjonalne
+			if (includeDtOfSgntr) {
+				const dtOfSgntr = document.getElementById("dtOfSgntr").value;
+				if (dtOfSgntr) {
+					xml += `        <DtOfSgntr>${dtOfSgntr}</DtOfSgntr>\n`;
+				}
+			}
+
+			xml += "      </MndtRltdInf>\n";
+		}
+
+		// TaxInf (Tax Information) - opcjonalne
+		const includeTaxInf = document.getElementById("includeTaxInf").checked;
+		if (includeTaxInf) {
+			const taxInfCdtr = document.getElementById("taxInfCdtr").value;
+			if (taxInfCdtr) {
+				xml += "      <TaxInf>\n";
+				xml += `        <Cdtr>${escapeXml(taxInfCdtr)}</Cdtr>\n`;
+				xml += "      </TaxInf>\n";
+			}
+		}
+
+		// Dbtr (Debtor) - wymagane
+		const dbtrNm = document.getElementById("dbtrNm").value;
+		if (dbtrNm) {
+			xml += "      <Dbtr>\n";
+			xml += `        <Nm>${escapeXml(dbtrNm)}</Nm>\n`;
+			xml += "      </Dbtr>\n";
+		}
+
+		// DbtrAcct (Debtor Account) - wymagane
+		const dbtrAcctId = document.getElementById("dbtrAcctId").value;
+		if (dbtrAcctId) {
+			xml += "      <DbtrAcct>\n";
+			xml += "        <Id>\n";
+			xml += `          <IBAN>${escapeXml(dbtrAcctId)}</IBAN>\n`;
+			xml += "        </Id>\n";
+			xml += "      </DbtrAcct>\n";
+		}
+
+		// UltmtDbtr (Ultimate Debtor) - opcjonalne
+		const includeUltmtDbtr =
+			document.getElementById("includeUltmtDbtr").checked;
+		if (includeUltmtDbtr) {
+			const ultmtDbtrNm = document.getElementById("ultmtDbtrNm").value;
+			if (ultmtDbtrNm) {
+				xml += "      <UltmtDbtr>\n";
+				xml += `        <Nm>${escapeXml(ultmtDbtrNm)}</Nm>\n`;
+				xml += "      </UltmtDbtr>\n";
+			}
+		}
+
+		// Cdtr (Creditor) - wymagane
+		const cdtrNm = document.getElementById("cdtrNm").value;
+		if (cdtrNm) {
+			xml += "      <Cdtr>\n";
+			xml += `        <Nm>${escapeXml(cdtrNm)}</Nm>\n`;
+			xml += "      </Cdtr>\n";
+		}
+
+		// CdtrAcct (Creditor Account) - wymagane
+		const cdtrAcctId = document.getElementById("cdtrAcctId").value;
+		if (cdtrAcctId) {
+			xml += "      <CdtrAcct>\n";
+			xml += "        <Id>\n";
+			xml += `          <IBAN>${escapeXml(cdtrAcctId)}</IBAN>\n`;
+			xml += "        </Id>\n";
+			xml += "      </CdtrAcct>\n";
+		}
+
+		// UltmtCdtr (Ultimate Creditor) - opcjonalne
+		const includeUltmtCdtr =
+			document.getElementById("includeUltmtCdtr").checked;
+		if (includeUltmtCdtr) {
+			const ultmtCdtrNm = document.getElementById("ultmtCdtrNm").value;
+			if (ultmtCdtrNm) {
+				xml += "      <UltmtCdtr>\n";
+				xml += `        <Nm>${escapeXml(ultmtCdtrNm)}</Nm>\n`;
+				xml += "      </UltmtCdtr>\n";
+			}
+		}
+
+		// Purp (Purpose) - opcjonalne
+		const includePurp = document.getElementById("includePurp").checked;
+		if (includePurp) {
+			const purpCd = document.getElementById("purpCd").value;
+			if (purpCd) {
+				xml += "      <Purp>\n";
+				xml += `        <Cd>${purpCd}</Cd>\n`;
+				xml += "      </Purp>\n";
+			}
+		}
+
+		// RgltryRptg (Regulatory Reporting) - opcjonalne
+		const includeRgltryRptg =
+			document.getElementById("includeRgltryRptg").checked;
+		if (includeRgltryRptg) {
+			const rgltryRptgDbtCdtRptgInd = document.getElementById(
+				"rgltryRptgDbtCdtRptgInd"
+			).value;
+			if (rgltryRptgDbtCdtRptgInd) {
+				xml += "      <RgltryRptg>\n";
+				xml += `        <DbtCdtRptgInd>${rgltryRptgDbtCdtRptgInd}</DbtCdtRptgInd>\n`;
+				xml += "      </RgltryRptg>\n";
+			}
+		}
+
+		// RltdRmtInf (Related Remittance Information) - opcjonalne
+		const includeRltdRmtInf =
+			document.getElementById("includeRltdRmtInf").checked;
+		if (includeRltdRmtInf) {
+			const rltdRmtInfRmtId = document.getElementById("rltdRmtInfRmtId").value;
+			if (rltdRmtInfRmtId) {
+				xml += "      <RltdRmtInf>\n";
+				xml += `        <RmtId>${escapeXml(rltdRmtInfRmtId)}</RmtId>\n`;
+				xml += "      </RltdRmtInf>\n";
+			}
+		}
+
+		// InstrForNxtAgt (Instruction For Next Agent) - opcjonalne
+		const includeInstrForNxtAgt = document.getElementById(
+			"includeInstrForNxtAgt"
+		).checked;
+		if (includeInstrForNxtAgt) {
+			const instrForNxtAgtCd =
+				document.getElementById("instrForNxtAgtCd").value;
+			if (instrForNxtAgtCd) {
+				xml += "      <InstrForNxtAgt>\n";
+				xml += `        <Cd>${instrForNxtAgtCd}</Cd>\n`;
+				xml += "      </InstrForNxtAgt>\n";
+			}
+		}
+
+		// IntrmyAgt1 (Intermediary Agent 1) - opcjonalne
+		const includeIntrmyAgt1 =
+			document.getElementById("includeIntrmyAgt1").checked;
+		if (includeIntrmyAgt1) {
+			const intrmyAgt1Bicfi = document.getElementById("intrmyAgt1Bicfi").value;
+			if (intrmyAgt1Bicfi) {
+				xml += "      <IntrmyAgt1>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(intrmyAgt1Bicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </IntrmyAgt1>\n";
+			}
+		}
+
+		// IntrmyAgt1Acct (Intermediary Agent Account 1) - opcjonalne
+		const includeIntrmyAgt1Acct = document.getElementById(
+			"includeIntrmyAgt1Acct"
+		).checked;
+		if (includeIntrmyAgt1Acct) {
+			const intrmyAgt1AcctId =
+				document.getElementById("intrmyAgt1AcctId").value;
+			if (intrmyAgt1AcctId) {
+				xml += "      <IntrmyAgt1Acct>\n";
+				xml += "        <Id>\n";
+				xml += `          <IBAN>${escapeXml(intrmyAgt1AcctId)}</IBAN>\n`;
+				xml += "        </Id>\n";
+				xml += "      </IntrmyAgt1Acct>\n";
+			}
+		}
+
+		// PrvsInstgAgt1 (Previous Instructing Agent 1) - opcjonalne
+		const includePrvsInstgAgt1 = document.getElementById(
+			"includePrvsInstgAgt1"
+		).checked;
+		if (includePrvsInstgAgt1) {
+			const prvsInstgAgt1Bicfi =
+				document.getElementById("prvsInstgAgt1Bicfi").value;
+			if (prvsInstgAgt1Bicfi) {
+				xml += "      <PrvsInstgAgt1>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(prvsInstgAgt1Bicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </PrvsInstgAgt1>\n";
+			}
+		}
+
+		// DbtrAgt (Debtor Agent) - opcjonalne
+		const includeDbtrAgt = document.getElementById("includeDbtrAgt").checked;
+		if (includeDbtrAgt) {
+			const dbtrAgtBicfi = document.getElementById("dbtrAgtBicfi").value;
+			if (dbtrAgtBicfi) {
+				xml += "      <DbtrAgt>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(dbtrAgtBicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </DbtrAgt>\n";
+			}
+		}
+
+		// CdtrAgt (Creditor Agent) - opcjonalne
+		const includeCdtrAgt = document.getElementById("includeCdtrAgt").checked;
+		if (includeCdtrAgt) {
+			const cdtrAgtBicfi = document.getElementById("cdtrAgtBicfi").value;
+			if (cdtrAgtBicfi) {
+				xml += "      <CdtrAgt>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(cdtrAgtBicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </CdtrAgt>\n";
+			}
+		}
+
+		// InstrForCdtrAgt (Instruction For Creditor Agent) - opcjonalne
+		const includeInstrForCdtrAgt = document.getElementById(
+			"includeInstrForCdtrAgt"
+		).checked;
+		if (includeInstrForCdtrAgt) {
+			const instrForCdtrAgtCd =
+				document.getElementById("instrForCdtrAgtCd").value;
+			if (instrForCdtrAgtCd) {
+				xml += "      <InstrForCdtrAgt>\n";
+				xml += `        <Cd>${instrForCdtrAgtCd}</Cd>\n`;
+				xml += "      </InstrForCdtrAgt>\n";
+			}
+		}
+
+		// InstrForDbtrAgt (Instruction For Debtor Agent) - opcjonalne
+		const includeInstrForDbtrAgt = document.getElementById(
+			"includeInstrForDbtrAgt"
+		).checked;
+		if (includeInstrForDbtrAgt) {
+			const instrForDbtrAgt = document.getElementById("instrForDbtrAgt").value;
+			if (instrForDbtrAgt) {
+				xml += `      <InstrForDbtrAgt>${escapeXml(
+					instrForDbtrAgt
+				)}</InstrForDbtrAgt>\n`;
+			}
+		}
+
+		// SttlmDt (Settlement Date) in CdtTrfTxInf - opcjonalne
+		const includeCdtTrfTxInfSttlmDt = document.getElementById(
+			"includeCdtTrfTxInfSttlmDt"
+		).checked;
+		if (includeCdtTrfTxInfSttlmDt) {
+			const cdtTrfTxInfSttlmDt =
+				document.getElementById("cdtTrfTxInfSttlmDt").value;
+			if (cdtTrfTxInfSttlmDt) {
+				xml += `      <SttlmDt>${cdtTrfTxInfSttlmDt}</SttlmDt>\n`;
+			}
+		}
+
+		// SttlmPrty (Settlement Priority) - opcjonalne
+		const includeSttlmPrty =
+			document.getElementById("includeSttlmPrty").checked;
+		if (includeSttlmPrty) {
+			const sttlmPrty = document.getElementById("sttlmPrty").value;
+			if (sttlmPrty) {
+				xml += `      <SttlmPrty>${sttlmPrty}</SttlmPrty>\n`;
+			}
+		}
+
+		// SttlmTmIndctn (Settlement Time Indication) - opcjonalne
+		const includeSttlmTmIndctn = document.getElementById(
+			"includeSttlmTmIndctn"
+		).checked;
+		const includeDbtDtTm = document.getElementById("includeDbtDtTm").checked;
+
+		// Sprawdzenie, czy potrzebujemy dodać sekcję SttlmTmIndctn
+		if (includeSttlmTmIndctn || includeDbtDtTm) {
+			xml += "      <SttlmTmIndctn>\n";
+
+			// CdtDtTm (Credit Date Time) - opcjonalne
+			if (includeSttlmTmIndctn) {
+				const sttlmTmIndctnCdtDtTm = document.getElementById(
+					"sttlmTmIndctnCdtDtTm"
+				).value;
+				if (sttlmTmIndctnCdtDtTm) {
+					// Przekształcenie formatu datetime-local na ISO String
+					const dateObj = new Date(sttlmTmIndctnCdtDtTm);
+					const isoString = dateObj.toISOString().replace(/\.\d{3}Z$/, "");
+					xml += `        <CdtDtTm>${isoString}</CdtDtTm>\n`;
+				}
+			}
+
+			// DbtDtTm (Debit Date Time) - opcjonalne
+			if (includeDbtDtTm) {
+				const sttlmTmIndctnDbtDtTm = document.getElementById(
+					"sttlmTmIndctnDbtDtTm"
+				).value;
+				if (sttlmTmIndctnDbtDtTm) {
+					// Przekształcenie formatu datetime-local na ISO String
+					const dateObj = new Date(sttlmTmIndctnDbtDtTm);
+					const isoString = dateObj.toISOString().replace(/\.\d{3}Z$/, "");
+					xml += `        <DbtDtTm>${isoString}</DbtDtTm>\n`;
+				}
+			}
+
+			xml += "      </SttlmTmIndctn>\n";
+		}
+
+		// SttlmTmReq (Settlement Time Request) - opcjonalne
+		const includeSttlmTmReq =
+			document.getElementById("includeSttlmTmReq").checked;
+		const includeRjctTm = document.getElementById("includeRjctTm").checked;
+		const includeFrTm = document.getElementById("includeFrTm").checked;
+		const includeTillTm = document.getElementById("includeTillTm").checked;
+
+		// Sprawdzenie, czy potrzebujemy dodać sekcję SttlmTmReq
+		if (includeSttlmTmReq || includeRjctTm || includeFrTm || includeTillTm) {
+			xml += "      <SttlmTmReq>\n";
+
+			// ClsTm (Closure Time) - opcjonalne
+			if (includeSttlmTmReq) {
+				const sttlmTmReqClsTm =
+					document.getElementById("sttlmTmReqClsTm").value;
+				if (sttlmTmReqClsTm) {
+					xml += `        <ClsTm>${sttlmTmReqClsTm}:00</ClsTm>\n`;
+				}
+			}
+
+			// RjctTm (Reject Time) - opcjonalne
+			if (includeRjctTm) {
+				const sttlmTmReqRjctTm =
+					document.getElementById("sttlmTmReqRjctTm").value;
+				if (sttlmTmReqRjctTm) {
+					xml += `        <RjctTm>${sttlmTmReqRjctTm}:00</RjctTm>\n`;
+				}
+			}
+
+			// FrTm (From Time) - opcjonalne
+			if (includeFrTm) {
+				const sttlmTmReqFrTm = document.getElementById("sttlmTmReqFrTm").value;
+				if (sttlmTmReqFrTm) {
+					xml += `        <FrTm>${sttlmTmReqFrTm}:00</FrTm>\n`;
+				}
+			}
+
+			// TillTm (Till Time) - opcjonalne
+			if (includeTillTm) {
+				const sttlmTmReqTillTm =
+					document.getElementById("sttlmTmReqTillTm").value;
+				if (sttlmTmReqTillTm) {
+					xml += `        <TillTm>${sttlmTmReqTillTm}:00</TillTm>\n`;
+				}
+			}
+
+			xml += "      </SttlmTmReq>\n";
+		}
+
+		// AccptncDtTm (Acceptance Date Time) - opcjonalne
+		const includeAccptncDtTm =
+			document.getElementById("includeAccptncDtTm").checked;
+		if (includeAccptncDtTm) {
+			const accptncDtTm = document.getElementById("accptncDtTm").value;
+			if (accptncDtTm) {
+				// Przekształcenie formatu datetime-local na ISO String
+				const dateObj = new Date(accptncDtTm);
+				const isoString = dateObj.toISOString().replace(/\.\d{3}Z$/, "");
+				xml += `      <AccptncDtTm>${isoString}</AccptncDtTm>\n`;
+			}
+		}
+
+		// InstdAmt (Instructed Amount) - opcjonalne
+		const includeInstdAmt = document.getElementById("includeInstdAmt").checked;
+		if (includeInstdAmt) {
+			const instdAmt = document.getElementById("instdAmt").value;
+			const instdAmtCcy = document.getElementById("instdAmtCcy").value;
+			if (instdAmt && instdAmtCcy) {
+				xml += `      <InstdAmt Ccy="${instdAmtCcy}">${instdAmt}</InstdAmt>\n`;
+			}
+		}
+
+		// XchgRate (Exchange Rate) - opcjonalne
+		const includeXchgRate = document.getElementById("includeXchgRate").checked;
+		if (includeXchgRate) {
+			const xchgRate = document.getElementById("xchgRate").value;
+			if (xchgRate) {
+				xml += `      <XchgRate>${xchgRate}</XchgRate>\n`;
+			}
+		}
+
+		// RmtInf (Remittance Information) - opcjonalne
+		const includeRmtInfUstrd =
+			document.getElementById("includeRmtInfUstrd").checked;
+		const includeRmtInfStrd =
+			document.getElementById("includeRmtInfStrd").checked;
+		const includeCdtrRefInf =
+			document.getElementById("includeCdtrRefInf")?.checked;
+
+		if (includeRmtInfUstrd || includeRmtInfStrd || includeCdtrRefInf) {
+			xml += "      <RmtInf>\n";
+			if (
+				includeRmtInfUstrd &&
+				document.getElementById("rmtInfUstrd") &&
+				document.getElementById("rmtInfUstrd").value
+			) {
+				xml += `        <Ustrd>${escapeXml(
+					document.getElementById("rmtInfUstrd").value
+				)}</Ustrd>\n`;
+			}
+			if (
+				includeRmtInfStrd &&
+				document.getElementById("rmtInfStrdRefInfNb") &&
+				document.getElementById("rmtInfStrdRefInfNb").value
+			) {
+				xml += `        <Strd>\n`;
+				xml += `          <RfrdDocInf>\n`;
+				xml += `            <Nb>${escapeXml(
+					document.getElementById("rmtInfStrdRefInfNb").value
+				)}</Nb>\n`;
+				if (
+					document.getElementById("rmtInfStrdRefInfRltdDt") &&
+					document.getElementById("rmtInfStrdRefInfRltdDt").value
+				) {
+					xml += `              <RltdDt>${escapeXml(
+						document.getElementById("rmtInfStrdRefInfRltdDt").value
+					)}</RltdDt>\n`;
+				}
+				xml += `          </RfrdDocInf>\n`;
+				xml += `        </Strd>\n`;
+			}
+			// CdtrRefInf (Creditor Reference Information) - opcjonalne
+			if (includeCdtrRefInf) {
+				const cdtrRefInfTp = document.getElementById("cdtrRefInfTp").value;
+				const cdtrRefInfRef = document.getElementById("cdtrRefInfRef").value;
+				if (cdtrRefInfTp && cdtrRefInfRef) {
+					xml += `        <Strd>\n`;
+					xml += `          <CdtrRefInf>\n`;
+					xml += `            <Tp>\n`;
+					xml += `              <CdOrPrtry>\n`;
+					xml += `                <Cd>${escapeXml(cdtrRefInfTp)}</Cd>\n`;
+					xml += `              </CdOrPrtry>\n`;
+					xml += `            </Tp>\n`;
+					xml += `            <Ref>${escapeXml(cdtrRefInfRef)}</Ref>\n`;
+					xml += `          </CdtrRefInf>\n`;
+					xml += `        </Strd>\n`;
+				}
+			}
+			xml += "      </RmtInf>\n";
+		}
+
+		// PrvsInstgAgt2 (Previous Instructing Agent 2) - opcjonalne
+		const includePrvsInstgAgt2 = document.getElementById(
+			"includePrvsInstgAgt2"
+		).checked;
+		if (includePrvsInstgAgt2) {
+			const prvsInstgAgt2Bicfi =
+				document.getElementById("prvsInstgAgt2Bicfi").value;
+			if (prvsInstgAgt2Bicfi) {
+				xml += "      <PrvsInstgAgt2>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(prvsInstgAgt2Bicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </PrvsInstgAgt2>\n";
+			}
+		}
+
+		// PrvsInstgAgt3 (Previous Instructing Agent 3) - opcjonalne
+		const includePrvsInstgAgt3 = document.getElementById(
+			"includePrvsInstgAgt3"
+		).checked;
+		if (includePrvsInstgAgt3) {
+			const prvsInstgAgt3Bicfi =
+				document.getElementById("prvsInstgAgt3Bicfi").value;
+			if (prvsInstgAgt3Bicfi) {
+				xml += "      <PrvsInstgAgt3>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(prvsInstgAgt3Bicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </PrvsInstgAgt3>\n";
+			}
+		}
+
+		// IntrmyAgt2 (Intermediary Agent 2) - opcjonalne
+		const includeIntrmyAgt2 =
+			document.getElementById("includeIntrmyAgt2").checked;
+		if (includeIntrmyAgt2) {
+			const intrmyAgt2Bicfi = document.getElementById("intrmyAgt2Bicfi").value;
+			if (intrmyAgt2Bicfi) {
+				xml += "      <IntrmyAgt2>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(intrmyAgt2Bicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </IntrmyAgt2>\n";
+			}
+		}
+
+		// IntrmyAgt2Acct (Intermediary Agent Account 2) - opcjonalne
+		const includeIntrmyAgt2Acct = document.getElementById(
+			"includeIntrmyAgt2Acct"
+		).checked;
+		if (includeIntrmyAgt2Acct) {
+			const intrmyAgt2AcctId =
+				document.getElementById("intrmyAgt2AcctId").value;
+			if (intrmyAgt2AcctId) {
+				xml += "      <IntrmyAgt2Acct>\n";
+				xml += "        <Id>\n";
+				xml += `          <IBAN>${escapeXml(intrmyAgt2AcctId)}</IBAN>\n`;
+				xml += "        </Id>\n";
+				xml += "      </IntrmyAgt2Acct>\n";
+			}
+		}
+
+		// IntrmyAgt3 (Intermediary Agent 3) - opcjonalne
+		const includeIntrmyAgt3 =
+			document.getElementById("includeIntrmyAgt3").checked;
+		if (includeIntrmyAgt3) {
+			const intrmyAgt3Bicfi = document.getElementById("intrmyAgt3Bicfi").value;
+			if (intrmyAgt3Bicfi) {
+				xml += "      <IntrmyAgt3>\n";
+				xml += "        <FinInstnId>\n";
+				xml += `          <BICFI>${escapeXml(intrmyAgt3Bicfi)}</BICFI>\n`;
+				xml += "        </FinInstnId>\n";
+				xml += "      </IntrmyAgt3>\n";
+			}
+		}
+
+		// IntrmyAgt3Acct (Intermediary Agent Account 3) - opcjonalne
+		const includeIntrmyAgt3Acct = document.getElementById(
+			"includeIntrmyAgt3Acct"
+		).checked;
+		if (includeIntrmyAgt3Acct) {
+			const intrmyAgt3AcctId =
+				document.getElementById("intrmyAgt3AcctId").value;
+			if (intrmyAgt3AcctId) {
+				xml += "      <IntrmyAgt3Acct>\n";
+				xml += "        <Id>\n";
+				xml += `          <IBAN>${escapeXml(intrmyAgt3AcctId)}</IBAN>\n`;
+				xml += "        </Id>\n";
+				xml += "      </IntrmyAgt3Acct>\n";
+			}
+		}
+
+		// SplmtryInf (Supplementary Information) - opcjonalne
+		const includeSplmtryInf =
+			document.getElementById("includeSplmtryInf")?.checked;
+		if (includeSplmtryInf) {
+			const splmtryInf = document.getElementById("splmtryInf").value;
+			if (splmtryInf) {
+				xml += `      <PmtTpInf>
+        <SplmtryInf>${escapeXml(splmtryInf)}</SplmtryInf>
+      </PmtTpInf>\n`;
+			}
+		}
+
+		// SplmtryData (Supplementary Data) - opcjonalne
+		const includeSplmtryData =
+			document.getElementById("includeSplmtryData")?.checked;
+		if (includeSplmtryData) {
+			const splmtryData = document.getElementById("splmtryData").value;
+			if (splmtryData) {
+				xml += `      <SplmtryData>
+        <PlcAndNm>TransactionDetails</PlcAndNm>
+        <Envlp>
+          <any>${escapeXml(splmtryData)}</any>
+        </Envlp>
+      </SplmtryData>\n`;
+			}
+		}
+
+		// InstrForFinInstnId (Instruction For Financial Institution) - opcjonalne
+		const includeInstrForFinInstnId = document.getElementById(
+			"includeInstrForFinInstnId"
+		)?.checked;
+		if (includeInstrForFinInstnId) {
+			const instrForFinInstnId =
+				document.getElementById("instrForFinInstnId").value;
+			if (instrForFinInstnId) {
+				xml += `      <InstrForFinInstnId>
+        <Cd>${escapeXml(instrForFinInstnId)}</Cd>
+      </InstrForFinInstnId>\n`;
+			}
+		}
+
+		// InstrForDbtrAgtAcct (Instruction For Debtor Agent Account) - opcjonalne
+		const includeInstrForDbtrAgtAcct = document.getElementById(
+			"includeInstrForDbtrAgtAcct"
+		)?.checked;
+		if (includeInstrForDbtrAgtAcct) {
+			const instrForDbtrAgtAcct = document.getElementById(
+				"instrForDbtrAgtAcct"
+			).value;
+			if (instrForDbtrAgtAcct) {
+				xml += `      <InstrForDbtrAgtAcct>
+        <InstrInf>${escapeXml(instrForDbtrAgtAcct)}</InstrInf>
+      </InstrForDbtrAgtAcct>\n`;
+			}
+		}
+
+		// RgltryCpltc (Regulatory Compliance) - opcjonalne
+		const includeRgltryCpltc =
+			document.getElementById("includeRgltryCpltc")?.checked;
+		if (includeRgltryCpltc) {
+			const rgltryCpltc = document.getElementById("rgltryCpltc").value;
+			if (rgltryCpltc) {
+				xml += `      <RgltryCpltc>
+        <Cd>${escapeXml(rgltryCpltc)}</Cd>
+      </RgltryCpltc>\n`;
+			}
+		}
+
+		// ClrChanl (Clearing Channel) - opcjonalne
+		const includeClrChanl = document.getElementById("includeClrChanl")?.checked;
+		if (includeClrChanl) {
+			const clrChanl = document.getElementById("clrChanl").value;
+			if (clrChanl) {
+				xml += `      <ClrChanl>${escapeXml(clrChanl)}</ClrChanl>\n`;
+			}
+		}
+
+		// NclsrRsn (Non-Closure Reason) - opcjonalne
+		const includeNclsrRsn = document.getElementById("includeNclsrRsn")?.checked;
+		if (includeNclsrRsn) {
+			const nclsrRsn = document.getElementById("nclsrRsn").value;
+			if (nclsrRsn) {
+				xml += `      <NclsrRsn>
+        <Cd>${escapeXml(nclsrRsn)}</Cd>
+      </NclsrRsn>\n`;
+			}
+		}
+
+		xml += "    </CdtTrfTxInf>\n";
+		xml += "  </FIToFICstmrCdtTrf>\n";
+		xml += "</Document>";
+
+		return xml;
+	}
+
+	// Funkcja do escapowania znaków specjalnych w XML
+	function escapeXml(unsafe) {
+		return unsafe.replace(/[<>&'"]/g, function (c) {
+			switch (c) {
+				case "<":
+					return "&lt;";
+				case ">":
+					return "&gt;";
+				case "&":
+					return "&amp;";
+				case "'":
+					return "&apos;";
+				case '"':
+					return "&quot;";
+			}
+		});
+	}
+
+	// Pomocnicza funkcja do dodawania zera z przodu dla liczb < 10
+	function padZero(num) {
+		return num < 10 ? "0" + num : num;
+	}
+
+	// Wyświetlanie XML w elemencie pre
+	function displayXML(xml) {
+		xmlOutput.textContent = xml;
+	}
+
+	// Pobieranie XML jako pliku
+	function downloadXML(xml) {
+		const blob = new Blob([xml], { type: "application/xml" });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = "pacs.008.001.13.xml";
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	}
+
+	// Wypełnianie pól wymaganych przykładowymi danymi
+	function fillRequiredFields() {
+		// MsgId (Message Identification)
+		document.getElementById("msgId").value = "MSG-ID-" + new Date().getTime();
+
+		// CreDtTm (Creation Date Time)
+		const now = new Date();
+		const year = now.getFullYear();
+		const month = padZero(now.getMonth() + 1);
+		const day = padZero(now.getDate());
+		const hours = padZero(now.getHours());
+		const minutes = padZero(now.getMinutes());
+
+		// Format dla input type="datetime-local": YYYY-MM-DDThh:mm
+		document.getElementById(
+			"creDtTm"
+		).value = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+		// NbOfTxs (Number of Transactions) - domyślnie 1
+		document.getElementById("nbOfTxs").value = "1";
+
+		// SttlmMtd (Settlement Method) - domyślnie CLRG
+		document.getElementById("sttlmMtd").value = "CLRG";
+
+		// Pola z sekcji CdtTrfTxInf
+		// EndToEndId
+		document.getElementById("endToEndId").value =
+			"E2E-ID-" + new Date().getTime();
+
+		// IntrBkSttlmAmt i waluta
+		document.getElementById("intrBkSttlmAmt").value = "100.00";
+		document.getElementById("intrBkSttlmAmtCcy").value = "EUR";
+
+		// ChrgBr
+		document.getElementById("chrgBr").value = "SHAR";
+
+		// Dbtr i DbtrAcct
+		document.getElementById("dbtrNm").value = "Nazwa Dłużnika Sp. z o.o.";
+		document.getElementById("dbtrAcctId").value =
+			"PL21109010140000071219812874";
+
+		// Cdtr i CdtrAcct
+		document.getElementById("cdtrNm").value = "Nazwa Wierzyciela S.A.";
+		document.getElementById("cdtrAcctId").value = "DE89370400440532013000";
+
+		// Komunikat o wypełnieniu pól
+		showNotification("Wypełniono pola wymagane");
+	}
+
+	// Wypełnianie pól opcjonalnych przykładowymi danymi
+	function fillOptionalFields() {
+		/* 
+		Funkcja pomocnicza do bezpiecznego ustawiania wartości pól.
+		Sprawdza czy checkbox i pole istnieją przed próbą ustawienia wartości
+		*/
+		function safeSetFieldValue(checkboxId, inputId, value) {
+			const checkbox = document.getElementById(checkboxId);
+			const input = document.getElementById(inputId);
+			if (checkbox && input) {
+				checkbox.checked = true;
+				input.value = value;
+			}
+		}
+
+		try {
+			// Generowanie identyfikatorów dla endToEndId
+			const randomEndToEndId =
+				"E2E" + Math.floor(Math.random() * 10000000).toString();
+
+			// 1. Expiry Date Time - poprawione ID
+			safeSetFieldValue(
+				"includeXpryDtTm",
+				"xpryDtTm",
+				getISODateTime(1, "days")
+			);
+
+			// 2. Batch Booking - poprawione ID
+			safeSetFieldValue("includeBtchBookg", "btchBookg", "true");
+
+			// 3. Control Sum - dodane pole
+			safeSetFieldValue("includeCtrlSum", "ctrlSum", "1000.00");
+
+			// 4. Total Interbank Settlement Amount - dodane pole
+			safeSetFieldValue(
+				"includeTtlIntrBkSttlmAmt",
+				"ttlIntrBkSttlmAmt",
+				"1000.00"
+			);
+
+			// Waluta dla Total Interbank Settlement Amount
+			if (document.getElementById("ttlIntrBkSttlmAmtCcy")) {
+				document.getElementById("ttlIntrBkSttlmAmtCcy").value = "EUR";
+			}
+
+			// 5. Interbank Settlement Date - dodane pole
+			safeSetFieldValue(
+				"includeIntrBkSttlmDt",
+				"intrBkSttlmDt",
+				getISODateTime(0, "days").split("T")[0]
+			);
+
+			// 6. Clearing System - sprawdzenie czy istnieje
+			safeSetFieldValue("includeClrSys", "clrSysCd", "TARGET");
+
+			// Pola, które są wymagane, więc powinny być ustawione bezpośrednio bez checkboxa
+			if (document.getElementById("nbOfTxs")) {
+				document.getElementById("nbOfTxs").value = "1";
+			}
+
+			if (document.getElementById("intrBkSttlmAmt")) {
+				document.getElementById("intrBkSttlmAmt").value = "1000.00";
+			}
+
+			// 7. Settlement Priority
+			safeSetFieldValue("includeSttlmPrty", "sttlmPrty", "NORM");
+
+			// 8. Settlement Time Indication
+			safeSetFieldValue(
+				"includeSttlmTmIndctn",
+				"sttlmTmIndctnCdtDtTm",
+				getISODateTime(0, "days")
+			);
+			safeSetFieldValue(
+				"includeDbtDtTm",
+				"sttlmTmIndctnDbtDtTm",
+				getISODateTime(0, "days")
+			);
+
+			// 9. Settlement Time Request
+			safeSetFieldValue(
+				"includeSttlmTmReq",
+				"sttlmTmReqClsTm",
+				getISODateTime(0, "days").split("T")[1]
+			);
+			safeSetFieldValue(
+				"includeRjctTm",
+				"sttlmTmReqRjctTm",
+				getISODateTime(0, "days").split("T")[1]
+			);
+			safeSetFieldValue(
+				"includeFrTm",
+				"sttlmTmReqFrTm",
+				getISODateTime(0, "days").split("T")[1]
+			);
+			safeSetFieldValue(
+				"includeTillTm",
+				"sttlmTmReqTillTm",
+				getISODateTime(0, "days").split("T")[1]
+			);
+
+			// 10. Acceptance Date Time
+			safeSetFieldValue(
+				"includeAccptncDtTm",
+				"accptncDtTm",
+				getISODateTime(0, "days")
+			);
+
+			// 11. Pool Identifier
+			safeSetFieldValue(
+				"includePoolgAdjstmntDt",
+				"poolgAdjstmntDt",
+				getISODateTime(0, "days").split("T")[0]
+			);
+			safeSetFieldValue(
+				"includePoolgId",
+				"poolgId",
+				"POOL" + Math.floor(Math.random() * 10000000).toString()
+			);
+
+			// 12. Instructed Amount
+			safeSetFieldValue("includeInstdAmt", "instdAmt", "1005.50");
+			safeSetFieldValue("includeInstdAmt", "instdAmtCcy", "EUR");
+
+			// 13. Exchange Rate - poprawiony ID
+			safeSetFieldValue("includeXchgRate", "xchgRate", "1.1352");
+
+			// 14. Charges Information Amount
+			safeSetFieldValue("includeChrgsInf", "chrgsInfAmt", "5.50");
+			if (document.getElementById("chrgsInfAmtCcy")) {
+				document.getElementById("chrgsInfAmtCcy").value = "EUR";
+			}
+
+			// 15. Payment Signature
+			safeSetFieldValue("includePmtSgntr", "pmtSgntrCd", "ABCD1234");
+
+			// 16. Mandate Related Information
+			safeSetFieldValue("includeMndtRltdInf", "mndtId", "MNDT2024001");
+			safeSetFieldValue(
+				"includeDtOfSgntr",
+				"dtOfSgntr",
+				getISODateTime(-30, "days").split("T")[0]
+			);
+
+			// 17. Instructing Agent
+			safeSetFieldValue("includeInstgAgt", "instgAgtBicfi", "BICFIABCXXX");
+
+			// 18. Instructed Agent - poprawka ID
+			safeSetFieldValue("includeInstdAgt", "instdAgtBicfi", "BICFIXYZXXX");
+
+			// 19. Debtor
+			safeSetFieldValue("includeDbtr", "dbtrNm", "John Doe");
+			safeSetFieldValue("includeDbtrPstlAdr", "dbtrStrtNm", "Bankowa");
+			safeSetFieldValue("includeDbtrPstlAdr", "dbtrBldgNb", "14");
+			safeSetFieldValue("includeDbtrPstlAdr", "dbtrPstCd", "00-950");
+			safeSetFieldValue("includeDbtrPstlAdr", "dbtrTwnNm", "Warsaw");
+			safeSetFieldValue("includeDbtrPstlAdr", "dbtrCtry", "PL");
+			safeSetFieldValue(
+				"includeDbtrAcct",
+				"dbtrAcctId",
+				"PL12345678901234567890123456"
+			);
+
+			// 20. Debtor Agent
+			safeSetFieldValue("includeDbtrAgt", "dbtrAgtBicfi", "NBPLPLPWXXX");
+			safeSetFieldValue(
+				"includeDbtrAgtAcct",
+				"dbtrAgtAcctId",
+				"PL98765432109876543210987654"
+			);
+
+			// 21. Ultimate Debtor - dodane pole
+			safeSetFieldValue(
+				"includeUltmtDbtr",
+				"ultmtDbtrNm",
+				"Ultimate Debtor Corp"
+			);
+			safeSetFieldValue(
+				"includeUltmtDbtrPstlAdr",
+				"ultmtDbtrStrtNm",
+				"Wall Street"
+			);
+			safeSetFieldValue("includeUltmtDbtrPstlAdr", "ultmtDbtrBldgNb", "15");
+			safeSetFieldValue("includeUltmtDbtrPstlAdr", "ultmtDbtrPstCd", "10005");
+			safeSetFieldValue(
+				"includeUltmtDbtrPstlAdr",
+				"ultmtDbtrTwnNm",
+				"New York"
+			);
+			safeSetFieldValue("includeUltmtDbtrPstlAdr", "ultmtDbtrCtry", "US");
+
+			// 22. Previous Instructing Agent
+			safeSetFieldValue(
+				"includePrvsInstgAgt1",
+				"prvsInstgAgt1Bicfi",
+				"AAAAPLP0XXX"
+			);
+			safeSetFieldValue(
+				"includePrvsInstgAgt1Acct",
+				"prvsInstgAgt1AcctId",
+				"PL12121212121212121212121212"
+			);
+
+			safeSetFieldValue(
+				"includePrvsInstgAgt2",
+				"prvsInstgAgt2Bicfi",
+				"BBBBPLP0XXX"
+			);
+			safeSetFieldValue(
+				"includePrvsInstgAgt2Acct",
+				"prvsInstgAgt2AcctId",
+				"PL23232323232323232323232323"
+			);
+
+			safeSetFieldValue(
+				"includePrvsInstgAgt3",
+				"prvsInstgAgt3Bicfi",
+				"CCCCPLP0XXX"
+			);
+			safeSetFieldValue(
+				"includePrvsInstgAgt3Acct",
+				"prvsInstgAgt3AcctId",
+				"PL34343434343434343434343434"
+			);
+
+			// 23. Intermediary Agent
+			safeSetFieldValue("includeIntrmyAgt1", "intrmyAgt1Bicfi", "DDDDPLP0XXX");
+			safeSetFieldValue(
+				"includeIntrmyAgt1Acct",
+				"intrmyAgt1AcctId",
+				"PL45454545454545454545454545"
+			);
+
+			safeSetFieldValue("includeIntrmyAgt2", "intrmyAgt2Bicfi", "EEEEPLP0XXX");
+			safeSetFieldValue(
+				"includeIntrmyAgt2Acct",
+				"intrmyAgt2AcctId",
+				"PL56565656565656565656565656"
+			);
+
+			safeSetFieldValue("includeIntrmyAgt3", "intrmyAgt3Bicfi", "FFFFPLP0XXX");
+			safeSetFieldValue(
+				"includeIntrmyAgt3Acct",
+				"intrmyAgt3AcctId",
+				"PL67676767676767676767676767"
+			);
+
+			// Dodatkowa obsługa alternatywnej wersji pola konta trzeciego agenta pośredniczącego
+			if (document.getElementById("intrmyAgt3Acct")) {
+				safeSetFieldValue(
+					"includeIntrmyAgt3Acct",
+					"intrmyAgt3Acct",
+					"PL67676767676767676767676767"
+				);
+
+				// Ręczne zaznaczenie wszystkich checkboxów o tym samym ID
+				document
+					.querySelectorAll('input[id="includeIntrmyAgt3Acct"]')
+					.forEach(checkbox => {
+						checkbox.checked = true;
+					});
+			}
+
+			// 24. Creditor Agent
+			safeSetFieldValue("includeCdtrAgt", "cdtrAgtBicfi", "GGGGGPLPXXX");
+			safeSetFieldValue(
+				"includeCdtrAgtAcct",
+				"cdtrAgtAcctId",
+				"PL78787878787878787878787878"
+			);
+
+			// 25. Creditor
+			safeSetFieldValue("includeCdtr", "cdtrNm", "Jane Smith");
+			safeSetFieldValue("includeCdtrPstlAdr", "cdtrStrtNm", "Kwiatowa");
+			safeSetFieldValue("includeCdtrPstlAdr", "cdtrBldgNb", "7");
+			safeSetFieldValue("includeCdtrPstlAdr", "cdtrPstCd", "00-950");
+			safeSetFieldValue("includeCdtrPstlAdr", "cdtrTwnNm", "Warsaw");
+			safeSetFieldValue("includeCdtrPstlAdr", "cdtrCtry", "PL");
+			safeSetFieldValue(
+				"includeCdtrAcct",
+				"cdtrAcctId",
+				"PL89898989898989898989898989"
+			);
+
+			// 26. Ultimate Creditor
+			safeSetFieldValue(
+				"includeUltmtCdtr",
+				"ultmtCdtrNm",
+				"Ultimate Creditor Inc."
+			);
+			safeSetFieldValue(
+				"includeUltmtCdtrPstlAdr",
+				"ultmtCdtrStrtNm",
+				"Main Street"
+			);
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrBldgNb", "100");
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrPstCd", "00-950");
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrTwnNm", "Warsaw");
+			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrCtry", "PL");
+
+			// 27. Service Level Code
+			safeSetFieldValue("includeSvcLvl", "svcLvlCd", "SEPA");
+
+			// 28. Local Instrument Code
+			safeSetFieldValue("includeLclInstrm", "lclInstrmCd", "INST");
+
+			// 29. Category Purpose Code
+			safeSetFieldValue("includeCtgyPurp", "ctgyPurpCd", "CASH");
+
+			// 30. Instruction for Creditor Agent
+			safeSetFieldValue("includeInstrForCdtrAgt", "instrForCdtrAgtCd", "HOLD");
+			safeSetFieldValue(
+				"includeInstrForCdtrAgtInf",
+				"instrForCdtrAgtInf",
+				"Please hold for collection"
+			);
+
+			// 31. Instruction for Next Agent
+			safeSetFieldValue(
+				"includeInstrForNxtAgt",
+				"instrForNxtAgt",
+				"Please process urgently"
+			);
+			// Instruction for Next Agent Code - poprawione ID
+			if (
+				document.getElementById("includeInstrForNxtAgt") &&
+				document.getElementById("instrForNxtAgtCd")
+			) {
+				document.getElementById("includeInstrForNxtAgt").checked = true;
+				const instrForNxtAgtCdField =
+					document.getElementById("instrForNxtAgtCd");
+				instrForNxtAgtCdField.disabled = false; // Usunięcie atrybutu disabled
+				instrForNxtAgtCdField.value = "PHOB";

@@ -166,6 +166,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (e.target.id === "includePmtTpInf") {
 			pmtTpInfContainer.style.display = e.target.checked ? "block" : "none";
 		}
+
+		// Obsługa pokazywania/ukrywania kontenera txPmtTpInf (Transaction Payment Type Information)
+		if (e.target.id === "includeTxPmtTpInf") {
+			const txPmtTpInfContainer = document.getElementById(
+				"txPmtTpInfContainer"
+			);
+			if (txPmtTpInfContainer) {
+				txPmtTpInfContainer.style.display = e.target.checked ? "block" : "none";
+			}
+		}
 	});
 
 	// Funkcja generująca XML na podstawie danych z formularza
@@ -294,6 +304,73 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 
 			// Tutaj będą dodawane inne opcjonalne elementy PmtTpInf
+
+			xml += "      </PmtTpInf>\n";
+		}
+
+		// PmtTpInf (Payment Type Information) w CdtTrfTxInf - opcjonalne
+		const includeTxPmtTpInf =
+			document.getElementById("includeTxPmtTpInf")?.checked;
+
+		// Sprawdź czy którykolwiek z elementów PmtTpInf jest zaznaczony
+		if (includeTxPmtTpInf) {
+			xml += "      <PmtTpInf>\n";
+
+			// Instruction Priority
+			const includeTxInstrPrty =
+				document.getElementById("includeTxInstrPrty")?.checked;
+			if (includeTxInstrPrty) {
+				const txInstrPrty = document.getElementById("txInstrPrty").value;
+				if (txInstrPrty) {
+					xml += `        <InstrPrty>${escapeXml(txInstrPrty)}</InstrPrty>\n`;
+				}
+			}
+
+			// Clearing Channel
+			const includeTxClrChanl =
+				document.getElementById("includeTxClrChanl")?.checked;
+			if (includeTxClrChanl) {
+				const txClrChanl = document.getElementById("txClrChanl").value;
+				if (txClrChanl) {
+					xml += `        <ClrChanl>${escapeXml(txClrChanl)}</ClrChanl>\n`;
+				}
+			}
+
+			// Service Level
+			const includeTxSvcLvl =
+				document.getElementById("includeTxSvcLvl")?.checked;
+			if (includeTxSvcLvl) {
+				const txSvcLvlCd = document.getElementById("txSvcLvlCd").value;
+				if (txSvcLvlCd) {
+					xml += "        <SvcLvl>\n";
+					xml += `          <Cd>${escapeXml(txSvcLvlCd)}</Cd>\n`;
+					xml += "        </SvcLvl>\n";
+				}
+			}
+
+			// Local Instrument
+			const includeTxLclInstrm =
+				document.getElementById("includeTxLclInstrm")?.checked;
+			if (includeTxLclInstrm) {
+				const txLclInstrmCd = document.getElementById("txLclInstrmCd").value;
+				if (txLclInstrmCd) {
+					xml += "        <LclInstrm>\n";
+					xml += `          <Cd>${escapeXml(txLclInstrmCd)}</Cd>\n`;
+					xml += "        </LclInstrm>\n";
+				}
+			}
+
+			// Category Purpose
+			const includeTxCtgyPurp =
+				document.getElementById("includeTxCtgyPurp")?.checked;
+			if (includeTxCtgyPurp) {
+				const txCtgyPurpCd = document.getElementById("txCtgyPurpCd").value;
+				if (txCtgyPurpCd) {
+					xml += "        <CtgyPurp>\n";
+					xml += `          <Cd>${escapeXml(txCtgyPurpCd)}</Cd>\n`;
+					xml += "        </CtgyPurp>\n";
+				}
+			}
 
 			xml += "      </PmtTpInf>\n";
 		}
@@ -1838,6 +1915,179 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		}
 
+		// RmtInf (Remittance Information) - opcjonalne
+		const includeRmtInfUstrd =
+			document.getElementById("includeRmtInfUstrd").checked;
+		const includeRmtInfStrd =
+			document.getElementById("includeRmtInfStrd").checked;
+
+		// Rozszerzona sekcja Structured Remittance Information
+		if (includeRmtInfUstrd || includeRmtInfStrd) {
+			xml += "      <RmtInf>\n";
+
+			// Niestrukturyzowana informacja
+			if (
+				includeRmtInfUstrd &&
+				document.getElementById("rmtInfUstrd") &&
+				document.getElementById("rmtInfUstrd").value
+			) {
+				xml += `        <Ustrd>${escapeXml(
+					document.getElementById("rmtInfUstrd").value
+				)}</Ustrd>\n`;
+			}
+
+			// Strukturyzowana informacja
+			if (includeRmtInfStrd) {
+				xml += "        <Strd>\n";
+
+				// Referred Document Information
+				xml += "          <RfrdDocInf>\n";
+
+				// Document Number
+				if (
+					document.getElementById("rmtInfStrdRefInfNb") &&
+					document.getElementById("rmtInfStrdRefInfNb").value
+				) {
+					xml += `            <Nb>${escapeXml(
+						document.getElementById("rmtInfStrdRefInfNb").value
+					)}</Nb>\n`;
+				}
+
+				// Document Type
+				const includeRmtInfStrdTpCd = document.getElementById(
+					"includeRmtInfStrdTpCd"
+				)?.checked;
+				if (
+					includeRmtInfStrdTpCd &&
+					document.getElementById("rmtInfStrdTpCd").value
+				) {
+					xml += "            <Tp>\n";
+					xml += `              <Cd>${escapeXml(
+						document.getElementById("rmtInfStrdTpCd").value
+					)}</Cd>\n`;
+					xml += "            </Tp>\n";
+				}
+
+				// Related Date
+				const includeRmtInfStrdRefInfRltdDt = document.getElementById(
+					"includeRmtInfStrdRefInfRltdDt"
+				)?.checked;
+				if (
+					includeRmtInfStrdRefInfRltdDt &&
+					document.getElementById("rmtInfStrdRefInfRltdDt") &&
+					document.getElementById("rmtInfStrdRefInfRltdDt").value
+				) {
+					xml += `            <RltdDt>${escapeXml(
+						document.getElementById("rmtInfStrdRefInfRltdDt").value
+					)}</RltdDt>\n`;
+				}
+
+				xml += "          </RfrdDocInf>\n";
+
+				// Referred Document Amount
+				const includeRmtInfStrdDuePyblAmt = document.getElementById(
+					"includeRmtInfStrdDuePyblAmt"
+				)?.checked;
+				const includeRmtInfStrdRmtdAmt = document.getElementById(
+					"includeRmtInfStrdRmtdAmt"
+				)?.checked;
+
+				if (includeRmtInfStrdDuePyblAmt || includeRmtInfStrdRmtdAmt) {
+					xml += "          <RfrdDocAmt>\n";
+
+					// Due Payable Amount
+					if (
+						includeRmtInfStrdDuePyblAmt &&
+						document.getElementById("rmtInfStrdDuePyblAmt") &&
+						document.getElementById("rmtInfStrdDuePyblAmt").value
+					) {
+						const duePyblAmt = document.getElementById(
+							"rmtInfStrdDuePyblAmt"
+						).value;
+						const duePyblAmtCcy = document.getElementById(
+							"rmtInfStrdDuePyblAmtCcy"
+						).value;
+						xml += `            <DuePyblAmt Ccy="${escapeXml(
+							duePyblAmtCcy
+						)}">${escapeXml(duePyblAmt)}</DuePyblAmt>\n`;
+					}
+
+					// Remitted Amount
+					if (
+						includeRmtInfStrdRmtdAmt &&
+						document.getElementById("rmtInfStrdRmtdAmt") &&
+						document.getElementById("rmtInfStrdRmtdAmt").value
+					) {
+						const rmtdAmt = document.getElementById("rmtInfStrdRmtdAmt").value;
+						const rmtdAmtCcy = document.getElementById(
+							"rmtInfStrdRmtdAmtCcy"
+						).value;
+						xml += `            <RmtdAmt Ccy="${escapeXml(
+							rmtdAmtCcy
+						)}">${escapeXml(rmtdAmt)}</RmtdAmt>\n`;
+					}
+
+					xml += "          </RfrdDocAmt>\n";
+				}
+
+				// Creditor Reference Information
+				const includeRmtInfStrdCdtrRefInf = document.getElementById(
+					"includeRmtInfStrdCdtrRefInf"
+				)?.checked;
+				const includeRmtInfStrdCdtrRefInfRef = document.getElementById(
+					"includeRmtInfStrdCdtrRefInfRef"
+				)?.checked;
+
+				if (includeRmtInfStrdCdtrRefInf || includeRmtInfStrdCdtrRefInfRef) {
+					xml += "          <CdtrRefInf>\n";
+
+					// Type
+					if (
+						includeRmtInfStrdCdtrRefInf &&
+						document.getElementById("rmtInfStrdCdtrRefInfTp") &&
+						document.getElementById("rmtInfStrdCdtrRefInfTp").value
+					) {
+						xml += "            <Tp>\n";
+						xml += `              <Cd>${escapeXml(
+							document.getElementById("rmtInfStrdCdtrRefInfTp").value
+						)}</Cd>\n`;
+						xml += "            </Tp>\n";
+					}
+
+					// Reference
+					if (
+						includeRmtInfStrdCdtrRefInfRef &&
+						document.getElementById("rmtInfStrdCdtrRefInfRef") &&
+						document.getElementById("rmtInfStrdCdtrRefInfRef").value
+					) {
+						xml += `            <Ref>${escapeXml(
+							document.getElementById("rmtInfStrdCdtrRefInfRef").value
+						)}</Ref>\n`;
+					}
+
+					xml += "          </CdtrRefInf>\n";
+				}
+
+				// Additional Remittance Information
+				const includeRmtInfStrdAddtlRmtInf = document.getElementById(
+					"includeRmtInfStrdAddtlRmtInf"
+				)?.checked;
+				if (
+					includeRmtInfStrdAddtlRmtInf &&
+					document.getElementById("rmtInfStrdAddtlRmtInf") &&
+					document.getElementById("rmtInfStrdAddtlRmtInf").value
+				) {
+					xml += `          <AddtlRmtInf>${escapeXml(
+						document.getElementById("rmtInfStrdAddtlRmtInf").value
+					)}</AddtlRmtInf>\n`;
+				}
+
+				xml += "        </Strd>\n";
+			}
+
+			xml += "      </RmtInf>\n";
+		}
+
 		xml += "    </CdtTrfTxInf>\n";
 		xml += "  </FIToFICstmrCdtTrf>\n";
 		xml += "</Document>";
@@ -2576,6 +2826,55 @@ document.addEventListener("DOMContentLoaded", function () {
 				"rmtInfStrdRefInfNb",
 				"REF/2024/06/1234"
 			);
+
+			// Rozszerzone dane dla Structured Remittance Information
+			safeSetFieldValue(
+				"includeRmtInfStrdRefInfRltdDt",
+				"rmtInfStrdRefInfRltdDt",
+				getISODateTime(0, "days").split("T")[0]
+			);
+			safeSetFieldValue("includeRmtInfStrdTpCd", "rmtInfStrdTpCd", "CINV");
+			safeSetFieldValue(
+				"includeRmtInfStrdDuePyblAmt",
+				"rmtInfStrdDuePyblAmt",
+				"1000.00"
+			);
+			document.getElementById("rmtInfStrdDuePyblAmtCcy").value = "EUR";
+			safeSetFieldValue(
+				"includeRmtInfStrdRmtdAmt",
+				"rmtInfStrdRmtdAmt",
+				"1000.00"
+			);
+			document.getElementById("rmtInfStrdRmtdAmtCcy").value = "EUR";
+			safeSetFieldValue(
+				"includeRmtInfStrdCdtrRefInf",
+				"rmtInfStrdCdtrRefInfTp",
+				"SCOR"
+			);
+			safeSetFieldValue(
+				"includeRmtInfStrdCdtrRefInfRef",
+				"rmtInfStrdCdtrRefInfRef",
+				"RF19HX123456789"
+			);
+			safeSetFieldValue(
+				"includeRmtInfStrdAddtlRmtInf",
+				"rmtInfStrdAddtlRmtInf",
+				"Płatność za fakturę INVOICE/2024/12345"
+			);
+
+			// Transaction Payment Type Information
+			safeSetFieldValue("includeTxPmtTpInf", null, true);
+			const txPmtTpInfContainer = document.getElementById(
+				"txPmtTpInfContainer"
+			);
+			if (txPmtTpInfContainer) {
+				txPmtTpInfContainer.style.display = "block";
+			}
+			safeSetFieldValue("includeTxInstrPrty", "txInstrPrty", "HIGH");
+			safeSetFieldValue("includeTxClrChanl", "txClrChanl", "RTGS");
+			safeSetFieldValue("includeTxSvcLvl", "txSvcLvlCd", "SEPA");
+			safeSetFieldValue("includeTxLclInstrm", "txLclInstrmCd", "INST");
+			safeSetFieldValue("includeTxCtgyPurp", "txCtgyPurpCd", "SUPP");
 
 			// Dodane Related Remittance Information
 			safeSetFieldValue("includeRltdRmtInf", "rltdRmtInfRmtId", "RMTID2024001");
