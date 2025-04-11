@@ -1595,35 +1595,67 @@
                     <div class="form-subheader">
                         <h3>Purpose (Purp)<span class="optional-indicator"> (opcjonalne)</span></h3>
                     </div>
+                    <!-- Dodanie przełącznika między Cd a Prtry -->
                     <div class="form-row">
-                        <label class="field-label" for="purpCd">Code (Cd)<span class="optional-indicator">
-                                (opcjonalne)</span></label>
+                        <label class="field-label">Type Selection</label>
                         <div class="field-input">
-                            <select id="purpCd" name="purpCd" disabled>
-                                <option value="CASH">CASH - Wypłata gotówki</option>
-                                <option value="CORT">CORT - Rozliczenie handlowe</option>
-                                <option value="DIVI">DIVI - Dywidenda</option>
-                                <option value="GOVT">GOVT - Płatność rządowa</option>
-                                <option value="INTE">INTE - Odsetki</option>
-                                <option value="PENS">PENS - Emerytura</option>
-                                <option value="SALA">SALA - Wynagrodzenie</option>
-                                <option value="SUPP">SUPP - Płatność dla dostawcy</option>
-                                <option value="TAXS">TAXS - Płatność podatku</option>
-                                <option value="TREA">TREA - Transakcja skarbowa</option>
+                            <select id="purpType" name="purpType" disabled>
+                                <option value="Cd">Code (Cd)</option>
+                                <option value="Prtry">Proprietary (Prtry)</option>
                             </select>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includePurp" class="include-field" data-field="purpCd">
+                            <input type="checkbox" id="includePurp" class="include-field" data-field="purpType">
                             <label for="includePurp">Uwzględnij</label>
                         </div>
-                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Purp>
+                    </div>
+
+                    <!-- Kod (Code) -->
+                    <div id="purpCdContainer">
+                        <div class="form-row">
+                            <label class="field-label" for="purpCd">Code (Cd)<span class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="purpCd" name="purpCd" disabled>
+                                    <option value="CASH">CASH - Wypłata gotówki</option>
+                                    <option value="CORT">CORT - Rozliczenie handlowe</option>
+                                    <option value="DIVI">DIVI - Dywidenda</option>
+                                    <option value="GOVT">GOVT - Płatność rządowa</option>
+                                    <option value="INTE">INTE - Odsetki</option>
+                                    <option value="PENS">PENS - Emerytura</option>
+                                    <option value="SALA">SALA - Wynagrodzenie</option>
+                                    <option value="SUPP">SUPP - Płatność dla dostawcy</option>
+                                    <option value="TAXS">TAXS - Płatność podatku</option>
+                                    <option value="TREA">TREA - Transakcja skarbowa</option>
+                                </select>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Purp>
   <Cd>SUPP</Cd>
 </Purp>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML"
-                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Purp > Cd">🌳</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Purp > Cd">🌳</span>
+                        </div>
                     </div>
-                    <div class="field-description">Kod określający cel płatności. Identyfikuje podstawowy powód
-                        transakcji płatniczej.</div>
+
+                    <!-- Własna wartość (Proprietary) -->
+                    <div id="purpPrtryContainer" style="display:none;">
+                        <div class="form-row">
+                            <label class="field-label" for="purpPrtry">Proprietary (Prtry)<span
+                                    class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="purpPrtry" name="purpPrtry" maxlength="35" disabled>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Purp>
+  <Prtry>Custom Payment Purpose</Prtry>
+</Purp>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Purp > Prtry">🌳</span>
+                        </div>
+                    </div>
+
+                    <div class="field-description">Cel płatności. Można określić go za pomocą standardowego kodu lub
+                        podać własną wartość (Proprietary). Identyfikuje podstawowy powód transakcji płatniczej.</div>
                 </div>
 
                 <!-- Regulatory Reporting -->
@@ -1643,25 +1675,30 @@
                             </select>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDbtCdtRptgInd" class="include-field" data-field="rgltryRptgDbtCdtRptgInd">
+                            <input type="checkbox" id="includeRgltryRptgDbtCdtRptgInd" class="include-field"
+                                data-field="rgltryRptgDbtCdtRptgInd">
                             <label for="includeRgltryRptgDbtCdtRptgInd">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
   <DbtCdtRptgInd>CRED</DbtCdtRptgInd>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > DbtCdtRptgInd">🌳</span>
                     </div>
-                    <div class="field-description">Wskaźnik określający, czy informacje o transakcji mają być raportowane jako kredytowe, debetowe, czy oba.</div>
+                    <div class="field-description">Wskaźnik określający, czy informacje o transakcji mają być
+                        raportowane jako kredytowe, debetowe, czy oba.</div>
 
                     <!-- Authority -->
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgAuthrtyNm">Authority Name<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgAuthrtyNm">Authority Name<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
                         <div class="field-input">
-                            <input type="text" id="rgltryRptgAuthrtyNm" name="rgltryRptgAuthrtyNm" maxlength="140" disabled>
+                            <input type="text" id="rgltryRptgAuthrtyNm" name="rgltryRptgAuthrtyNm" maxlength="140"
+                                disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgAuthrtyNm" class="include-field" data-field="rgltryRptgAuthrtyNm">
+                            <input type="checkbox" id="includeRgltryRptgAuthrtyNm" class="include-field"
+                                data-field="rgltryRptgAuthrtyNm">
                             <label for="includeRgltryRptgAuthrtyNm">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1669,17 +1706,20 @@
     <Nm>Narodowy Bank Polski</Nm>
   </Authrty>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Authrty > Nm">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgAuthrtyCtry">Authority Country<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgAuthrtyCtry">Authority Country<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
                         <div class="field-input">
-                            <input type="text" id="rgltryRptgAuthrtyCtry" name="rgltryRptgAuthrtyCtry" maxlength="2" pattern="[A-Z]{2,2}" placeholder="np. PL" disabled>
+                            <input type="text" id="rgltryRptgAuthrtyCtry" name="rgltryRptgAuthrtyCtry" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. PL" disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgAuthrtyCtry" class="include-field" data-field="rgltryRptgAuthrtyCtry">
+                            <input type="checkbox" id="includeRgltryRptgAuthrtyCtry" class="include-field"
+                                data-field="rgltryRptgAuthrtyCtry">
                             <label for="includeRgltryRptgAuthrtyCtry">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1687,7 +1727,7 @@
     <Ctry>PL</Ctry>
   </Authrty>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Authrty > Ctry">🌳</span>
                     </div>
 
@@ -1695,14 +1735,16 @@
                     <div class="form-subheader" style="margin-top: 10px;">
                         <h4>Details (Dtls)<span class="optional-indicator"> (opcjonalne)</span></h4>
                     </div>
-                    
+
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgDtlsTp">Type<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgDtlsTp">Type<span class="optional-indicator">
+                                (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="text" id="rgltryRptgDtlsTp" name="rgltryRptgDtlsTp" maxlength="35" disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDtlsTp" class="include-field" data-field="rgltryRptgDtlsTp">
+                            <input type="checkbox" id="includeRgltryRptgDtlsTp" class="include-field"
+                                data-field="rgltryRptgDtlsTp">
                             <label for="includeRgltryRptgDtlsTp">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1710,17 +1752,19 @@
     <Tp>REPORTING_TYPE_1</Tp>
   </Dtls>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Dtls > Tp">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgDtlsDt">Date<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgDtlsDt">Date<span class="optional-indicator">
+                                (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="date" id="rgltryRptgDtlsDt" name="rgltryRptgDtlsDt" disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDtlsDt" class="include-field" data-field="rgltryRptgDtlsDt">
+                            <input type="checkbox" id="includeRgltryRptgDtlsDt" class="include-field"
+                                data-field="rgltryRptgDtlsDt">
                             <label for="includeRgltryRptgDtlsDt">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1728,17 +1772,20 @@
     <Dt>2024-06-15</Dt>
   </Dtls>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Dtls > Dt">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgDtlsCtry">Country<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgDtlsCtry">Country<span class="optional-indicator">
+                                (opcjonalne)</span></label>
                         <div class="field-input">
-                            <input type="text" id="rgltryRptgDtlsCtry" name="rgltryRptgDtlsCtry" maxlength="2" pattern="[A-Z]{2,2}" placeholder="np. PL" disabled>
+                            <input type="text" id="rgltryRptgDtlsCtry" name="rgltryRptgDtlsCtry" maxlength="2"
+                                pattern="[A-Z]{2,2}" placeholder="np. PL" disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDtlsCtry" class="include-field" data-field="rgltryRptgDtlsCtry">
+                            <input type="checkbox" id="includeRgltryRptgDtlsCtry" class="include-field"
+                                data-field="rgltryRptgDtlsCtry">
                             <label for="includeRgltryRptgDtlsCtry">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1746,17 +1793,19 @@
     <Ctry>PL</Ctry>
   </Dtls>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Dtls > Ctry">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgDtlsCd">Code<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgDtlsCd">Code<span class="optional-indicator">
+                                (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="text" id="rgltryRptgDtlsCd" name="rgltryRptgDtlsCd" maxlength="10" disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDtlsCd" class="include-field" data-field="rgltryRptgDtlsCd">
+                            <input type="checkbox" id="includeRgltryRptgDtlsCd" class="include-field"
+                                data-field="rgltryRptgDtlsCd">
                             <label for="includeRgltryRptgDtlsCd">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1764,12 +1813,13 @@
     <Cd>ABC123</Cd>
   </Dtls>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Dtls > Cd">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgDtlsAmt">Amount<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgDtlsAmt">Amount<span class="optional-indicator">
+                                (opcjonalne)</span></label>
                         <div class="field-input currency-input-container">
                             <input type="number" id="rgltryRptgDtlsAmt" name="rgltryRptgDtlsAmt" step="0.01" disabled>
                             <select id="rgltryRptgDtlsAmtCcy" name="rgltryRptgDtlsAmtCcy" disabled>
@@ -1781,7 +1831,8 @@
                             </select>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDtlsAmt" class="include-field" data-field="rgltryRptgDtlsAmt" data-related-field="rgltryRptgDtlsAmtCcy">
+                            <input type="checkbox" id="includeRgltryRptgDtlsAmt" class="include-field"
+                                data-field="rgltryRptgDtlsAmt" data-related-field="rgltryRptgDtlsAmtCcy">
                             <label for="includeRgltryRptgDtlsAmt">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1789,17 +1840,19 @@
     <Amt Ccy=&quot;EUR&quot;>1000.00</Amt>
   </Dtls>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Dtls > Amt">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="rgltryRptgDtlsInf">Information<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <label class="field-label" for="rgltryRptgDtlsInf">Information<span class="optional-indicator">
+                                (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="text" id="rgltryRptgDtlsInf" name="rgltryRptgDtlsInf" maxlength="35" disabled>
                         </div>
                         <div class="field-checkbox">
-                            <input type="checkbox" id="includeRgltryRptgDtlsInf" class="include-field" data-field="rgltryRptgDtlsInf">
+                            <input type="checkbox" id="includeRgltryRptgDtlsInf" class="include-field"
+                                data-field="rgltryRptgDtlsInf">
                             <label for="includeRgltryRptgDtlsInf">Uwzględnij</label>
                         </div>
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
@@ -1807,11 +1860,12 @@
     <Inf>Import declaration reference</Inf>
   </Dtls>
 </RgltryRptg>">📋</span>
-                        <span class="tree-icon" title="Pokaż strukturę XML" 
+                        <span class="tree-icon" title="Pokaż strukturę XML"
                             data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > Dtls > Inf">🌳</span>
                     </div>
-                    
-                    <div class="field-description">Informacje wymagane przez organy regulacyjne. Zawiera szczegółowe informacje o transakcji, które muszą być raportowane do określonych organów.</div>
+
+                    <div class="field-description">Informacje wymagane przez organy regulacyjne. Zawiera szczegółowe
+                        informacje o transakcji, które muszą być raportowane do określonych organów.</div>
                 </div>
 
                 <!-- End of Regulatory Reporting -->
@@ -1909,10 +1963,13 @@
                     <div class="form-subheader">
                         <h3>Tax (Tax)<span class="optional-indicator"> (opcjonalne)</span></h3>
                     </div>
+
                     <!-- Tax Creditor -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Tax Creditor (Cdtr)<span class="optional-indicator"> (opcjonalne)</span></h4>
+                    </div>
                     <div class="form-row">
-                        <label class="field-label" for="taxCdtrTaxId">Tax Creditor ID (Cdtr.TaxId)<span
-                                class="optional-indicator">
+                        <label class="field-label" for="taxCdtrTaxId">Tax ID (TaxId)<span class="optional-indicator">
                                 (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="text" id="taxCdtrTaxId" name="taxCdtrTaxId" maxlength="35" disabled>
@@ -1924,8 +1981,6 @@
                         <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
   <Cdtr>
     <TaxId>TAX123456789</TaxId>
-    <RegnId>REG987654321</RegnId>
-    <TaxTp>VAT</TaxTp>
   </Cdtr>
 </Tax>">📋</span>
                         <span class="tree-icon" title="Pokaż strukturę XML"
@@ -1933,24 +1988,154 @@
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="taxCdtrRegnId">Tax Creditor Registration ID (Cdtr.RegnId)<span
+                        <label class="field-label" for="taxCdtrRegnId">Registration ID (RegnId)<span
                                 class="optional-indicator">
                                 (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="text" id="taxCdtrRegnId" name="taxCdtrRegnId" maxlength="35" disabled>
                         </div>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Cdtr > RegnId">🌳</span>
                     </div>
 
                     <div class="form-row">
-                        <label class="field-label" for="taxCdtrTaxTp">Tax Creditor Type (Cdtr.TaxTp)<span
-                                class="optional-indicator">
+                        <label class="field-label" for="taxCdtrTaxTp">Tax Type (TaxTp)<span class="optional-indicator">
                                 (opcjonalne)</span></label>
                         <div class="field-input">
                             <input type="text" id="taxCdtrTaxTp" name="taxCdtrTaxTp" maxlength="35" disabled>
                         </div>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Cdtr > TaxTp">🌳</span>
                     </div>
 
-                    <!-- Tax Reference Number -->
+                    <!-- Tax Debtor -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Tax Debtor (Dbtr)<span class="optional-indicator"> (opcjonalne)</span></h4>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="taxDbtrTaxId">Tax ID (TaxId)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxDbtrTaxId" name="taxDbtrTaxId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxDbtr" class="include-field" data-field="taxDbtrTaxId">
+                            <label for="includeTaxDbtr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <Dbtr>
+    <TaxId>DBTR-TAX-123456</TaxId>
+  </Dbtr>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Dbtr > TaxId">🌳</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxDbtrRegnId">Registration ID (RegnId)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxDbtrRegnId" name="taxDbtrRegnId" maxlength="35" disabled>
+                        </div>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Dbtr > RegnId">🌳</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxDbtrTaxTp">Tax Type (TaxTp)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxDbtrTaxTp" name="taxDbtrTaxTp" maxlength="35" disabled>
+                        </div>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Dbtr > TaxTp">🌳</span>
+                    </div>
+
+                    <!-- Tax Debtor Authorization -->
+                    <div class="form-row">
+                        <label class="field-label" for="taxDbtrAuthstnTitl">Debtor Authorization Title
+                            (Authstn.Titl)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxDbtrAuthstnTitl" name="taxDbtrAuthstnTitl" maxlength="35"
+                                disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxDbtrAuthstn" class="include-field"
+                                data-field="taxDbtrAuthstnTitl">
+                            <label for="includeTaxDbtrAuthstn">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <Dbtr>
+    <Authstn>
+      <Titl>Tax Office Representative</Titl>
+    </Authstn>
+  </Dbtr>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Dbtr > Authstn > Titl">🌳</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxDbtrAuthstnNm">Debtor Authorization Name (Authstn.Nm)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxDbtrAuthstnNm" name="taxDbtrAuthstnNm" maxlength="140" disabled>
+                        </div>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Dbtr > Authstn > Nm">🌳</span>
+                    </div>
+
+                    <!-- Ultimate Debtor -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Ultimate Debtor (UltmtDbtr)<span class="optional-indicator"> (opcjonalne)</span></h4>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="taxUltmtDbtrTaxId">Tax ID (TaxId)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxUltmtDbtrTaxId" name="taxUltmtDbtrTaxId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxUltmtDbtr" class="include-field"
+                                data-field="taxUltmtDbtrTaxId">
+                            <label for="includeTaxUltmtDbtr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <UltmtDbtr>
+    <TaxId>ULTMT-TAX-789012</TaxId>
+  </UltmtDbtr>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > UltmtDbtr > TaxId">🌳</span>
+                    </div>
+
+                    <!-- Other Tax Information -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Additional Tax Information<span class="optional-indicator"> (opcjonalne)</span></h4>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="taxAdmstnZone">Administration Zone (AdmstnZone)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxAdmstnZone" name="taxAdmstnZone" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxAdmstnZone" class="include-field"
+                                data-field="taxAdmstnZone">
+                            <label for="includeTaxAdmstnZone">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <AdmstnZone>PL-MAZOWIECKIE</AdmstnZone>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > AdmstnZone">🌳</span>
+                    </div>
+
                     <div class="form-row">
                         <label class="field-label" for="taxRefNb">Reference Number (RefNb)<span
                                 class="optional-indicator">
@@ -1958,6 +2143,25 @@
                         <div class="field-input">
                             <input type="text" id="taxRefNb" name="taxRefNb" maxlength="140" disabled>
                         </div>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > RefNb">🌳</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxMtd">Method (Mtd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxMtd" name="taxMtd" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxMtd" class="include-field" data-field="taxMtd">
+                            <label for="includeTaxMtd">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <Mtd>QUARTERLY-PAYMENT</Mtd>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Mtd">🌳</span>
                     </div>
 
                     <!-- Tax Date -->
@@ -1967,10 +2171,76 @@
                         <div class="field-input">
                             <input type="date" id="taxDt" name="taxDt" disabled>
                         </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxDt" class="include-field" data-field="taxDt">
+                            <label for="includeTaxDt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <Dt>2024-06-30</Dt>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Dt">🌳</span>
+                    </div>
+
+                    <!-- Tax Amount Information -->
+                    <div class="form-subheader" style="margin-top: 10px;">
+                        <h4>Tax Amount Information<span class="optional-indicator"> (opcjonalne)</span></h4>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="taxTtlTaxblBaseAmt">Total Taxable Base Amount
+                            (TtlTaxblBaseAmt)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="taxTtlTaxblBaseAmt" name="taxTtlTaxblBaseAmt" step="0.01" disabled>
+                            <select id="taxTtlTaxblBaseAmtCcy" name="taxTtlTaxblBaseAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxTtlTaxblBaseAmt" class="include-field"
+                                data-field="taxTtlTaxblBaseAmt" data-related-field="taxTtlTaxblBaseAmtCcy">
+                            <label for="includeTaxTtlTaxblBaseAmt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <TtlTaxblBaseAmt Ccy=&quot;EUR&quot;>1000.00</TtlTaxblBaseAmt>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > TtlTaxblBaseAmt">🌳</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxTtlTaxAmt">Total Tax Amount (TtlTaxAmt)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="taxTtlTaxAmt" name="taxTtlTaxAmt" step="0.01" disabled>
+                            <select id="taxTtlTaxAmtCcy" name="taxTtlTaxAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTaxTtlTaxAmt" class="include-field"
+                                data-field="taxTtlTaxAmt" data-related-field="taxTtlTaxAmtCcy">
+                            <label for="includeTaxTtlTaxAmt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <TtlTaxAmt Ccy=&quot;EUR&quot;>230.00</TtlTaxAmt>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > TtlTaxAmt">🌳</span>
                     </div>
 
                     <div class="field-description">Informacje o podatku zgodne ze strukturą TaxData1 w schemacie XSD.
-                        Obejmuje dane wierzyciela podatkowego, identyfikatory podatkowe, daty i kwoty.</div>
+                        Obejmuje dane wierzyciela i dłużnika podatkowego, identyfikatory podatkowe, daty, kwoty oraz
+                        metodę naliczania podatku.</div>
                 </div>
 
                 <!-- Previous Instructing Agent 1 -->

@@ -901,38 +901,183 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// Tax (Tax Data) - opcjonalne
 		const includeTax = document.getElementById("includeTax")?.checked;
-		if (includeTax) {
+		const includeTaxDbtr = document.getElementById("includeTaxDbtr")?.checked;
+		const includeTaxDbtrAuthstn = document.getElementById(
+			"includeTaxDbtrAuthstn"
+		)?.checked;
+		const includeTaxUltmtDbtr = document.getElementById(
+			"includeTaxUltmtDbtr"
+		)?.checked;
+		const includeTaxAdmstnZone = document.getElementById(
+			"includeTaxAdmstnZone"
+		)?.checked;
+		const includeTaxMtd = document.getElementById("includeTaxMtd")?.checked;
+		const includeTaxDt = document.getElementById("includeTaxDt")?.checked;
+		const includeTaxTtlTaxblBaseAmt = document.getElementById(
+			"includeTaxTtlTaxblBaseAmt"
+		)?.checked;
+		const includeTaxTtlTaxAmt = document.getElementById(
+			"includeTaxTtlTaxAmt"
+		)?.checked;
+
+		if (
+			includeTax ||
+			includeTaxDbtr ||
+			includeTaxDbtrAuthstn ||
+			includeTaxUltmtDbtr ||
+			includeTaxAdmstnZone ||
+			includeTaxMtd ||
+			includeTaxDt ||
+			includeTaxTtlTaxblBaseAmt ||
+			includeTaxTtlTaxAmt
+		) {
 			xml += "      <Tax>\n";
 
-			// Cdtr (Tax Party 1) section
-			const taxCdtrTaxId = document.getElementById("taxCdtrTaxId")?.value;
-			const taxCdtrRegnId = document.getElementById("taxCdtrRegnId")?.value;
-			const taxCdtrTaxTp = document.getElementById("taxCdtrTaxTp")?.value;
+			// Tax Creditor
+			if (includeTax) {
+				const taxCdtrTaxId = document.getElementById("taxCdtrTaxId").value;
+				const taxCdtrRegnId = document.getElementById("taxCdtrRegnId").value;
+				const taxCdtrTaxTp = document.getElementById("taxCdtrTaxTp").value;
 
-			if (taxCdtrTaxId || taxCdtrRegnId || taxCdtrTaxTp) {
-				xml += "        <Cdtr>\n";
-				if (taxCdtrTaxId) {
-					xml += `          <TaxId>${escapeXml(taxCdtrTaxId)}</TaxId>\n`;
+				if (taxCdtrTaxId || taxCdtrRegnId || taxCdtrTaxTp) {
+					xml += "        <Cdtr>\n";
+
+					if (taxCdtrTaxId) {
+						xml += `          <TaxId>${escapeXml(taxCdtrTaxId)}</TaxId>\n`;
+					}
+
+					if (taxCdtrRegnId) {
+						xml += `          <RegnId>${escapeXml(taxCdtrRegnId)}</RegnId>\n`;
+					}
+
+					if (taxCdtrTaxTp) {
+						xml += `          <TaxTp>${escapeXml(taxCdtrTaxTp)}</TaxTp>\n`;
+					}
+
+					xml += "        </Cdtr>\n";
 				}
-				if (taxCdtrRegnId) {
-					xml += `          <RegnId>${escapeXml(taxCdtrRegnId)}</RegnId>\n`;
-				}
-				if (taxCdtrTaxTp) {
-					xml += `          <TaxTp>${escapeXml(taxCdtrTaxTp)}</TaxTp>\n`;
-				}
-				xml += "        </Cdtr>\n";
 			}
 
-			// RefNb (Reference Number)
-			const taxRefNb = document.getElementById("taxRefNb")?.value;
+			// Tax Debtor
+			if (includeTaxDbtr) {
+				const taxDbtrTaxId = document.getElementById("taxDbtrTaxId").value;
+				const taxDbtrRegnId = document.getElementById("taxDbtrRegnId").value;
+				const taxDbtrTaxTp = document.getElementById("taxDbtrTaxTp").value;
+
+				// Debtor Authorization
+				const includeAuthstn = includeTaxDbtrAuthstn;
+				const taxDbtrAuthstnTitl =
+					document.getElementById("taxDbtrAuthstnTitl").value;
+				const taxDbtrAuthstnNm =
+					document.getElementById("taxDbtrAuthstnNm").value;
+
+				if (
+					taxDbtrTaxId ||
+					taxDbtrRegnId ||
+					taxDbtrTaxTp ||
+					(includeAuthstn && (taxDbtrAuthstnTitl || taxDbtrAuthstnNm))
+				) {
+					xml += "        <Dbtr>\n";
+
+					if (taxDbtrTaxId) {
+						xml += `          <TaxId>${escapeXml(taxDbtrTaxId)}</TaxId>\n`;
+					}
+
+					if (taxDbtrRegnId) {
+						xml += `          <RegnId>${escapeXml(taxDbtrRegnId)}</RegnId>\n`;
+					}
+
+					if (taxDbtrTaxTp) {
+						xml += `          <TaxTp>${escapeXml(taxDbtrTaxTp)}</TaxTp>\n`;
+					}
+
+					// Authorization
+					if (includeAuthstn && (taxDbtrAuthstnTitl || taxDbtrAuthstnNm)) {
+						xml += "          <Authstn>\n";
+
+						if (taxDbtrAuthstnTitl) {
+							xml += `            <Titl>${escapeXml(
+								taxDbtrAuthstnTitl
+							)}</Titl>\n`;
+						}
+
+						if (taxDbtrAuthstnNm) {
+							xml += `            <Nm>${escapeXml(taxDbtrAuthstnNm)}</Nm>\n`;
+						}
+
+						xml += "          </Authstn>\n";
+					}
+
+					xml += "        </Dbtr>\n";
+				}
+			}
+
+			// Ultimate Debtor
+			if (includeTaxUltmtDbtr) {
+				const taxUltmtDbtrTaxId =
+					document.getElementById("taxUltmtDbtrTaxId").value;
+
+				if (taxUltmtDbtrTaxId) {
+					xml += "        <UltmtDbtr>\n";
+					xml += `          <TaxId>${escapeXml(taxUltmtDbtrTaxId)}</TaxId>\n`;
+					xml += "        </UltmtDbtr>\n";
+				}
+			}
+
+			// Administration Zone
+			if (includeTaxAdmstnZone) {
+				const taxAdmstnZone = document.getElementById("taxAdmstnZone").value;
+				if (taxAdmstnZone) {
+					xml += `        <AdmstnZone>${escapeXml(
+						taxAdmstnZone
+					)}</AdmstnZone>\n`;
+				}
+			}
+
+			// Reference Number
+			const taxRefNb = document.getElementById("taxRefNb").value;
 			if (taxRefNb) {
 				xml += `        <RefNb>${escapeXml(taxRefNb)}</RefNb>\n`;
 			}
 
-			// Dt (Tax Date)
-			const taxDt = document.getElementById("taxDt")?.value;
-			if (taxDt) {
-				xml += `        <Dt>${taxDt}</Dt>\n`;
+			// Method
+			if (includeTaxMtd) {
+				const taxMtd = document.getElementById("taxMtd").value;
+				if (taxMtd) {
+					xml += `        <Mtd>${escapeXml(taxMtd)}</Mtd>\n`;
+				}
+			}
+
+			// Total Taxable Base Amount
+			if (includeTaxTtlTaxblBaseAmt) {
+				const taxTtlTaxblBaseAmt =
+					document.getElementById("taxTtlTaxblBaseAmt").value;
+				const taxTtlTaxblBaseAmtCcy = document.getElementById(
+					"taxTtlTaxblBaseAmtCcy"
+				).value;
+
+				if (taxTtlTaxblBaseAmt && taxTtlTaxblBaseAmtCcy) {
+					xml += `        <TtlTaxblBaseAmt Ccy="${taxTtlTaxblBaseAmtCcy}">${taxTtlTaxblBaseAmt}</TtlTaxblBaseAmt>\n`;
+				}
+			}
+
+			// Total Tax Amount
+			if (includeTaxTtlTaxAmt) {
+				const taxTtlTaxAmt = document.getElementById("taxTtlTaxAmt").value;
+				const taxTtlTaxAmtCcy =
+					document.getElementById("taxTtlTaxAmtCcy").value;
+
+				if (taxTtlTaxAmt && taxTtlTaxAmtCcy) {
+					xml += `        <TtlTaxAmt Ccy="${taxTtlTaxAmtCcy}">${taxTtlTaxAmt}</TtlTaxAmt>\n`;
+				}
+			}
+
+			// Date
+			if (includeTaxDt) {
+				const taxDt = document.getElementById("taxDt").value;
+				if (taxDt) {
+					xml += `        <Dt>${escapeXml(taxDt)}</Dt>\n`;
+				}
 			}
 
 			xml += "      </Tax>\n";
@@ -1565,11 +1710,22 @@ document.addEventListener("DOMContentLoaded", function () {
 		// Purp (Purpose) - opcjonalne
 		const includePurp = document.getElementById("includePurp").checked;
 		if (includePurp) {
-			const purpCd = document.getElementById("purpCd").value;
-			if (purpCd) {
-				xml += "      <Purp>\n";
-				xml += `        <Cd>${purpCd}</Cd>\n`;
-				xml += "      </Purp>\n";
+			const purpType = document.getElementById("purpType").value;
+
+			if (purpType === "Cd") {
+				const purpCd = document.getElementById("purpCd").value;
+				if (purpCd) {
+					xml += "      <Purp>\n";
+					xml += `        <Cd>${escapeXml(purpCd)}</Cd>\n`;
+					xml += "      </Purp>\n";
+				}
+			} else if (purpType === "Prtry") {
+				const purpPrtry = document.getElementById("purpPrtry").value;
+				if (purpPrtry) {
+					xml += "      <Purp>\n";
+					xml += `        <Prtry>${escapeXml(purpPrtry)}</Prtry>\n`;
+					xml += "      </Purp>\n";
+				}
 			}
 		}
 
@@ -2969,7 +3125,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 
 			// 36. Purpose - poprawka ID
+			document.getElementById("purpType").value = "Cd";
+			const purpTypeEvent = new Event("change");
+			document.getElementById("purpType").dispatchEvent(purpTypeEvent);
 			safeSetFieldValue("includePurp", "purpCd", "CASH");
+
+			// 36b. Purpose Proprietary - alternatywny typ
+			safeSetFieldValue("includePurp", "purpPrtry", "Custom Business Purpose");
 
 			// 37. Regulatory Reporting
 			safeSetFieldValue("includeRgltryRptgCtry", "rgltryRptgCtry", "PL");
@@ -3156,6 +3318,62 @@ document.addEventListener("DOMContentLoaded", function () {
 				"splmtryData",
 				"Additional transaction data for analysis"
 			);
+
+			// 31. Tax - Tax Creditor
+			safeSetFieldValue("includeTax", "taxCdtrTaxId", "TAX123456789");
+			safeSetFieldValue("includeTax", "taxCdtrRegnId", "REG987654321");
+			safeSetFieldValue("includeTax", "taxCdtrTaxTp", "VAT");
+			safeSetFieldValue("includeTax", "taxRefNb", "TAX/VAT/2023");
+
+			// Tax Debtor
+			safeSetFieldValue("includeTaxDbtr", "taxDbtrTaxId", "DBTR-TAX-123456");
+			safeSetFieldValue("includeTaxDbtr", "taxDbtrRegnId", "DBTR-REG-654321");
+			safeSetFieldValue("includeTaxDbtr", "taxDbtrTaxTp", "VAT");
+
+			// Tax Debtor Authorization
+			safeSetFieldValue(
+				"includeTaxDbtrAuthstn",
+				"taxDbtrAuthstnTitl",
+				"Tax Office Representative"
+			);
+			safeSetFieldValue(
+				"includeTaxDbtrAuthstn",
+				"taxDbtrAuthstnNm",
+				"John Doe"
+			);
+
+			// Ultimate Debtor
+			safeSetFieldValue(
+				"includeTaxUltmtDbtr",
+				"taxUltmtDbtrTaxId",
+				"ULTMT-TAX-789012"
+			);
+
+			// Additional Tax Information
+			safeSetFieldValue(
+				"includeTaxAdmstnZone",
+				"taxAdmstnZone",
+				"PL-MAZOWIECKIE"
+			);
+			safeSetFieldValue("includeTaxMtd", "taxMtd", "QUARTERLY-PAYMENT");
+
+			// Tax Date
+			safeSetFieldValue("includeTaxDt", "taxDt", "2024-06-30");
+
+			// Tax Amounts
+			safeSetFieldValue(
+				"includeTaxTtlTaxblBaseAmt",
+				"taxTtlTaxblBaseAmt",
+				"1000.00"
+			);
+			if (document.getElementById("taxTtlTaxblBaseAmtCcy")) {
+				document.getElementById("taxTtlTaxblBaseAmtCcy").value = "EUR";
+			}
+
+			safeSetFieldValue("includeTaxTtlTaxAmt", "taxTtlTaxAmt", "230.00");
+			if (document.getElementById("taxTtlTaxAmtCcy")) {
+				document.getElementById("taxTtlTaxAmtCcy").value = "EUR";
+			}
 
 			showNotification("Optional fields filled with example data");
 		} catch (error) {
@@ -3413,6 +3631,59 @@ document.addEventListener("DOMContentLoaded", function () {
 		includeCdtrAcctProxyTp.addEventListener("change", function () {
 			const cdtrAcctProxyVal = document.getElementById("cdtrAcctProxyVal");
 			cdtrAcctProxyVal.disabled = !this.checked;
+		});
+	}
+
+	// Obsługa przełączania typu Purpose (Cd/Prtry)
+	const purpTypeSelect = document.getElementById("purpType");
+	if (purpTypeSelect) {
+		purpTypeSelect.addEventListener("change", function () {
+			const purpCdContainer = document.getElementById("purpCdContainer");
+			const purpPrtryContainer = document.getElementById("purpPrtryContainer");
+
+			if (this.value === "Cd") {
+				purpCdContainer.style.display = "block";
+				purpPrtryContainer.style.display = "none";
+
+				// Włączenie pola purpCd i wyłączenie purpPrtry
+				const purpCd = document.getElementById("purpCd");
+				const purpPrtry = document.getElementById("purpPrtry");
+				if (purpCd && !purpCd.disabled) purpCd.disabled = false;
+				if (purpPrtry) purpPrtry.disabled = true;
+			} else if (this.value === "Prtry") {
+				purpCdContainer.style.display = "none";
+				purpPrtryContainer.style.display = "block";
+
+				// Włączenie pola purpPrtry i wyłączenie purpCd
+				const purpCd = document.getElementById("purpCd");
+				const purpPrtry = document.getElementById("purpPrtry");
+				if (purpPrtry && !purpPrtry.disabled) purpPrtry.disabled = false;
+				if (purpCd) purpCd.disabled = true;
+			}
+		});
+	}
+
+	// Obsługa checkboxa includePurp
+	const includePurp = document.getElementById("includePurp");
+	if (includePurp) {
+		includePurp.addEventListener("change", function () {
+			const purpTypeSelect = document.getElementById("purpType");
+			const purpCd = document.getElementById("purpCd");
+			const purpPrtry = document.getElementById("purpPrtry");
+
+			if (purpTypeSelect) {
+				purpTypeSelect.disabled = !this.checked;
+
+				// Aktualizuj stan zgodnie z aktualnym wyborem typu
+				if (this.checked) {
+					const event = new Event("change");
+					purpTypeSelect.dispatchEvent(event);
+				} else {
+					// Wyłącz oba pola przy odznacznaniu checkboxa
+					if (purpCd) purpCd.disabled = true;
+					if (purpPrtry) purpPrtry.disabled = true;
+				}
+			}
 		});
 	}
 });
