@@ -808,8 +808,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		const includeChrgsInfPtyBICFI = document.getElementById(
 			"includeChrgsInfPtyBICFI"
 		)?.checked;
+		const includeChrgsInfTp =
+			document.getElementById("includeChrgsInfTp")?.checked;
 
-		if (includeChrgsInf || includeChrgsInfPtyBICFI) {
+		if (includeChrgsInf || includeChrgsInfPtyBICFI || includeChrgsInfTp) {
 			xml += "      <ChrgsInf>\n";
 
 			// Amt (Amount) - wymagane dla ChrgsInf
@@ -831,6 +833,16 @@ document.addEventListener("DOMContentLoaded", function () {
 					xml += `            <BICFI>${escapeXml(chrgsInfPtyBICFI)}</BICFI>\n`;
 					xml += "          </FinInstnId>\n";
 					xml += "        </Agt>\n";
+				}
+			}
+
+			// Tp (Type) - opcjonalne dla ChrgsInf
+			if (includeChrgsInfTp) {
+				const chrgsInfTpCd = document.getElementById("chrgsInfTpCd").value;
+				if (chrgsInfTpCd) {
+					xml += "        <Tp>\n";
+					xml += `          <Cd>${escapeXml(chrgsInfTpCd)}</Cd>\n`;
+					xml += "        </Tp>\n";
 				}
 			}
 
@@ -1562,17 +1574,145 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		// RgltryRptg (Regulatory Reporting) - opcjonalne
-		const includeRgltryRptg =
-			document.getElementById("includeRgltryRptg").checked;
-		if (includeRgltryRptg) {
-			const rgltryRptgDbtCdtRptgInd = document.getElementById(
-				"rgltryRptgDbtCdtRptgInd"
-			).value;
-			if (rgltryRptgDbtCdtRptgInd) {
-				xml += "      <RgltryRptg>\n";
-				xml += `        <DbtCdtRptgInd>${rgltryRptgDbtCdtRptgInd}</DbtCdtRptgInd>\n`;
-				xml += "      </RgltryRptg>\n";
+		const includeRgltryRptgDbtCdtRptgInd = document.getElementById(
+			"includeRgltryRptgDbtCdtRptgInd"
+		)?.checked;
+		const includeRgltryRptgAuthrtyNm = document.getElementById(
+			"includeRgltryRptgAuthrtyNm"
+		)?.checked;
+		const includeRgltryRptgAuthrtyCtry = document.getElementById(
+			"includeRgltryRptgAuthrtyCtry"
+		)?.checked;
+		const includeRgltryRptgDtlsTp = document.getElementById(
+			"includeRgltryRptgDtlsTp"
+		)?.checked;
+		const includeRgltryRptgDtlsDt = document.getElementById(
+			"includeRgltryRptgDtlsDt"
+		)?.checked;
+		const includeRgltryRptgDtlsCtry = document.getElementById(
+			"includeRgltryRptgDtlsCtry"
+		)?.checked;
+		const includeRgltryRptgDtlsCd = document.getElementById(
+			"includeRgltryRptgDtlsCd"
+		)?.checked;
+		const includeRgltryRptgDtlsAmt = document.getElementById(
+			"includeRgltryRptgDtlsAmt"
+		)?.checked;
+		const includeRgltryRptgDtlsInf = document.getElementById(
+			"includeRgltryRptgDtlsInf"
+		)?.checked;
+
+		// Sprawdzamy czy jest jakiekolwiek pole do uwzględnienia
+		if (
+			includeRgltryRptgDbtCdtRptgInd ||
+			includeRgltryRptgAuthrtyNm ||
+			includeRgltryRptgAuthrtyCtry ||
+			includeRgltryRptgDtlsTp ||
+			includeRgltryRptgDtlsDt ||
+			includeRgltryRptgDtlsCtry ||
+			includeRgltryRptgDtlsCd ||
+			includeRgltryRptgDtlsAmt ||
+			includeRgltryRptgDtlsInf
+		) {
+			xml += "      <RgltryRptg>\n";
+
+			// DbtCdtRptgInd
+			if (includeRgltryRptgDbtCdtRptgInd) {
+				const dbtCdtRptgInd = document.getElementById(
+					"rgltryRptgDbtCdtRptgInd"
+				).value;
+				if (dbtCdtRptgInd) {
+					xml += `        <DbtCdtRptgInd>${escapeXml(
+						dbtCdtRptgInd
+					)}</DbtCdtRptgInd>\n`;
+				}
 			}
+
+			// Authority
+			if (includeRgltryRptgAuthrtyNm || includeRgltryRptgAuthrtyCtry) {
+				xml += "        <Authrty>\n";
+
+				if (includeRgltryRptgAuthrtyNm) {
+					const authrtyNm = document.getElementById(
+						"rgltryRptgAuthrtyNm"
+					).value;
+					if (authrtyNm) {
+						xml += `          <Nm>${escapeXml(authrtyNm)}</Nm>\n`;
+					}
+				}
+
+				if (includeRgltryRptgAuthrtyCtry) {
+					const authrtyCtry = document.getElementById(
+						"rgltryRptgAuthrtyCtry"
+					).value;
+					if (authrtyCtry) {
+						xml += `          <Ctry>${escapeXml(authrtyCtry)}</Ctry>\n`;
+					}
+				}
+
+				xml += "        </Authrty>\n";
+			}
+
+			// Details
+			if (
+				includeRgltryRptgDtlsTp ||
+				includeRgltryRptgDtlsDt ||
+				includeRgltryRptgDtlsCtry ||
+				includeRgltryRptgDtlsCd ||
+				includeRgltryRptgDtlsAmt ||
+				includeRgltryRptgDtlsInf
+			) {
+				xml += "        <Dtls>\n";
+
+				if (includeRgltryRptgDtlsTp) {
+					const dtlsTp = document.getElementById("rgltryRptgDtlsTp").value;
+					if (dtlsTp) {
+						xml += `          <Tp>${escapeXml(dtlsTp)}</Tp>\n`;
+					}
+				}
+
+				if (includeRgltryRptgDtlsDt) {
+					const dtlsDt = document.getElementById("rgltryRptgDtlsDt").value;
+					if (dtlsDt) {
+						xml += `          <Dt>${escapeXml(dtlsDt)}</Dt>\n`;
+					}
+				}
+
+				if (includeRgltryRptgDtlsCtry) {
+					const dtlsCtry = document.getElementById("rgltryRptgDtlsCtry").value;
+					if (dtlsCtry) {
+						xml += `          <Ctry>${escapeXml(dtlsCtry)}</Ctry>\n`;
+					}
+				}
+
+				if (includeRgltryRptgDtlsCd) {
+					const dtlsCd = document.getElementById("rgltryRptgDtlsCd").value;
+					if (dtlsCd) {
+						xml += `          <Cd>${escapeXml(dtlsCd)}</Cd>\n`;
+					}
+				}
+
+				if (includeRgltryRptgDtlsAmt) {
+					const dtlsAmt = document.getElementById("rgltryRptgDtlsAmt").value;
+					const dtlsAmtCcy = document.getElementById(
+						"rgltryRptgDtlsAmtCcy"
+					).value;
+					if (dtlsAmt && dtlsAmtCcy) {
+						xml += `          <Amt Ccy="${dtlsAmtCcy}">${dtlsAmt}</Amt>\n`;
+					}
+				}
+
+				if (includeRgltryRptgDtlsInf) {
+					const dtlsInf = document.getElementById("rgltryRptgDtlsInf").value;
+					if (dtlsInf) {
+						xml += `          <Inf>${escapeXml(dtlsInf)}</Inf>\n`;
+					}
+				}
+
+				xml += "        </Dtls>\n";
+			}
+
+			xml += "      </RgltryRptg>\n";
 		}
 
 		// RltdRmtInf (Related Remittance Information) - opcjonalne
@@ -2342,6 +2482,9 @@ document.addEventListener("DOMContentLoaded", function () {
 				"BANKPLPWXXX"
 			);
 
+			// Charge Type
+			safeSetFieldValue("includeChrgsInfTp", "chrgsInfTpCd", "COMM");
+
 			// 15. Payment Signature
 			safeSetFieldValue(
 				"includePmtSgntr",
@@ -2687,6 +2830,56 @@ document.addEventListener("DOMContentLoaded", function () {
 			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrPstCd", "00-950");
 			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrTwnNm", "Warsaw");
 			safeSetFieldValue("includeUltmtCdtrPstlAdr", "ultmtCdtrCtry", "PL");
+
+			// Regulatory Reporting
+			safeSetFieldValue(
+				"includeRgltryRptgDbtCdtRptgInd",
+				"rgltryRptgDbtCdtRptgInd",
+				"CRED"
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgAuthrtyNm",
+				"rgltryRptgAuthrtyNm",
+				"Narodowy Bank Polski"
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgAuthrtyCtry",
+				"rgltryRptgAuthrtyCtry",
+				"PL"
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgDtlsTp",
+				"rgltryRptgDtlsTp",
+				"REPORTING_TYPE_1"
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgDtlsDt",
+				"rgltryRptgDtlsDt",
+				getISODateTime(0, "days").split("T")[0]
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgDtlsCtry",
+				"rgltryRptgDtlsCtry",
+				"PL"
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgDtlsCd",
+				"rgltryRptgDtlsCd",
+				"REG123"
+			);
+			safeSetFieldValue(
+				"includeRgltryRptgDtlsAmt",
+				"rgltryRptgDtlsAmt",
+				"1000.00"
+			);
+			if (document.getElementById("rgltryRptgDtlsAmtCcy")) {
+				document.getElementById("rgltryRptgDtlsAmtCcy").value = "EUR";
+			}
+			safeSetFieldValue(
+				"includeRgltryRptgDtlsInf",
+				"rgltryRptgDtlsInf",
+				"Import declaration reference"
+			);
 
 			// 27. Service Level Code
 			safeSetFieldValue("includeSvcLvl", "svcLvlCd", "SEPA");
