@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="pl" class="light-mode">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator PACS.008.001.13</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>PACS.008 Generator</h1>
+                    <p class="tagline">Narzędzie do łatwego generowania plików XML ISO20022</p>
+                </div>
+            </div>
+            <div class="header-description">
+                <p>Ten generator umożliwia tworzenie poprawnych wiadomości FIToFICustomerCreditTransfer w formacie
+                    PACS.008.001.13.</p>
+                <p>Wypełnij pola w formularzu, a aplikacja wygeneruje zgodny ze schematem plik XML.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Floating Menu -->
+    <div class="floating-menu">
+        <div class="menu-header">
+            <h3>Menu</h3>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Dane</div>
+            <button id="fillRequiredFields" class="menu-btn">
+                <i class="fas fa-check-circle"></i> Wypełnij wymagane
+            </button>
+            <button id="fillOptionalFields" class="menu-btn">
+                <i class="fas fa-plus-circle"></i> Wypełnij opcjonalne
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">XML</div>
+            <button id="generateXml" class="menu-btn">
+                <i class="fas fa-code"></i> Generuj XML
+            </button>
+            <button id="downloadXml" class="menu-btn">
+                <i class="fas fa-download"></i> Pobierz XML
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Ustawienia</div>
+            <button id="toggleTheme" class="menu-btn toggle-btn">
+                <i class="fas fa-sun light-icon"></i>
+                <i class="fas fa-moon dark-icon"></i>
+                <span class="toggle-text">Tryb ciemny</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Formularz generatora</h2>
+
+        <form id="pacsForm">
+            <!-- GroupHeader (GrpHdr) -->
+            <div class="form-section">
+                <h2>Group Header (GrpHdr)</h2>
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="msgId">Message Identification (MsgId)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="text" id="msgId" name="msgId" maxlength="35" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<MsgId>ABCD1234567890</MsgId>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > MsgId">🌳</span>
+                    </div>
+                    <div class="field-description">Unikalny identyfikator komunikatu. Maksymalnie 35 znaków.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="creDtTm">Creation Date Time (CreDtTm)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="datetime-local" id="creDtTm" name="creDtTm" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<CreDtTm>2024-06-15T12:30:45</CreDtTm>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > CreDtTm">🌳</span>
+                    </div>
+                    <div class="field-description">Data i czas utworzenia komunikatu w formacie ISO
+                        (YYYY-MM-DDThh:mm:ss).</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="xpryDtTm">Expiry Date Time (XpryDtTm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="datetime-local" id="xpryDtTm" name="xpryDtTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeXpryDtTm" class="include-field" data-field="xpryDtTm">
+                            <label for="includeXpryDtTm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<XpryDtTm>2024-07-15T12:30:45</XpryDtTm>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > XpryDtTm">🌳</span>
+                    </div>
+                    <div class="field-description">Data i czas wygaśnięcia komunikatu w formacie ISO
+                        (YYYY-MM-DDThh:mm:ss).</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="btchBookg">Batch Booking (BtchBookg)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="btchBookg" name="btchBookg" disabled>
+                                <option value="true">Tak (true)</option>
+                                <option value="false">Nie (false)</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeBtchBookg" class="include-field" data-field="btchBookg">
+                            <label for="includeBtchBookg">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<BtchBookg>true</BtchBookg>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > BtchBookg">🌳</span>
+                    </div>
+                    <div class="field-description">Wskaźnik określający, czy płatności powinny być księgowane zbiorowo
+                        (true) czy indywidualnie (false).</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="nbOfTxs">Number of Transactions (NbOfTxs)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="number" id="nbOfTxs" name="nbOfTxs" min="1" max="999999999999999"
+                                pattern="[0-9]{1,15}" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<NbOfTxs>1</NbOfTxs>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > NbOfTxs">🌳</span>
+                    </div>
+                    <div class="field-description">Liczba indywidualnych transakcji zawartych w komunikacie. Maksymalnie
+                        15 cyfr.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="ctrlSum">Control Sum (CtrlSum)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="number" id="ctrlSum" name="ctrlSum" step="0.01" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCtrlSum" class="include-field" data-field="ctrlSum">
+                            <label for="includeCtrlSum">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<CtrlSum>1000.00</CtrlSum>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > CtrlSum">🌳</span>
+                    </div>
+                    <div class="field-description">Suma kontrolna - suma wszystkich pojedynczych kwot transakcji
+                        zawartych w komunikacie.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="ttlIntrBkSttlmAmt">Total Interbank Settlement Amount
+                            (TtlIntrBkSttlmAmt)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="ttlIntrBkSttlmAmt" name="ttlIntrBkSttlmAmt" step="0.01" disabled>
+                            <select id="ttlIntrBkSttlmAmtCcy" name="ttlIntrBkSttlmAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTtlIntrBkSttlmAmt" class="include-field"
+                                data-field="ttlIntrBkSttlmAmt" data-related-field="ttlIntrBkSttlmAmtCcy">
+                            <label for="includeTtlIntrBkSttlmAmt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<TtlIntrBkSttlmAmt Ccy=&quot;EUR&quot;>1000.00</TtlIntrBkSttlmAmt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > TtlIntrBkSttlmAmt">🌳</span>
+                    </div>
+                    <div class="field-description">Całkowita kwota rozliczenia międzybankowego. Kwota musi mieć
+                        określoną walutę.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="intrBkSttlmDt">Interbank Settlement Date (IntrBkSttlmDt)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="date" id="intrBkSttlmDt" name="intrBkSttlmDt" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrBkSttlmDt" class="include-field"
+                                data-field="intrBkSttlmDt">
+                            <label for="includeIntrBkSttlmDt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<IntrBkSttlmDt>2024-06-30</IntrBkSttlmDt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > IntrBkSttlmDt">🌳</span>
+                    </div>
+                    <div class="field-description">Data, w której kwota pieniędzy przestaje być dostępna dla agenta
+                        instruującego i staje się dostępna dla agenta poinstruowanego.</div>
+                </div>
+
+                <div class="form-group sttlm-section">
+                    <div class="form-subheader">
+                        <h3>Settlement Information (SttlmInf)<span class="required-indicator">*</span></h3>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmMtd">Settlement Method (SttlmMtd)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <select id="sttlmMtd" name="sttlmMtd" required>
+                                <option value="INDA">INDA - Institution to Debit Account</option>
+                                <option value="INGA">INGA - Institution to Credit Account</option>
+                                <option value="COVE">COVE - Cover Method</option>
+                                <option value="CLRG">CLRG - Clearing System</option>
+                            </select>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<SttlmMtd>CLRG</SttlmMtd>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > SttlmInf > SttlmMtd">🌳</span>
+                    </div>
+                    <div class="field-description">Metoda rozliczenia używana do rozliczenia instrukcji.</div>
+
+                    <div id="clrSysContainer" class="nested-form-group">
+                        <div class="form-row">
+                            <label class="field-label" for="clrSys">Clearing System (ClrSys)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="clrSysCd" name="clrSysCd" disabled>
+                                    <option value="RTGS">RTGS - Real-Time Gross Settlement System</option>
+                                    <option value="RTNS">RTNS - Real-Time Net Settlement System</option>
+                                    <option value="MPNS">MPNS - Multiple Period Net Settlement System</option>
+                                    <option value="BACT">BACT - Bilateral Agreement Clearing Track</option>
+                                    <option value="BOOK">BOOK - Internal Book Transfer</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeClrSys" class="include-field" data-field="clrSysCd">
+                                <label for="includeClrSys">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<ClrSys><Cd>RTGS</Cd></ClrSys>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > SttlmInf > ClrSys">🌳</span>
+                        </div>
+                        <div class="field-description">System rozliczeniowy, przez który dokonywane jest rozliczenie. W
+                            większości przypadków stosowany razem z metodą rozliczenia CLRG.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="pmtTpInf">Payment Type Information (PmtTpInf)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePmtTpInf" class="include-field">
+                            <label for="includePmtTpInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PmtTpInf>
+  <InstrPrty>HIGH</InstrPrty>
+</PmtTpInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > PmtTpInf">🌳</span>
+                    </div>
+                    <div class="field-description">Zbiór elementów dających dodatkowe szczegóły dotyczące typu
+                        płatności.</div>
+
+                    <div id="pmtTpInfContainer" class="nested-form-group" style="display: none;">
+                        <div class="form-row">
+                            <label class="field-label" for="instrPrty">Instruction Priority (InstrPrty)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="instrPrty" name="instrPrty" disabled>
+                                    <option value="HIGH">HIGH - Wysoki priorytet</option>
+                                    <option value="NORM">NORM - Normalny priorytet</option>
+                                </select>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeInstrPrty" class="include-field"
+                                    data-field="instrPrty">
+                                <label for="includeInstrPrty">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<InstrPrty>HIGH</InstrPrty>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > PmtTpInf > InstrPrty">🌳</span>
+                        </div>
+                        <div class="field-description">Wskazuje stopień ważności lub pilności, który nadawca chce
+                            zastosować do przetwarzania instrukcji.</div>
+                    </div>
+                </div>
+
+                <!-- Nowa podsekcja dla agentów -->
+                <div class="form-group subsection">
+                    <div class="form-subheader">
+                        <h3>Agent Information</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            <label class="field-label" for="instgAgtBicfi">Instructing Agent (InstgAgt)<span
+                                    class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="instgAgtBicfi" name="instgAgtBicfi" placeholder="np. BANKPLPWXXX"
+                                    maxlength="11" pattern="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}" disabled>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeInstgAgt" class="include-field"
+                                    data-field="instgAgtBicfi">
+                                <label for="includeInstgAgt">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstgAgt>
+  <FinInstnId>
+    <BICFI>BANKPLPWXXX</BICFI>
+  </FinInstnId>
+</InstgAgt>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstgAgt > FinInstnId > BICFI">🌳</span>
+                        </div>
+                        <div class="field-description">Identyfikator instytucji finansowej zlecającej transfer (BICFI -
+                            kod BIC instytucji finansowej).</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            <label class="field-label" for="instdAgtBicfi">Instructed Agent (InstdAgt)<span
+                                    class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="instdAgtBicfi" name="instdAgtBicfi" placeholder="np. DEUTDEFFXXX"
+                                    maxlength="11" pattern="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}" disabled>
+                            </div>
+                            <div class="field-checkbox">
+                                <input type="checkbox" id="includeInstdAgt" class="include-field"
+                                    data-field="instdAgtBicfi">
+                                <label for="includeInstdAgt">Uwzględnij</label>
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstdAgt>
+  <FinInstnId>
+    <BICFI>DEUTDEFFXXX</BICFI>
+  </FinInstnId>
+</InstdAgt>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > GrpHdr > InstdAgt > FinInstnId > BICFI">🌳</span>
+                        </div>
+                        <div class="field-description">Identyfikator instytucji finansowej otrzymującej transfer (BICFI
+                            - kod BIC instytucji finansowej).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Transfer Transaction Information (CdtTrfTxInf) -->
+            <div class="form-section">
+                <h2>Credit Transfer Transaction Information (CdtTrfTxInf)</h2>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="pmtId">Payment Identification (PmtId)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="text" id="endToEndId" name="endToEndId" maxlength="35"
+                                placeholder="np. E2E-ID-12345" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PmtId>
+  <EndToEndId>E2E-ID-12345</EndToEndId>
+</PmtId>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtId > EndToEndId">🌳</span>
+                    </div>
+                    <div class="field-description">Unikalny identyfikator End-to-End nadany przez stronę inicjującą.
+                        Maksymalnie 35 znaków.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Interbank Settlement Amount (IntrBkSttlmAmt)<span class="required-indicator">*</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="intrBkSttlmAmt">Amount and Currency (IntrBkSttlmAmt)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="intrBkSttlmAmt" name="intrBkSttlmAmt" step="0.01" min="0.01"
+                                required>
+                            <select id="intrBkSttlmAmtCcy" name="intrBkSttlmAmtCcy" required>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<IntrBkSttlmAmt Ccy=&quot;EUR&quot;>100.00</IntrBkSttlmAmt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrBkSttlmAmt">🌳</span>
+                    </div>
+                    <div class="field-description">Kwota międzybankowego rozliczenia przelewu. Wymagana kwota i waluta.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="chrgBr">Charge Bearer (ChrgBr)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <select id="chrgBr" name="chrgBr" required>
+                                <option value="DEBT">DEBT - Płaci dłużnik</option>
+                                <option value="CRED">CRED - Płaci wierzyciel</option>
+                                <option value="SHAR">SHAR - Koszty dzielone</option>
+                                <option value="SLEV">SLEV - Jak w umowie o poziomie serwisu</option>
+                            </select>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<ChrgBr>SHAR</ChrgBr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > ChrgBr">🌳</span>
+                    </div>
+                    <div class="field-description">Określa, która strona/strony poniosą opłaty związane z przetwarzaniem
+                        płatności.</div>
+                </div>
+
+                <!-- Debtor -->
+                <div class="form-group subsection">
+                    <div class="form-subheader">
+                        <h3>Debtor (Dbtr)<span class="required-indicator">*</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrNm">Name (Nm)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrNm" name="dbtrNm" maxlength="140" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Dbtr>
+  <Nm>Nazwa Dłużnika Sp. z o.o.</Nm>
+</Dbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa podmiotu płacącego. Maksymalnie 140 znaków.</div>
+                </div>
+
+                <!-- Debtor Account -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Debtor Account (DbtrAcct)<span class="required-indicator">*</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAcctId">IBAN (IBAN)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAcctId" name="dbtrAcctId" maxlength="34" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAcct>
+  <Id>
+    <IBAN>PL21109010140000071219812874</IBAN>
+  </Id>
+</DbtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAcct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Numer konta dłużnika w formacie IBAN. Maksymalnie 34 znaki.</div>
+                </div>
+
+                <!-- Creditor -->
+                <div class="form-group subsection">
+                    <div class="form-subheader">
+                        <h3>Creditor (Cdtr)<span class="required-indicator">*</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrNm">Name (Nm)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrNm" name="cdtrNm" maxlength="140" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Cdtr>
+  <Nm>Nazwa Wierzyciela S.A.</Nm>
+</Cdtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Cdtr > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa podmiotu otrzymującego płatność. Maksymalnie 140 znaków.</div>
+                </div>
+
+                <!-- Creditor Account -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Creditor Account (CdtrAcct)<span class="required-indicator">*</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAcctId">IBAN (IBAN)<span
+                                class="required-indicator">*</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAcctId" name="cdtrAcctId" maxlength="34" required>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAcct>
+  <Id>
+    <IBAN>DE89370400440532013000</IBAN>
+  </Id>
+</CdtrAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAcct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Numer konta wierzyciela w formacie IBAN. Maksymalnie 34 znaki.</div>
+                </div>
+
+                <!-- Remittance Information -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Remittance Information (RmtInf)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfUstrd">Unstructured (Ustrd)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <textarea id="rmtInfUstrd" name="rmtInfUstrd" maxlength="140" disabled></textarea>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfUstrd" class="include-field"
+                                data-field="rmtInfUstrd">
+                            <label for="includeRmtInfUstrd">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RmtInf>
+  <Ustrd>Faktura numer FV/2024/123</Ustrd>
+</RmtInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Ustrd">🌳</span>
+                    </div>
+                    <div class="field-description">Niestrukturyzowane informacje o przelewie, np. tytuł przelewu.
+                        Maksymalnie 140 znaków.</div>
+                </div>
+
+                <!-- Ultimate Debtor -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Ultimate Debtor (UltmtDbtr)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtDbtrNm">Name (Nm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtDbtrNm" name="ultmtDbtrNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtDbtr" class="include-field" data-field="ultmtDbtrNm">
+                            <label for="includeUltmtDbtr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtDbtr>
+  <Nm>Nazwa Pierwotnego Dłużnika</Nm>
+</UltmtDbtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtDbtr > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa podmiotu będącego pierwotnym dłużnikiem. Maksymalnie 140
+                        znaków.</div>
+                </div>
+
+                <!-- Ultimate Creditor -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Ultimate Creditor (UltmtCdtr)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="ultmtCdtrNm">Name (Nm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="ultmtCdtrNm" name="ultmtCdtrNm" maxlength="140" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeUltmtCdtr" class="include-field" data-field="ultmtCdtrNm">
+                            <label for="includeUltmtCdtr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<UltmtCdtr>
+  <Nm>Nazwa Końcowego Wierzyciela</Nm>
+</UltmtCdtr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > UltmtCdtr > Nm">🌳</span>
+                    </div>
+                    <div class="field-description">Nazwa podmiotu będącego końcowym wierzycielem. Maksymalnie 140
+                        znaków.</div>
+                </div>
+
+                <!-- Purpose -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Purpose (Purp)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="purpCd">Code (Cd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="purpCd" name="purpCd" disabled>
+                                <option value="CASH">CASH - Wypłata gotówki</option>
+                                <option value="CORT">CORT - Rozliczenie handlowe</option>
+                                <option value="DIVI">DIVI - Dywidenda</option>
+                                <option value="GOVT">GOVT - Płatność rządowa</option>
+                                <option value="INTE">INTE - Odsetki</option>
+                                <option value="PENS">PENS - Emerytura</option>
+                                <option value="SALA">SALA - Wynagrodzenie</option>
+                                <option value="SUPP">SUPP - Płatność dla dostawcy</option>
+                                <option value="TAXS">TAXS - Płatność podatku</option>
+                                <option value="TREA">TREA - Transakcja skarbowa</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePurp" class="include-field" data-field="purpCd">
+                            <label for="includePurp">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Purp>
+  <Cd>SUPP</Cd>
+</Purp>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Purp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Kod określający cel płatności. Identyfikuje podstawowy powód
+                        transakcji płatniczej.</div>
+                </div>
+
+                <!-- Regulatory Reporting -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Regulatory Reporting (RgltryRptg)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="rgltryRptgDbtCdtRptgInd">Debit Credit Reporting Indicator
+                            (DbtCdtRptgInd)<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="rgltryRptgDbtCdtRptgInd" name="rgltryRptgDbtCdtRptgInd" disabled>
+                                <option value="CRED">CRED - Kredyt</option>
+                                <option value="DEBT">DEBT - Debet</option>
+                                <option value="BOTH">BOTH - Oba</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRgltryRptg" class="include-field"
+                                data-field="rgltryRptgDbtCdtRptgInd">
+                            <label for="includeRgltryRptg">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RgltryRptg>
+  <DbtCdtRptgInd>CRED</DbtCdtRptgInd>
+</RgltryRptg>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RgltryRptg > DbtCdtRptgInd">🌳</span>
+                    </div>
+                    <div class="field-description">Wskaźnik określający, czy informacje raportowe dotyczą pozycji
+                        debetowej, kredytowej, czy obu.</div>
+                </div>
+
+                <!-- Related Remittance Information -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Related Remittance Information (RltdRmtInf)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="rltdRmtInfRmtId">Remittance Identification (RmtId)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="rltdRmtInfRmtId" name="rltdRmtInfRmtId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRltdRmtInf" class="include-field"
+                                data-field="rltdRmtInfRmtId">
+                            <label for="includeRltdRmtInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RltdRmtInf>
+  <RmtId>REF-RMT-2024-001</RmtId>
+</RltdRmtInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RltdRmtInf > RmtId">🌳</span>
+                    </div>
+                    <div class="field-description">Unikalny identyfikator informacji o przelewie. Maksymalnie 35 znaków.
+                    </div>
+                </div>
+
+                <!-- Instruction For Next Agent -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instruction For Next Agent (InstrForNxtAgt)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instrForNxtAgtCd">Code (Cd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="instrForNxtAgtCd" name="instrForNxtAgtCd" disabled>
+                                <option value="PHOA">PHOA - Powiadomienie przez telefon</option>
+                                <option value="TELA">TELA - Powiadomienie przez teleks</option>
+                                <option value="HOLD">HOLD - Wstrzymanie</option>
+                                <option value="CHQB">CHQB - Doręczenie czeku</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstrForNxtAgt" class="include-field"
+                                data-field="instrForNxtAgtCd">
+                            <label for="includeInstrForNxtAgt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstrForNxtAgt>
+  <Cd>PHOA</Cd>
+</InstrForNxtAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstrForNxtAgt > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Dalsze instrukcje dotyczące obsługi transakcji, które mają być
+                        wykonane przez agenta następnego w łańcuchu płatności.</div>
+                </div>
+
+                <!-- Intermediary Agent 1 -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Intermediary Agent 1 (IntrmyAgt1)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="intrmyAgt1Bicfi">BICFI (BICFI)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="intrmyAgt1Bicfi" name="intrmyAgt1Bicfi" placeholder="np. MIDLGB22XXX"
+                                maxlength="11" pattern="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrmyAgt1" class="include-field"
+                                data-field="intrmyAgt1Bicfi">
+                            <label for="includeIntrmyAgt1">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<IntrmyAgt1>
+  <FinInstnId>
+    <BICFI>MIDLGB22XXX</BICFI>
+  </FinInstnId>
+</IntrmyAgt1>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrmyAgt1 > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator instytucji finansowej pośredniczącej w łańcuchu
+                        płatności (BICFI - kod BIC instytucji finansowej).</div>
+                </div>
+
+                <!-- Tax Information -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Tax (Tax)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <!-- Tax Creditor -->
+                    <div class="form-row">
+                        <label class="field-label" for="taxCdtrTaxId">Tax Creditor ID (Cdtr.TaxId)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxCdtrTaxId" name="taxCdtrTaxId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTax" class="include-field" data-field="taxCdtrTaxId">
+                            <label for="includeTax">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Tax>
+  <Cdtr>
+    <TaxId>TAX123456789</TaxId>
+    <RegnId>REG987654321</RegnId>
+    <TaxTp>VAT</TaxTp>
+  </Cdtr>
+</Tax>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Tax > Cdtr > TaxId">🌳</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxCdtrRegnId">Tax Creditor Registration ID (Cdtr.RegnId)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxCdtrRegnId" name="taxCdtrRegnId" maxlength="35" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="taxCdtrTaxTp">Tax Creditor Type (Cdtr.TaxTp)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxCdtrTaxTp" name="taxCdtrTaxTp" maxlength="35" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Tax Reference Number -->
+                    <div class="form-row">
+                        <label class="field-label" for="taxRefNb">Reference Number (RefNb)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="taxRefNb" name="taxRefNb" maxlength="140" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Tax Date -->
+                    <div class="form-row">
+                        <label class="field-label" for="taxDt">Tax Date (Dt)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="date" id="taxDt" name="taxDt" disabled>
+                        </div>
+                    </div>
+
+                    <div class="field-description">Informacje o podatku zgodne ze strukturą TaxData1 w schemacie XSD.
+                        Obejmuje dane wierzyciela podatkowego, identyfikatory podatkowe, daty i kwoty.</div>
+                </div>
+
+                <!-- Previous Instructing Agent 1 -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Previous Instructing Agent 1 (PrvsInstgAgt1)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="prvsInstgAgt1Bicfi">BICFI (BICFI)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="prvsInstgAgt1Bicfi" name="prvsInstgAgt1Bicfi"
+                                placeholder="np. BARCGB22XXX" maxlength="11"
+                                pattern="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePrvsInstgAgt1" class="include-field"
+                                data-field="prvsInstgAgt1Bicfi">
+                            <label for="includePrvsInstgAgt1">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PrvsInstgAgt1>
+  <FinInstnId>
+    <BICFI>BARCGB22XXX</BICFI>
+  </FinInstnId>
+</PrvsInstgAgt1>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PrvsInstgAgt1 > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator instytucji finansowej będącej poprzednim agentem
+                        zlecającym w łańcuchu płatności.</div>
+                </div>
+
+                <!-- Dodanie konta dla Previous Instructing Agent 1 (PrvsInstgAgt1Acct) -->
+                <div class="form-row">
+                    <label class="field-label" for="prvsInstgAgt1AcctId">Konto agenta zlecającego 1
+                        (PrvsInstgAgt1Acct)<span class="optional-indicator"> (opcjonalne)</span></label>
+                    <div class="field-input">
+                        <input type="text" id="prvsInstgAgt1AcctId" name="prvsInstgAgt1AcctId" maxlength="34"
+                            placeholder="np. PL12345678901234567890123456" disabled>
+                    </div>
+                    <div class="field-checkbox">
+                        <input type="checkbox" id="includePrvsInstgAgt1Acct" class="include-field"
+                            data-field="prvsInstgAgt1AcctId">
+                        <label for="includePrvsInstgAgt1Acct">Uwzględnij</label>
+                    </div>
+                    <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PrvsInstgAgt1Acct>
+  <Id>
+    <IBAN>PL12345678901234567890123456</IBAN>
+  </Id>
+</PrvsInstgAgt1Acct>">📋</span>
+                    <span class="tree-icon" title="Pokaż strukturę XML"
+                        data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PrvsInstgAgt1Acct > Id > IBAN">🌳</span>
+                </div>
+                <div class="field-description">Numer konta IBAN dla poprzedniego agenta zlecającego 1.</div>
+
+                <!-- Instruction For Creditor Agent -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instruction For Creditor Agent (InstrForCdtrAgt)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instrForCdtrAgtCd">Code (Cd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="instrForCdtrAgtCd" name="instrForCdtrAgtCd" disabled>
+                                <option value="CHQB">CHQB - Płatność czekiem</option>
+                                <option value="HOLD">HOLD - Skontaktuj się z wierzycielem</option>
+                                <option value="PHOB">PHOB - Powiadom przez telefon</option>
+                                <option value="TELB">TELB - Powiadom przez teleks</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstrForCdtrAgt" class="include-field"
+                                data-field="instrForCdtrAgtCd">
+                            <label for="includeInstrForCdtrAgt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<InstrForCdtrAgt>
+  <Cd>PHOB</Cd>
+</InstrForCdtrAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstrForCdtrAgt > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Instrukcje dla agenta wierzyciela dotyczące sposobu obsługi
+                        transakcji.</div>
+                </div>
+
+                <!-- Creditor Agent -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Creditor Agent (CdtrAgt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAgtBicfi">BICFI (BICFI)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAgtBicfi" name="cdtrAgtBicfi" placeholder="np. COBADEFFXXX"
+                                maxlength="11" pattern="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAgt2" class="include-field" data-field="cdtrAgtBicfi">
+                            <label for="includeCdtrAgt2">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAgt>
+  <FinInstnId>
+    <BICFI>GGGGGPLPXXX</BICFI>
+  </FinInstnId>
+</CdtrAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAgt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator instytucji finansowej będącej agentem wierzyciela (bank
+                        wierzyciela).</div>
+                </div>
+
+                <!-- Debtor Agent -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Debtor Agent (DbtrAgt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAgtBicfi">BICFI (BICFI)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAgtBicfi" name="dbtrAgtBicfi" placeholder="np. INGBPLPWXXX"
+                                maxlength="11" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAgt2" class="include-field" data-field="dbtrAgtBicfi">
+                            <label for="includeDbtrAgt2">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAgt>
+  <FinInstnId>
+    <BICFI>NBPLPLPWXXX</BICFI>
+  </FinInstnId>
+</DbtrAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAgt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator instytucji finansowej będącej agentem dłużnika (bank
+                        dłużnika).</div>
+                </div>
+
+                <!-- Intermediary Agent Account 1 -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Intermediary Agent Account 1 (IntrmyAgt1Acct)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="intrmyAgt1AcctId">IBAN (IBAN)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="intrmyAgt1AcctId" name="intrmyAgt1AcctId" maxlength="34" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrmyAgt1Acct" class="include-field"
+                                data-field="intrmyAgt1AcctId">
+                            <label for="includeIntrmyAgt1Acct">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<IntrmyAgt1Acct>
+  <Id>
+    <IBAN>GB29NWBK60161331926819</IBAN>
+  </Id>
+</IntrmyAgt1Acct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrmyAgt1Acct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Numer konta pośrednika 1 używany do rozliczenia płatności. Format
+                        IBAN, maksymalnie 34 znaki.</div>
+                </div>
+
+                <!-- Settlement Date -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Settlement Date (SttlmDt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="cdtTrfTxInfSttlmDt">Date (Date)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="date" id="cdtTrfTxInfSttlmDt" name="cdtTrfTxInfSttlmDt" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtTrfTxInfSttlmDt" class="include-field"
+                                data-field="cdtTrfTxInfSttlmDt">
+                            <label for="includeCdtTrfTxInfSttlmDt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<SttlmDt>2024-07-15</SttlmDt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmDt">🌳</span>
+                    </div>
+                    <div class="field-description">Data rozliczenia. Data, w której kwota ma zostać przeniesiona między
+                        agentem dłużnika a agentem wierzyciela.</div>
+                </div>
+
+                <!-- Acceptance Date Time -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Acceptance Date Time (AccptncDtTm)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="accptncDtTm">Date Time (DateTime)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="datetime-local" id="accptncDtTm" name="accptncDtTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeAccptncDtTm" class="include-field"
+                                data-field="accptncDtTm">
+                            <label for="includeAccptncDtTm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<AccptncDtTm>2024-06-15T10:30:00</AccptncDtTm>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > AccptncDtTm">🌳</span>
+                    </div>
+                    <div class="field-description">Data i czas akceptacji przelewu. Moment, w którym instrukcja
+                        płatnicza została zaakceptowana przez agenta dłużnika.</div>
+                </div>
+
+                <!-- Instruction For Debtor Agent -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instruction For Debtor Agent (InstrForDbtrAgt)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instrForDbtrAgt">Instruction Information (InstrInf)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <textarea id="instrForDbtrAgt" name="instrForDbtrAgt" maxlength="140" disabled></textarea>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstrForDbtrAgt" class="include-field"
+                                data-field="instrForDbtrAgt">
+                            <label for="includeInstrForDbtrAgt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<InstrForDbtrAgt>Proszę przetworzyć w trybie pilnym</InstrForDbtrAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstrForDbtrAgt">🌳</span>
+                    </div>
+                    <div class="field-description">Dodatkowe instrukcje dla agenta dłużnika dotyczące sposobu obsługi
+                        transakcji. Maksymalnie 140 znaków.</div>
+                </div>
+
+                <!-- Exchange Rate -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Exchange Rate (XchgRate)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="xchgRate">Rate (Rate)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="number" id="xchgRate" name="xchgRate" step="0.0001" min="0.0001" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeXchgRate" class="include-field" data-field="xchgRate">
+                            <label for="includeXchgRate">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<XchgRate>4.3245</XchgRate>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > XchgRate">🌳</span>
+                    </div>
+                    <div class="field-description">Kurs wymiany używany do przeliczenia kwoty zlecenia. Wyrażony jako
+                        stosunek jednostki waluty kwotowanej do jednostki waluty bazowej.</div>
+                </div>
+
+                <!-- Instruction Identification -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Instruction Identification (InstrId)<span class="optional-indicator"> (opcjonalne)</span>
+                        </h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="instrId">Identification (Id)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="instrId" name="instrId" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstrId" class="include-field" data-field="instrId">
+                            <label for="includeInstrId">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<InstrId>INSTR-ID2024061501</InstrId>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtId > InstrId">🌳</span>
+                    </div>
+                    <div class="field-description">Unikalny identyfikator transakcji nadany przez inicjatora przelewu
+                        dla strony wysyłającej. Maksymalnie 35 znaków.</div>
+                </div>
+
+                <!-- End To End Identification -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>End To End Identification (EndToEndId)<span class="optional-indicator"> (opcjonalne)</span>
+                        </h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="endToEndId2">Identification (Id)<span
+                                class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="endToEndId2" name="endToEndId2" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeEndToEndId" class="include-field"
+                                data-field="endToEndId2">
+                            <label for="includeEndToEndId">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<EndToEndId>E2E-REF-2024061501</EndToEndId>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtId > EndToEndId">🌳</span>
+                    </div>
+                    <div class="field-description">Unikalny identyfikator transakcji nadany przez zleceniodawcę,
+                        przekazywany przez cały łańcuch płatności. Maksymalnie 35 znaków.</div>
+                </div>
+
+                <!-- Charges Information -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Charges Information (ChrgsInf)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="chrgsInfAmt">Amount (Amt)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="chrgsInfAmt" name="chrgsInfAmt" step="0.01" disabled>
+                            <select id="chrgsInfAmtCcy" name="chrgsInfAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeChrgsInf" class="include-field" data-field="chrgsInfAmt"
+                                data-related-field="chrgsInfAmtCcy">
+                            <label for="includeChrgsInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<ChrgsInf>
+  <Amt Ccy=&quot;EUR&quot;>5.00</Amt>
+                            <Pty>
+                                <FinInstnId>
+                                    <BICFI>BANKPLPWXXX</BICFI>
+                                </FinInstnId>
+                            </Pty>
+                            </ChrgsInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > ChrgsInf > Amt">🌳</span>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="chrgsInfPtyBICFI">Party BICFI (BICFI)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="chrgsInfPtyBICFI" name="chrgsInfPtyBICFI" maxlength="11" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeChrgsInfPtyBICFI" class="include-field"
+                                data-field="chrgsInfPtyBICFI">
+                            <label for="includeChrgsInfPtyBICFI">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<ChrgsInf>
+  <Agt>
+    <FinInstnId>
+      <BICFI>BANKPLPWXXX</BICFI>
+    </FinInstnId>
+  </Agt>
+</ChrgsInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > ChrgsInf > Agt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Informacje o opłatach związanych z transakcją płatniczą, w tym kwota
+                        opłaty i instytucja pobierająca opłatę.</div>
+                </div>
+
+                <!-- Original Transaction Reference -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Original Transaction Reference (OrgnlTxRef)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="orgnlTxRef">Reference (Ref)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="orgnlTxRef" name="orgnlTxRef" maxlength="35" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeOrgnlTxRef" class="include-field" data-field="orgnlTxRef">
+                            <label for="includeOrgnlTxRef">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<OrgnlTxRef>REF-2024-05-001</OrgnlTxRef>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > OrgnlTxRef">🌳</span>
+                    </div>
+                    <div class="field-description">Referencja do oryginalnej transakcji, używana w przypadku zwrotów lub
+                        korekt. Maksymalnie 35 znaków.</div>
+                </div>
+
+                <!-- Service Level -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Service Level (SvcLvl)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="svcLvlCd">Code (Cd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="svcLvlCd" name="svcLvlCd" disabled>
+                                <option value="SEPA">SEPA - Single Euro Payments Area</option>
+                                <option value="SDVA">SDVA - Same Day Value</option>
+                                <option value="PRPT">PRPT - EBA Priority Service</option>
+                                <option value="URGT">URGT - Urgent Payment</option>
+                                <option value="NURG">NURG - Non-Urgent Payment</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeSvcLvl" class="include-field" data-field="svcLvlCd">
+                            <label for="includeSvcLvl">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SvcLvl>
+  <Cd>SEPA</Cd>
+</SvcLvl>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > SvcLvl > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Uzgodnienie lub zasady, zgodnie z którymi ma być obsługiwana
+                        transakcja. Określa poziom lub typ usługi płatniczej.</div>
+                </div>
+
+                <!-- Local Instrument -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Local Instrument (LclInstrm)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="lclInstrmCd">Code (Cd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="lclInstrmCd" name="lclInstrmCd" disabled>
+                                <option value="INST">INST - Instant Payment</option>
+                                <option value="ELIXIR">ELIXIR - Polish Clearing System</option>
+                                <option value="SORBNET">SORBNET - Polish RTGS System</option>
+                                <option value="EXPRESS">EXPRESS - Express Transfer</option>
+                                <option value="INTERNAL">INTERNAL - Bank-Internal Transfer</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeLclInstrm" class="include-field" data-field="lclInstrmCd">
+                            <label for="includeLclInstrm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<LclInstrm>
+  <Cd>INST</Cd>
+</LclInstrm>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > LclInstrm > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Instrument specyficzny dla społeczności użytkowników, określa lokalny
+                        instrument płatniczy lub usługę.</div>
+                </div>
+
+                <!-- Category Purpose -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Category Purpose (CtgyPurp)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="ctgyPurpCd">Code (Cd)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="ctgyPurpCd" name="ctgyPurpCd" disabled>
+                                <option value="CASH">CASH - Cash Management Transfer</option>
+                                <option value="CORT">CORT - Trade Settlement Payment</option>
+                                <option value="DIVI">DIVI - Dividend Payment</option>
+                                <option value="GOVT">GOVT - Government Payment</option>
+                                <option value="INTC">INTC - Intra-Company Payment</option>
+                                <option value="PENS">PENS - Pension Payment</option>
+                                <option value="SALA">SALA - Salary Payment</option>
+                                <option value="SUPP">SUPP - Supplier Payment</option>
+                                <option value="TAXS">TAXS - Tax Payment</option>
+                                <option value="TREA">TREA - Treasury Payment</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCtgyPurp" class="include-field" data-field="ctgyPurpCd">
+                            <label for="includeCtgyPurp">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CtgyPurp>
+  <Cd>SUPP</Cd>
+</CtgyPurp>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtTpInf > CtgyPurp > Cd">🌳</span>
+                    </div>
+                    <div class="field-description">Określa cel płatności na podstawie zbioru wcześniej uzgodnionych
+                        kategorii, np. wynagrodzenie, podatek, dywidenda.</div>
+                </div>
+
+                <!-- Non-closure Reason -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Non-closure Reason (NclsrRsn)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="nclsrRsn">Reason (Rsn)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <textarea id="nclsrRsn" name="nclsrRsn" maxlength="105" disabled></textarea>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeNclsrRsn" class="include-field" data-field="nclsrRsn">
+                            <label for="includeNclsrRsn">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<NclsrRsn>Needing further validation and approval</NclsrRsn>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > NclsrRsn">🌳</span>
+                    </div>
+                    <div class="field-description">Powód, dla którego transakcja nie jest uważana za zamkniętą.
+                        Maksymalnie 105 znaków.</div>
+                </div>
+
+                <!-- Structured Remittance Information -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Structured Remittance Information (RmtInfStrd)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdRefInfNb">Reference Number (Nb)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="rmtInfStrdRefInfNb" name="rmtInfStrdRefInfNb" maxlength="35"
+                                disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRmtInfStrd" class="include-field"
+                                data-field="rmtInfStrdRefInfNb">
+                            <label for="includeRmtInfStrd">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<RmtInf>
+  <Strd>
+    <RfrdDocInf>
+      <Nb>INVOICE-2024-005</Nb>
+      <RltdDt>2024-06-01</RltdDt>
+    </RfrdDocInf>
+    <RfrdDocAmt>
+      <DuePyblAmt Ccy=&quot;EUR&quot;>1000.00</DuePyblAmt>
+                            </RfrdDocAmt>
+                            </Strd>
+                            </RmtInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > RmtInf > Strd > RfrdDocInf > Nb">🌳</span>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="rmtInfStrdRefInfRltdDt">Related Date (RltdDt)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="date" id="rmtInfStrdRefInfRltdDt" name="rmtInfStrdRefInfRltdDt" disabled>
+                        </div>
+                    </div>
+                    <div class="field-description">Ustrukturyzowane informacje o przelewie, związane z dokumentami
+                        referencyjnymi, np. faktury, noty kredytowe.</div>
+                </div>
+
+                <!-- Supplementary Data -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Supplementary Data (SplmtryData)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="splmtryData">Data (Data)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <textarea id="splmtryData" name="splmtryData" maxlength="1000" disabled></textarea>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeSplmtryData" class="include-field"
+                                data-field="splmtryData">
+                            <label for="includeSplmtryData">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SplmtryData>
+  <PlcAndNm>TransactionDetails</PlcAndNm>
+  <Envlp>
+    <AdditionalData>Dodatkowe informacje dla banku odbiorcy</AdditionalData>
+  </Envlp>
+</SplmtryData>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SplmtryData">🌳</span>
+                    </div>
+                    <div class="field-description">Dodatkowe informacje, które nie mogą być uwzględnione w
+                        ustrukturyzowanych elementach komunikatu. Maksymalnie 1000 znaków.</div>
+                </div>
+
+                <!-- Dodanie prioritetu rozliczenia (SttlmPrty) w sekcji CdtTrfTxInf - po polu SttlmDt -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmPrty">Priorytet rozliczenia (SttlmPrty)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <select id="sttlmPrty" name="sttlmPrty" disabled>
+                                <option value="URGT">URGT - Pilny</option>
+                                <option value="HIGH">HIGH - Wysoki</option>
+                                <option value="NORM">NORM - Normalny</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeSttlmPrty" class="include-field" data-field="sttlmPrty">
+                            <label for="includeSttlmPrty">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<SttlmPrty>HIGH</SttlmPrty>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmPrty">🌳</span>
+                    </div>
+                    <div class="field-description">Priorytet rozliczenia transakcji (URGT - pilny, HIGH - wysoki, NORM -
+                        normalny).</div>
+                </div>
+
+                <!-- Dodanie wskazania czasu rozliczenia (SttlmTmIndctn) - po SttlmPrty -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Wskazanie czasu rozliczenia (SttlmTmIndctn)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmTmIndctnCdtDtTm">Czas uznania (CdtDtTm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="datetime-local" id="sttlmTmIndctnCdtDtTm" name="sttlmTmIndctnCdtDtTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeSttlmTmIndctn" class="include-field"
+                                data-field="sttlmTmIndctnCdtDtTm">
+                            <label for="includeSttlmTmIndctn">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SttlmTmIndctn>
+  <CdtDtTm>2024-07-15T10:30:00</CdtDtTm>
+</SttlmTmIndctn>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmTmIndctn > CdtDtTm">🌳</span>
+                    </div>
+                    <div class="field-description">Czas, w którym transakcja ma zostać uznana.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmTmIndctnDbtDtTm">Czas obciążenia (DbtDtTm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="datetime-local" id="sttlmTmIndctnDbtDtTm" name="sttlmTmIndctnDbtDtTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtDtTm" class="include-field"
+                                data-field="sttlmTmIndctnDbtDtTm">
+                            <label for="includeDbtDtTm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SttlmTmIndctn>
+  <DbtDtTm>2024-07-15T09:00:00</DbtDtTm>
+</SttlmTmIndctn>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmTmIndctn > DbtDtTm">🌳</span>
+                    </div>
+                    <div class="field-description">Czas, w którym transakcja ma zostać obciążona.</div>
+                </div>
+
+                <!-- Dodanie kwoty zleconej (InstdAmt) - po IntrBkSttlmAmt -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="instdAmt">Kwota zlecona (InstdAmt)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input currency-input-container">
+                            <input type="number" id="instdAmt" name="instdAmt" step="0.01" disabled>
+                            <select id="instdAmtCcy" name="instdAmtCcy" disabled>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="CHF">CHF</option>
+                                <option value="PLN">PLN</option>
+                            </select>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeInstdAmt" class="include-field" data-field="instdAmt"
+                                data-related-field="instdAmtCcy">
+                            <label for="includeInstdAmt">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                            data-xml="<InstdAmt Ccy=&quot;EUR&quot;>100.00</InstdAmt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > InstdAmt">🌳</span>
+                    </div>
+                    <div class="field-description">Kwota zlecona przez stronę inicjującą. Może różnić się od kwoty
+                        rozliczenia międzybankowego.</div>
+                </div>
+
+                <!-- Dodanie drugiego agenta zlecającego (PrvsInstgAgt2) - po PrvsInstgAgt1 -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="prvsInstgAgt2Bicfi">Drugi agent zlecający (PrvsInstgAgt2)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="prvsInstgAgt2Bicfi" name="prvsInstgAgt2Bicfi" maxlength="11"
+                                placeholder="np. BPHKPLPK" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePrvsInstgAgt2" class="include-field"
+                                data-field="prvsInstgAgt2Bicfi">
+                            <label for="includePrvsInstgAgt2">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PrvsInstgAgt2>
+  <FinInstnId>
+    <BICFI>BPHKPLPK</BICFI>
+  </FinInstnId>
+</PrvsInstgAgt2>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PrvsInstgAgt2 > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Drugi agent zlecający w łańcuchu płatności (kod BIC instytucji
+                        finansowej).</div>
+                </div>
+
+                <!-- Dodanie drugiego agenta pośredniczącego (IntrmyAgt2) - po IntrmyAgt1Acct -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="intrmyAgt2Bicfi">Drugi agent pośredniczący (IntrmyAgt2)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="intrmyAgt2Bicfi" name="intrmyAgt2Bicfi" maxlength="11"
+                                placeholder="np. CITIGB2L" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrmyAgt2" class="include-field"
+                                data-field="intrmyAgt2Bicfi">
+                            <label for="includeIntrmyAgt2">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<IntrmyAgt2>
+  <FinInstnId>
+    <BICFI>CITIGB2L</BICFI>
+  </FinInstnId>
+</IntrmyAgt2>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrmyAgt2 > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Drugi agent pośredniczący w łańcuchu płatności (kod BIC instytucji
+                        finansowej).</div>
+                </div>
+
+                <!-- Dodanie konta drugiego agenta pośredniczącego (IntrmyAgt2Acct) -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="intrmyAgt2AcctId">Konto drugiego agenta pośredniczącego
+                            (IntrmyAgt2Acct)<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="intrmyAgt2AcctId" name="intrmyAgt2AcctId" maxlength="34"
+                                placeholder="np. GB29NWBK60161331926819" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrmyAgt2Acct" class="include-field"
+                                data-field="intrmyAgt2AcctId">
+                            <label for="includeIntrmyAgt2Acct">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<IntrmyAgt2Acct>
+  <Id>
+    <IBAN>GB29NWBK60161331926819</IBAN>
+  </Id>
+</IntrmyAgt2Acct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrmyAgt2Acct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator konta drugiego agenta pośredniczącego (IBAN).</div>
+                </div>
+
+                <!-- Dodanie żądania czasu rozliczenia (SttlmTmReq) - po SttlmTmIndctn -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Żądanie czasu rozliczenia (SttlmTmReq)<span class="optional-indicator"> (opcjonalne)</span>
+                        </h3>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmTmReqClsTm">Czas zamknięcia (ClsTm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="time" id="sttlmTmReqClsTm" name="sttlmTmReqClsTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeSttlmTmReq" class="include-field"
+                                data-field="sttlmTmReqClsTm">
+                            <label for="includeSttlmTmReq">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SttlmTmReq>
+  <ClsTm>14:30:00</ClsTm>
+</SttlmTmReq>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmTmReq > ClsTm">🌳</span>
+                    </div>
+                    <div class="field-description">Czas, przed którym ostateczne rozliczenie powinno zostać ukończone.
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmTmReqRjctTm">Czas odrzucenia (RjctTm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="time" id="sttlmTmReqRjctTm" name="sttlmTmReqRjctTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeRjctTm" class="include-field"
+                                data-field="sttlmTmReqRjctTm">
+                            <label for="includeRjctTm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SttlmTmReq>
+  <RjctTm>15:00:00</RjctTm>
+</SttlmTmReq>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmTmReq > RjctTm">🌳</span>
+                    </div>
+                    <div class="field-description">Czas, po którym zlecenie transakcji zostanie odrzucone.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmTmReqFrTm">Czas od (FrTm)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="time" id="sttlmTmReqFrTm" name="sttlmTmReqFrTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeFrTm" class="include-field" data-field="sttlmTmReqFrTm">
+                            <label for="includeFrTm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SttlmTmReq>
+  <FrTm>08:00:00</FrTm>
+</SttlmTmReq>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmTmReq > FrTm">🌳</span>
+                    </div>
+                    <div class="field-description">Czas, od którego rozliczenie powinno być realizowane.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="sttlmTmReqTillTm">Czas do (TillTm)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="time" id="sttlmTmReqTillTm" name="sttlmTmReqTillTm" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeTillTm" class="include-field"
+                                data-field="sttlmTmReqTillTm">
+                            <label for="includeTillTm">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SttlmTmReq>
+  <TillTm>16:00:00</TillTm>
+</SttlmTmReq>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > SttlmTmReq > TillTm">🌳</span>
+                    </div>
+                    <div class="field-description">Czas, do którego rozliczenie powinno być realizowane.</div>
+                </div>
+
+                <!-- Dodanie podpisu płatności (PmtSgntr) -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Podpis płatności (PmtSgntr)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="pmtSgntrType">Typ podpisu</label>
+                        <div class="field-input">
+                            <select id="pmtSgntrType" name="pmtSgntrType" disabled>
+                                <option value="ILPV4">ILPV4 (Interledger)</option>
+                                <option value="Sgntr">Sgntr (SHA256)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="pmtSgntrValue">Wartość podpisu<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="pmtSgntrValue" name="pmtSgntrValue"
+                                placeholder="Heksadecymalny format klucza/podpisu" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePmtSgntr" class="include-field" data-field="pmtSgntrValue"
+                                data-related-field="pmtSgntrType">
+                            <label for="includePmtSgntr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PmtSgntr>
+  <ILPV4>4642F973614EAA85396053511F5F6FFA</ILPV4>
+</PmtSgntr>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PmtSgntr > ILPV4">🌳</span>
+                    </div>
+                    <div class="field-description">Cyfrowy podpis transakcji płatniczej. ILPV4 dla kluczy
+                        kryptograficznych w formacie Interledger (dowolny format heksadecymalny). Sgntr dla podpisów
+                        SHA256 (64 znaki heksadecymalne).</div>
+                </div>
+
+                <!-- Dodanie informacji dotyczących mandatu (MndtRltdInf) -->
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Informacje dotyczące mandatu (MndtRltdInf)<span class="optional-indicator">
+                                (opcjonalne)</span></h3>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="mndtId">Identyfikator mandatu (MndtId)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="mndtId" name="mndtId" maxlength="35" placeholder="np. MAND-2024-123"
+                                disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeMndtRltdInf" class="include-field" data-field="mndtId">
+                            <label for="includeMndtRltdInf">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<MndtRltdInf>
+  <MndtId>MAND-2024-123</MndtId>
+</MndtRltdInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > MndtRltdInf > MndtId">🌳</span>
+                    </div>
+                    <div class="field-description">Unikalny identyfikator mandatu.</div>
+
+                    <div class="form-row">
+                        <label class="field-label" for="dtOfSgntr">Data podpisania (DtOfSgntr)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="date" id="dtOfSgntr" name="dtOfSgntr" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDtOfSgntr" class="include-field" data-field="dtOfSgntr">
+                            <label for="includeDtOfSgntr">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<MndtRltdInf>
+  <DtOfSgntr>2024-01-15</DtOfSgntr>
+</MndtRltdInf>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > MndtRltdInf > DtOfSgntr">🌳</span>
+                    </div>
+                    <div class="field-description">Data podpisania mandatu.</div>
+                </div>
+
+                <!-- Dodanie trzeciego agenta zlecającego (PrvsInstgAgt3) - po PrvsInstgAgt2 -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="prvsInstgAgt3Bicfi">Trzeci agent zlecający (PrvsInstgAgt3)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="prvsInstgAgt3Bicfi" name="prvsInstgAgt3Bicfi" maxlength="11"
+                                placeholder="np. XXXXYYYZZZ" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePrvsInstgAgt3" class="include-field"
+                                data-field="prvsInstgAgt3Bicfi">
+                            <label for="includePrvsInstgAgt3">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PrvsInstgAgt3>
+  <FinInstnId>
+    <BICFI>CCCCPLP0XXX</BICFI>
+  </FinInstnId>
+</PrvsInstgAgt3>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PrvsInstgAgt3 > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator trzeciego poprzedniego agenta zlecającego w łańcuchu
+                        płatności.</div>
+
+                    <!-- Konto dla PrvsInstgAgt3 -->
+                    <div class="form-row">
+                        <label class="field-label" for="prvsInstgAgt3AcctId">Konto trzeciego agenta zlecającego
+                            (PrvsInstgAgt3Acct)<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="prvsInstgAgt3AcctId" name="prvsInstgAgt3AcctId" maxlength="34"
+                                placeholder="np. PL12345678901234567890123456" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includePrvsInstgAgt3Acct" class="include-field"
+                                data-field="prvsInstgAgt3AcctId">
+                            <label for="includePrvsInstgAgt3Acct">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PrvsInstgAgt3Acct>
+  <Id>
+    <IBAN>PL12345678901234567890123456</IBAN>
+  </Id>
+</PrvsInstgAgt3Acct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PrvsInstgAgt3Acct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Numer konta IBAN dla trzeciego poprzedniego agenta zlecającego.</div>
+                </div>
+
+                <div class="field-description">Identyfikator drugiego poprzedniego agenta zlecającego w łańcuchu
+                    płatności.</div>
+
+                <!-- Konto dla PrvsInstgAgt2 -->
+                <div class="form-row">
+                    <label class="field-label" for="prvsInstgAgt2AcctId">Konto drugiego agenta zlecającego
+                        (PrvsInstgAgt2Acct)<span class="optional-indicator"> (opcjonalne)</span></label>
+                    <div class="field-input">
+                        <input type="text" id="prvsInstgAgt2AcctId" name="prvsInstgAgt2AcctId" maxlength="34"
+                            placeholder="np. PL12345678901234567890123456" disabled>
+                    </div>
+                    <div class="field-checkbox">
+                        <input type="checkbox" id="includePrvsInstgAgt2Acct" class="include-field"
+                            data-field="prvsInstgAgt2AcctId">
+                        <label for="includePrvsInstgAgt2Acct">Uwzględnij</label>
+                    </div>
+                    <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<PrvsInstgAgt2Acct>
+  <Id>
+    <IBAN>PL12345678901234567890123456</IBAN>
+  </Id>
+</PrvsInstgAgt2Acct>">📋</span>
+                    <span class="tree-icon" title="Pokaż strukturę XML"
+                        data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > PrvsInstgAgt2Acct > Id > IBAN">🌳</span>
+                </div>
+                <div class="field-description">Numer konta IBAN dla drugiego poprzedniego agenta zlecającego.</div>
+
+                <!-- Dodanie trzeciego agenta pośredniczącego (IntrmyAgt3) - po IntrmyAgt2Acct -->
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="intrmyAgt3Bicfi">Trzeci agent pośredniczący (IntrmyAgt3)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="intrmyAgt3Bicfi" name="intrmyAgt3Bicfi" maxlength="11"
+                                placeholder="np. CHASUS33" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrmyAgt3" class="include-field"
+                                data-field="intrmyAgt3Bicfi">
+                            <label for="includeIntrmyAgt3">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<IntrmyAgt3>
+  <FinInstnId>
+    <BICFI>FFFFPLP0XXX</BICFI>
+  </FinInstnId>
+</IntrmyAgt3>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrmyAgt3 > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Trzeci agent pośredniczący w łańcuchu płatności (kod BIC instytucji
+                        finansowej).</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+                        <label class="field-label" for="intrmyAgt3AcctId">Konto trzeciego agenta pośredniczącego
+                            (IntrmyAgt3Acct)<span class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="intrmyAgt3AcctId" name="intrmyAgt3AcctId" maxlength="34"
+                                placeholder="np. PL12345678901234567890123456" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeIntrmyAgt3Acct" class="include-field"
+                                data-field="intrmyAgt3AcctId">
+                            <label for="includeIntrmyAgt3Acct">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<IntrmyAgt3Acct>
+  <Id>
+    <IBAN>PL67676767676767676767676767</IBAN>
+  </Id>
+</IntrmyAgt3Acct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > IntrmyAgt3Acct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Identyfikator konta trzeciego agenta pośredniczącego (IBAN).</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Debtor Agent (DbtrAgt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAgtBicfi">BICFI (BICFI)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAgtBicfi" name="dbtrAgtBicfi" placeholder="np. INGBPLPWXXX"
+                                maxlength="11" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAgt2" class="include-field" data-field="dbtrAgtBicfi">
+                            <label for="includeDbtrAgt2">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAgt>
+  <FinInstnId>
+    <BICFI>NBPLPLPWXXX</BICFI>
+  </FinInstnId>
+</DbtrAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAgt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Kod BIC instytucji finansowej agenta dłużnika.</div>
+
+                    <!-- Dodanie konta dla agenta dłużnika -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrAgtAcctId">Konto agenta dłużnika (DbtrAgtAcct)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="dbtrAgtAcctId" name="dbtrAgtAcctId" maxlength="34"
+                                placeholder="np. PL12345678901234567890123456" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrAgtAcct" class="include-field"
+                                data-field="dbtrAgtAcctId">
+                            <label for="includeDbtrAgtAcct">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<DbtrAgtAcct>
+  <Id>
+    <IBAN>PL98765432109876543210987654</IBAN>
+  </Id>
+</DbtrAgtAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > DbtrAgtAcct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Numer konta IBAN dla agenta dłużnika.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-subheader">
+                        <h3>Creditor Agent (CdtrAgt)<span class="optional-indicator"> (opcjonalne)</span></h3>
+                    </div>
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAgtBicfi">BICFI (BICFI)<span class="optional-indicator">
+                                (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAgtBicfi" name="cdtrAgtBicfi" placeholder="np. COBADEFFXXX"
+                                maxlength="11" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAgt2" class="include-field" data-field="cdtrAgtBicfi">
+                            <label for="includeCdtrAgt2">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAgt>
+  <FinInstnId>
+    <BICFI>GGGGGPLPXXX</BICFI>
+  </FinInstnId>
+</CdtrAgt>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAgt > FinInstnId > BICFI">🌳</span>
+                    </div>
+                    <div class="field-description">Kod BIC instytucji finansowej agenta wierzyciela.</div>
+
+                    <!-- Dodanie konta dla agenta wierzyciela -->
+                    <div class="form-row">
+                        <label class="field-label" for="cdtrAgtAcctId">Konto agenta wierzyciela (CdtrAgtAcct)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-input">
+                            <input type="text" id="cdtrAgtAcctId" name="cdtrAgtAcctId" maxlength="34"
+                                placeholder="np. DE12345678901234567890" disabled>
+                        </div>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeCdtrAgtAcct" class="include-field"
+                                data-field="cdtrAgtAcctId">
+                            <label for="includeCdtrAgtAcct">Uwzględnij</label>
+                        </div>
+                        <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<CdtrAgtAcct>
+  <Id>
+    <IBAN>DE98765432109876543210</IBAN>
+  </Id>
+</CdtrAgtAcct>">📋</span>
+                        <span class="tree-icon" title="Pokaż strukturę XML"
+                            data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > CdtrAgtAcct > Id > IBAN">🌳</span>
+                    </div>
+                    <div class="field-description">Numer konta IBAN dla agenta wierzyciela.</div>
+                </div>
+            </div>
+        </form>
+
+        <div class="xml-output">
+            <h3>Wygenerowany XML:</h3>
+            <pre id="xmlOutput"></pre>
+        </div>
+    </div>
+
+    <!-- Dymek z XML -->
+    <div id="xmlTooltip" class="tooltip">
+        <pre id="xmlTooltipContent"></pre>
+    </div>
+
+    <!-- Dymek ze strukturą drzewa XML -->
+    <div id="treeTooltip" class="tooltip">
+        <pre id="treeTooltipContent"></pre>
+    </div>
+
+    <!-- Komunikat o skopiowaniu do schowka -->
+    <div id="copyNotification" class="notification">
+        Skopiowano do schowka!
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
