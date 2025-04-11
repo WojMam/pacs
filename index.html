@@ -521,9 +521,124 @@
                     </div>
                     <div class="field-description">Kod kraju, w którym rezyduje dłużnik. Dokładnie 2 znaki alfabetyczne
                         (ISO).</div>
+
+                    <!-- Dodaję Identification dla Debtor -->
+                    <div class="form-row">
+                        <label class="field-label" for="dbtrOrgId">Organization Identification (OrgId)<span
+                                class="optional-indicator"> (opcjonalne)</span></label>
+                        <div class="field-checkbox">
+                            <input type="checkbox" id="includeDbtrId" class="include-field"
+                                data-field="dbtrOrgIdContainer">
+                            <label for="includeDbtrId">Uwzględnij identyfikację</label>
+                        </div>
+                    </div>
+
+                    <!-- Container dla OrgId -->
+                    <div id="dbtrOrgIdContainer" style="display:none; margin-left: 20px;">
+                        <div class="form-row">
+                            <label class="field-label" for="dbtrOrgIdAnyBIC">AnyBIC<span class="optional-indicator">
+                                    (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="dbtrOrgIdAnyBIC" name="dbtrOrgIdAnyBIC" maxlength="11"
+                                    pattern="[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Id>
+  <OrgId>
+    <AnyBIC>ABCDEFGHIJK</AnyBIC>
+  </OrgId>
+</Id>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Id > OrgId > AnyBIC">🌳</span>
+                        </div>
+                        <div class="field-description">Bank Identifier Code (BIC). 8 lub 11 znaków alfanumerycznych.
+                        </div>
+
+                        <!-- Othr section -->
+                        <div class="form-row">
+                            <label class="field-label" for="dbtrOrgIdOthrId">Other Identification (Othr/Id)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="dbtrOrgIdOthrId" name="dbtrOrgIdOthrId" maxlength="256">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<Id>
+  <OrgId>
+    <Othr>
+      <Id>123456789</Id>
+    </Othr>
+  </OrgId>
+</Id>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Id > OrgId > Othr > Id">🌳</span>
+                        </div>
+                        <div class="field-description">Inny identyfikator organizacji. Maksymalnie 256 znaków.</div>
+
+                        <!-- SchmeNm section -->
+                        <div class="form-row">
+                            <label class="field-label" for="dbtrOrgIdSchemeName">Scheme Name Type<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <select id="dbtrOrgIdSchemeName" name="dbtrOrgIdSchemeName">
+                                    <option value="">-- Wybierz typ schematu --</option>
+                                    <option value="Cd">Code (Cd)</option>
+                                    <option value="Prtry">Proprietary (Prtry)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field-description">Typ nazwy schematu identyfikacyjnego.</div>
+
+                        <!-- Conditional fields based on SchmeNm selection -->
+                        <div id="dbtrOrgIdSchemeCodeContainer" style="display:none; margin-left: 20px;">
+                            <div class="form-row">
+                                <label class="field-label" for="dbtrOrgIdSchemeCode">Scheme Code (Cd)<span
+                                        class="optional-indicator"> (opcjonalne)</span></label>
+                                <div class="field-input">
+                                    <input type="text" id="dbtrOrgIdSchemeCode" name="dbtrOrgIdSchemeCode"
+                                        maxlength="4">
+                                </div>
+                                <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SchmeNm>
+  <Cd>TXID</Cd>
+</SchmeNm>">📋</span>
+                                <span class="tree-icon" title="Pokaż strukturę XML"
+                                    data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Id > OrgId > Othr > SchmeNm > Cd">🌳</span>
+                            </div>
+                            <div class="field-description">Kod schematu identyfikacyjnego. Maksymalnie 4 znaki.</div>
+                        </div>
+
+                        <div id="dbtrOrgIdSchemePrtryContainer" style="display:none; margin-left: 20px;">
+                            <div class="form-row">
+                                <label class="field-label" for="dbtrOrgIdSchemePrtry">Scheme Proprietary (Prtry)<span
+                                        class="optional-indicator"> (opcjonalne)</span></label>
+                                <div class="field-input">
+                                    <input type="text" id="dbtrOrgIdSchemePrtry" name="dbtrOrgIdSchemePrtry"
+                                        maxlength="35">
+                                </div>
+                                <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować" data-xml="<SchmeNm>
+  <Prtry>WłasnySchematIdentyfikacji</Prtry>
+</SchmeNm>">📋</span>
+                                <span class="tree-icon" title="Pokaż strukturę XML"
+                                    data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Id > OrgId > Othr > SchmeNm > Prtry">🌳</span>
+                            </div>
+                            <div class="field-description">Własna nazwa schematu identyfikacyjnego. Maksymalnie 35
+                                znaków.</div>
+                        </div>
+
+                        <!-- Issr section -->
+                        <div class="form-row">
+                            <label class="field-label" for="dbtrOrgIdIssr">Issuer (Issr)<span
+                                    class="optional-indicator"> (opcjonalne)</span></label>
+                            <div class="field-input">
+                                <input type="text" id="dbtrOrgIdIssr" name="dbtrOrgIdIssr" maxlength="35">
+                            </div>
+                            <span class="xml-icon" title="Pokaż XML i kliknij, aby skopiować"
+                                data-xml="<Issr>Nazwa Wystawcy</Issr>">📋</span>
+                            <span class="tree-icon" title="Pokaż strukturę XML"
+                                data-tree="Document > FIToFICstmrCdtTrf > CdtTrfTxInf > Dbtr > Id > OrgId > Othr > Issr">🌳</span>
+                        </div>
+                        <div class="field-description">Wystawca identyfikatora. Maksymalnie 35 znaków.</div>
+                    </div>
                 </div>
 
-                <!-- Debtor Postal Address (Dodaję nową sekcję z adresem pocztowym) -->
+                <!-- Debtor Postal Address -->
                 <div class="form-group">
                     <div class="form-subheader">
                         <h3>Debtor Postal Address (DbtrPstlAdr)<span class="optional-indicator"> (opcjonalne)</span>

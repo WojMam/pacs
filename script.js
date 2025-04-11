@@ -630,6 +630,76 @@ document.addEventListener("DOMContentLoaded", function () {
 				}
 			}
 
+			// Dodanie Id (OrgId) dla Debtor
+			const includeDbtrId = document.getElementById("includeDbtrId")?.checked;
+			if (includeDbtrId) {
+				let hasIdData = false;
+				let idXml = "        <Id>\n          <OrgId>\n";
+
+				// AnyBIC
+				const dbtrOrgIdAnyBIC =
+					document.getElementById("dbtrOrgIdAnyBIC").value;
+				if (dbtrOrgIdAnyBIC) {
+					idXml += `            <AnyBIC>${escapeXml(
+						dbtrOrgIdAnyBIC
+					)}</AnyBIC>\n`;
+					hasIdData = true;
+				}
+
+				// Other ID
+				const dbtrOrgIdOthrId =
+					document.getElementById("dbtrOrgIdOthrId").value;
+				if (dbtrOrgIdOthrId) {
+					idXml += "            <Othr>\n";
+					idXml += `              <Id>${escapeXml(dbtrOrgIdOthrId)}</Id>\n`;
+
+					// SchmeNm
+					const dbtrOrgIdSchemeName = document.getElementById(
+						"dbtrOrgIdSchemeName"
+					).value;
+					if (dbtrOrgIdSchemeName) {
+						idXml += "              <SchmeNm>\n";
+
+						if (dbtrOrgIdSchemeName === "Cd") {
+							const dbtrOrgIdSchemeCode = document.getElementById(
+								"dbtrOrgIdSchemeCode"
+							).value;
+							if (dbtrOrgIdSchemeCode) {
+								idXml += `                <Cd>${escapeXml(
+									dbtrOrgIdSchemeCode
+								)}</Cd>\n`;
+							}
+						} else if (dbtrOrgIdSchemeName === "Prtry") {
+							const dbtrOrgIdSchemePrtry = document.getElementById(
+								"dbtrOrgIdSchemePrtry"
+							).value;
+							if (dbtrOrgIdSchemePrtry) {
+								idXml += `                <Prtry>${escapeXml(
+									dbtrOrgIdSchemePrtry
+								)}</Prtry>\n`;
+							}
+						}
+
+						idXml += "              </SchmeNm>\n";
+					}
+
+					// Issr
+					const dbtrOrgIdIssr = document.getElementById("dbtrOrgIdIssr").value;
+					if (dbtrOrgIdIssr) {
+						idXml += `              <Issr>${escapeXml(dbtrOrgIdIssr)}</Issr>\n`;
+					}
+
+					idXml += "            </Othr>\n";
+					hasIdData = true;
+				}
+
+				if (hasIdData) {
+					idXml += "          </OrgId>\n";
+					idXml += "        </Id>\n";
+					xml += idXml;
+				}
+			}
+
 			xml += "      </Dbtr>\n";
 		}
 
@@ -1333,6 +1403,26 @@ document.addEventListener("DOMContentLoaded", function () {
 			safeSetFieldValue("includeDbtr", "dbtrNm", "John Doe");
 			safeSetFieldValue("includeDbtrLEI", "dbtrLEI", "1234567890ABCDEFGHI22");
 			safeSetFieldValue("includeDbtrCtryOfRes", "dbtrCtryOfRes", "PL");
+
+			// Organization Identification
+			document.getElementById("includeDbtrId").checked = true;
+			document.getElementById("dbtrOrgIdContainer").style.display = "block";
+			document.getElementById("dbtrOrgIdAnyBIC").value = "NBPLPLPWXXX";
+			document.getElementById("dbtrOrgIdOthrId").value = "12345678901";
+
+			// Scheme Name
+			const dbtrOrgIdSchemeName = document.getElementById(
+				"dbtrOrgIdSchemeName"
+			);
+			dbtrOrgIdSchemeName.value = "Cd";
+			// Wyzwól event change, aby pokazać odpowiednie pola
+			const event = new Event("change");
+			dbtrOrgIdSchemeName.dispatchEvent(event);
+
+			document.getElementById("dbtrOrgIdSchemeCode").value = "TXID";
+			document.getElementById("dbtrOrgIdIssr").value = "NBP";
+
+			// Postal Address
 			safeSetFieldValue("includeDbtrPstlAdr", "dbtrStrtNm", "Bankowa");
 			safeSetFieldValue("includeDbtrPstlAdr", "dbtrBldgNb", "14");
 			safeSetFieldValue("includeDbtrPstlAdr", "dbtrPstCd", "00-950");
@@ -1808,5 +1898,38 @@ document.addEventListener("DOMContentLoaded", function () {
 				return v.toString(16);
 			}
 		);
+	}
+
+	// Dodaję obsługę zmiany typu schematu w Organization ID
+	const dbtrOrgIdSchemeName = document.getElementById("dbtrOrgIdSchemeName");
+	if (dbtrOrgIdSchemeName) {
+		dbtrOrgIdSchemeName.addEventListener("change", function () {
+			const schemeCodeContainer = document.getElementById(
+				"dbtrOrgIdSchemeCodeContainer"
+			);
+			const schemePrtryContainer = document.getElementById(
+				"dbtrOrgIdSchemePrtryContainer"
+			);
+
+			if (this.value === "Cd") {
+				schemeCodeContainer.style.display = "block";
+				schemePrtryContainer.style.display = "none";
+			} else if (this.value === "Prtry") {
+				schemeCodeContainer.style.display = "none";
+				schemePrtryContainer.style.display = "block";
+			} else {
+				schemeCodeContainer.style.display = "none";
+				schemePrtryContainer.style.display = "none";
+			}
+		});
+	}
+
+	// Obsługa włączania/wyłączania pól Organization ID
+	const includeDbtrId = document.getElementById("includeDbtrId");
+	if (includeDbtrId) {
+		includeDbtrId.addEventListener("change", function () {
+			const dbtrOrgIdContainer = document.getElementById("dbtrOrgIdContainer");
+			dbtrOrgIdContainer.style.display = this.checked ? "block" : "none";
+		});
 	}
 });
