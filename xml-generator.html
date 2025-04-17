@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pl" class="light-mode">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator XML - ISO20022 Generator Tools</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="xml-generator.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Generator XML</h1>
+                    <p class="tagline">Narzędzie do tworzenia własnych struktur XML</p>
+                </div>
+            </div>
+            <div class="header-description">
+                <p>To narzędzie umożliwia tworzenie niestandardowych dokumentów XML z walidacją schematów XSD.</p>
+                <p>Możesz budować strukturę za pomocą edytora wizualnego lub bezpośredniej edycji kodu.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Floating Menu -->
+    <div class="floating-menu">
+        <div class="menu-header">
+            <h3>Menu</h3>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Plik</div>
+            <button id="newXml" class="menu-btn">
+                <i class="fas fa-file"></i> Nowy
+            </button>
+            <button id="loadXml" class="menu-btn">
+                <i class="fas fa-folder-open"></i> Wczytaj
+            </button>
+            <button id="saveXml" class="menu-btn">
+                <i class="fas fa-save"></i> Zapisz
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Walidacja</div>
+            <button id="loadSchema" class="menu-btn">
+                <i class="fas fa-file-code"></i> Wczytaj schemat
+            </button>
+            <button id="validateXml" class="menu-btn">
+                <i class="fas fa-check-circle"></i> Waliduj
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Szablony</div>
+            <button id="loadTemplate" class="menu-btn">
+                <i class="fas fa-puzzle-piece"></i> Wczytaj szablon
+            </button>
+            <button id="saveTemplate" class="menu-btn">
+                <i class="fas fa-save"></i> Zapisz jako szablon
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Ustawienia</div>
+            <button id="toggleTheme" class="menu-btn toggle-btn">
+                <i class="fas fa-sun light-icon"></i>
+                <i class="fas fa-moon dark-icon"></i>
+                <span class="toggle-text">Tryb ciemny</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to Main -->
+    <div class="back-to-main">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Powrót do strony głównej
+        </a>
+    </div>
+
+    <div class="container xml-generator-container">
+        <div class="workspace">
+            <!-- Left Panel - Structure Tree -->
+            <div class="panel structure-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-sitemap"></i> Struktura dokumentu</h3>
+                    <div class="panel-controls">
+                        <button id="addElement" class="panel-btn" title="Dodaj element">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div id="xmlTree" class="xml-tree">
+                        <ul class="tree-root">
+                            <li class="tree-item root-item">
+                                <div class="tree-item-content">
+                                    <span class="element-name">document</span>
+                                    <div class="tree-item-actions">
+                                        <button class="tree-action-btn add-child" title="Dodaj element podrzędny">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <ul class="tree-children"></ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Panel - Properties -->
+            <div class="panel properties-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-cogs"></i> Właściwości</h3>
+                </div>
+                <div class="panel-content">
+                    <form id="elementPropertiesForm">
+                        <div class="form-group">
+                            <label for="elementName">Nazwa elementu:</label>
+                            <input type="text" id="elementName" name="elementName">
+                        </div>
+                        <div class="form-group">
+                            <label for="elementValue">Wartość:</label>
+                            <textarea id="elementValue" name="elementValue"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Atrybuty:</label>
+                            <div id="attributesContainer">
+                                <!-- Atrybuty będą dodawane dynamicznie -->
+                            </div>
+                            <button type="button" id="addAttribute" class="action-btn">
+                                <i class="fas fa-plus"></i> Dodaj atrybut
+                            </button>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="applyProperties" class="action-btn primary">
+                                <i class="fas fa-check"></i> Zastosuj
+                            </button>
+                            <button type="button" id="deleteElement" class="action-btn danger">
+                                <i class="fas fa-trash-alt"></i> Usuń element
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Panel - XML Preview -->
+            <div class="panel preview-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-code"></i> Podgląd XML</h3>
+                    <div class="panel-controls">
+                        <button id="formatXml" class="panel-btn" title="Formatuj XML">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button id="copyXml" class="panel-btn" title="Kopiuj do schowka">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea id="xmlPreview" class="xml-preview"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validation Panel -->
+        <div class="validation-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Walidacja</h3>
+                <div class="panel-controls">
+                    <button id="clearValidation" class="panel-btn" title="Wyczyść">
+                        <i class="fas fa-broom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div id="validationResults" class="validation-results">
+                    <div class="info-message">
+                        <i class="fas fa-info-circle"></i> Wczytaj schemat XSD i kliknij "Waliduj" aby sprawdzić
+                        poprawność dokumentu XML.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Templates Modal -->
+    <div id="templatesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wybierz szablon</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="templates-list">
+                    <div class="template-item" data-template="empty">
+                        <div class="template-title">Pusty dokument</div>
+                        <div class="template-description">Rozpocznij od pustego dokumentu XML.</div>
+                    </div>
+                    <div class="template-item" data-template="contact">
+                        <div class="template-title">Kontakty</div>
+                        <div class="template-description">Struktura z danymi kontaktowymi (imię, nazwisko, email,
+                            telefon).</div>
+                    </div>
+                    <div class="template-item" data-template="invoice">
+                        <div class="template-title">Faktura</div>
+                        <div class="template-description">Podstawowa struktura faktury z danymi klienta i pozycjami.
+                        </div>
+                    </div>
+                    <div class="template-item" data-template="config">
+                        <div class="template-title">Plik konfiguracyjny</div>
+                        <div class="template-description">Przykład pliku konfiguracyjnego XML z sekcjami i parametrami.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Input for XSD Schema -->
+    <input type="file" id="schemaFileInput" accept=".xsd" style="display: none;">
+
+    <!-- File Input for XML -->
+    <input type="file" id="xmlFileInput" accept=".xml" style="display: none;">
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationMessage">Operacja zakończona pomyślnie</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="xml-generator.js"></script>
+</body>
+
+</html>
