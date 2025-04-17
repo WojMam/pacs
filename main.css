@@ -6,6 +6,55 @@
 	margin-top: 30px;
 }
 
+/* Generator Tools container styles */
+.generators-container {
+	padding: 30px;
+	border-radius: 8px;
+	background-color: rgba(var(--primary-color-rgb), 0.05);
+	border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.generators-container .section-title {
+	color: var(--primary-color);
+}
+
+.generators-container .section-title::after {
+	background: linear-gradient(
+		to right,
+		var(--primary-color),
+		var(--primary-hover)
+	);
+}
+
+.generators-container .tile {
+	background: linear-gradient(
+		to bottom right,
+		var(--container-bg),
+		rgba(var(--primary-color-rgb), 0.05)
+	);
+}
+
+.generators-container .tile::before {
+	background: linear-gradient(
+		to bottom,
+		var(--primary-color),
+		var(--primary-hover)
+	);
+}
+
+.generators-container .tile:hover {
+	border-color: var(--primary-color);
+	box-shadow: 0 8px 18px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.generators-container .tile-icon {
+	color: var(--primary-color);
+}
+
+.generators-container .tile-description {
+	color: var(--primary-color);
+}
+
 .tile {
 	background: var(--container-bg);
 	border-radius: 8px;
@@ -217,6 +266,10 @@ html.dark-mode {
 	}
 
 	.other-tools-container {
+		padding: 20px;
+	}
+
+	.generators-container {
 		padding: 20px;
 	}
 }
