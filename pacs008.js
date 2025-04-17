@@ -2488,14 +2488,37 @@ document.addEventListener("DOMContentLoaded", function () {
 		Sprawdza czy checkbox i pole istnieją przed próbą ustawienia wartości
 		*/
 		function safeSetFieldValue(checkboxId, inputId, value) {
-			const checkbox = document.getElementById(checkboxId);
-			const input = document.getElementById(inputId);
-			if (checkbox && input) {
-				checkbox.checked = true;
-				input.disabled = false; // Usuwamy atrybut disabled
-				input.value = value;
+			// Special case handling for when only checkbox needs to be checked
+			if (checkboxId !== null && inputId === null) {
+				const checkbox = document.getElementById(checkboxId);
+				if (checkbox) {
+					checkbox.checked = true;
+					return true;
+				}
+				return false;
+			}
 
-				// Sprawdź czy checkbox ma atrybut data-related-field i jeśli tak, usuń również disabled z powiązanego pola
+			// Regular case with both checkbox and input
+			const checkbox = checkboxId ? document.getElementById(checkboxId) : null;
+			const input = inputId ? document.getElementById(inputId) : null;
+
+			// Return early if input doesn't exist
+			if (!input) {
+				console.warn(`Input field with ID '${inputId}' not found.`);
+				return false;
+			}
+
+			// If checkbox exists, check it and enable the input
+			if (checkbox) {
+				checkbox.checked = true;
+				input.disabled = false;
+			}
+
+			// Set the value
+			input.value = value;
+
+			// Check for related fields via data-related-field attribute
+			if (checkbox) {
 				const relatedFieldId = checkbox.getAttribute("data-related-field");
 				if (relatedFieldId) {
 					const relatedField = document.getElementById(relatedFieldId);
@@ -2503,15 +2526,16 @@ document.addEventListener("DOMContentLoaded", function () {
 						relatedField.disabled = false;
 					}
 				}
-
-				// Wykrywanie pola waluty na podstawie konwencji nazewnictwa
-				// (np. jeśli inputId to "ttlIntrBkSttlmAmt", szukamy pola "ttlIntrBkSttlmAmtCcy")
-				const currencyFieldId = inputId + "Ccy";
-				const currencyField = document.getElementById(currencyFieldId);
-				if (currencyField) {
-					currencyField.disabled = false;
-				}
 			}
+
+			// Check for currency field
+			const currencyFieldId = inputId + "Ccy";
+			const currencyField = document.getElementById(currencyFieldId);
+			if (currencyField) {
+				currencyField.disabled = false;
+			}
+
+			return true;
 		}
 
 		try {
@@ -2540,8 +2564,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			);
 
 			// Waluta dla Total Interbank Settlement Amount
-			if (document.getElementById("ttlIntrBkSttlmAmtCcy")) {
-				document.getElementById("ttlIntrBkSttlmAmtCcy").value = "EUR";
+			const ttlIntrBkSttlmAmtCcy = document.getElementById(
+				"ttlIntrBkSttlmAmtCcy"
+			);
+			if (ttlIntrBkSttlmAmtCcy) {
+				ttlIntrBkSttlmAmtCcy.value = "EUR";
 			}
 
 			// 5. Interbank Settlement Date - dodane pole
@@ -2628,8 +2655,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			// 14. Charges Information Amount
 			safeSetFieldValue("includeChrgsInf", "chrgsInfAmt", "5.50");
-			if (document.getElementById("chrgsInfAmtCcy")) {
-				document.getElementById("chrgsInfAmtCcy").value = "EUR";
+			const chrgsInfAmtCcy = document.getElementById("chrgsInfAmtCcy");
+			if (chrgsInfAmtCcy) {
+				chrgsInfAmtCcy.value = "EUR";
 			}
 			// Party BICFI w ChrgsInf
 			safeSetFieldValue(
@@ -2647,9 +2675,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				"pmtSgntrValue",
 				"4642F973614EAA85396053511F5F6FFA"
 			);
-			if (document.getElementById("pmtSgntrType")) {
-				document.getElementById("pmtSgntrType").value = "ILPV4";
-				document.getElementById("pmtSgntrType").disabled = false;
+			const pmtSgntrType = document.getElementById("pmtSgntrType");
+			if (pmtSgntrType) {
+				pmtSgntrType.value = "ILPV4";
+				pmtSgntrType.disabled = false;
 			}
 
 			// 16. Mandate Related Information
@@ -2675,10 +2704,22 @@ document.addEventListener("DOMContentLoaded", function () {
 				"instgAgtOtherId",
 				"87654321"
 			);
-			document.getElementById("instgAgtOthrSchmeNmContainer").style.display =
-				"block";
-			document.getElementById("instgAgtOthrSchmeNmCd").value = "BANK";
-			document.getElementById("instgAgtOthrIssr").value = "NBP";
+			const instgAgtOthrSchmeNmContainer = document.getElementById(
+				"instgAgtOthrSchmeNmContainer"
+			);
+			if (instgAgtOthrSchmeNmContainer) {
+				instgAgtOthrSchmeNmContainer.style.display = "block";
+			}
+			const instgAgtOthrSchmeNmCd = document.getElementById(
+				"instgAgtOthrSchmeNmCd"
+			);
+			if (instgAgtOthrSchmeNmCd) {
+				instgAgtOthrSchmeNmCd.value = "BANK";
+			}
+			const instgAgtOthrIssr = document.getElementById("instgAgtOthrIssr");
+			if (instgAgtOthrIssr) {
+				instgAgtOthrIssr.value = "NBP";
+			}
 
 			// Instructing Agent Address
 			safeSetFieldValue(
@@ -2718,10 +2759,22 @@ document.addEventListener("DOMContentLoaded", function () {
 				"instdAgtOtherId",
 				"12345678"
 			);
-			document.getElementById("instdAgtOthrSchmeNmContainer").style.display =
-				"block";
-			document.getElementById("instdAgtOthrSchmeNmCd").value = "BANK";
-			document.getElementById("instdAgtOthrIssr").value = "Bundesbank";
+			const instdAgtOthrSchmeNmContainer = document.getElementById(
+				"instdAgtOthrSchmeNmContainer"
+			);
+			if (instdAgtOthrSchmeNmContainer) {
+				instdAgtOthrSchmeNmContainer.style.display = "block";
+			}
+			const instdAgtOthrSchmeNmCd = document.getElementById(
+				"instdAgtOthrSchmeNmCd"
+			);
+			if (instdAgtOthrSchmeNmCd) {
+				instdAgtOthrSchmeNmCd.value = "BANK";
+			}
+			const instdAgtOthrIssr = document.getElementById("instdAgtOthrIssr");
+			if (instdAgtOthrIssr) {
+				instdAgtOthrIssr.value = "Bundesbank";
+			}
 
 			// Instructed Agent Address
 			safeSetFieldValue(
@@ -3028,8 +3081,11 @@ document.addEventListener("DOMContentLoaded", function () {
 				"rgltryRptgDtlsAmt",
 				"1000.00"
 			);
-			if (document.getElementById("rgltryRptgDtlsAmtCcy")) {
-				document.getElementById("rgltryRptgDtlsAmtCcy").value = "EUR";
+			const rgltryRptgDtlsAmtCcy = document.getElementById(
+				"rgltryRptgDtlsAmtCcy"
+			);
+			if (rgltryRptgDtlsAmtCcy) {
+				rgltryRptgDtlsAmtCcy.value = "EUR";
 			}
 			safeSetFieldValue(
 				"includeRgltryRptgDtlsInf",
@@ -3194,13 +3250,23 @@ document.addEventListener("DOMContentLoaded", function () {
 				"rmtInfStrdDuePyblAmt",
 				"1000.00"
 			);
-			document.getElementById("rmtInfStrdDuePyblAmtCcy").value = "EUR";
+			const rmtInfStrdDuePyblAmtCcy = document.getElementById(
+				"rmtInfStrdDuePyblAmtCcy"
+			);
+			if (rmtInfStrdDuePyblAmtCcy) {
+				rmtInfStrdDuePyblAmtCcy.value = "EUR";
+			}
 			safeSetFieldValue(
 				"includeRmtInfStrdRmtdAmt",
 				"rmtInfStrdRmtdAmt",
 				"1000.00"
 			);
-			document.getElementById("rmtInfStrdRmtdAmtCcy").value = "EUR";
+			const rmtInfStrdRmtdAmtCcy = document.getElementById(
+				"rmtInfStrdRmtdAmtCcy"
+			);
+			if (rmtInfStrdRmtdAmtCcy) {
+				rmtInfStrdRmtdAmtCcy.value = "EUR";
+			}
 			safeSetFieldValue(
 				"includeRmtInfStrdCdtrRefInf",
 				"rmtInfStrdCdtrRefInfTp",
@@ -3366,13 +3432,17 @@ document.addEventListener("DOMContentLoaded", function () {
 				"taxTtlTaxblBaseAmt",
 				"1000.00"
 			);
-			if (document.getElementById("taxTtlTaxblBaseAmtCcy")) {
-				document.getElementById("taxTtlTaxblBaseAmtCcy").value = "EUR";
+			const taxTtlTaxblBaseAmtCcy = document.getElementById(
+				"taxTtlTaxblBaseAmtCcy"
+			);
+			if (taxTtlTaxblBaseAmtCcy) {
+				taxTtlTaxblBaseAmtCcy.value = "EUR";
 			}
 
 			safeSetFieldValue("includeTaxTtlTaxAmt", "taxTtlTaxAmt", "230.00");
-			if (document.getElementById("taxTtlTaxAmtCcy")) {
-				document.getElementById("taxTtlTaxAmtCcy").value = "EUR";
+			const taxTtlTaxAmtCcy = document.getElementById("taxTtlTaxAmtCcy");
+			if (taxTtlTaxAmtCcy) {
+				taxTtlTaxAmtCcy.value = "EUR";
 			}
 
 			showNotification("Optional fields filled with example data");
