@@ -1,0 +1,572 @@
+/**
+ * Layout CSS - style dla układu strony i systemu siatki
+ */
+
+/* Container */
+.container {
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 1200px;
+}
+
+@media (min-width: 576px) {
+	.container {
+		max-width: 540px;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		max-width: 720px;
+	}
+}
+
+@media (min-width: 992px) {
+	.container {
+		max-width: 960px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.container {
+		max-width: 1140px;
+	}
+}
+
+/* Grid system */
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.col {
+	position: relative;
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	flex-basis: 0;
+	flex-grow: 1;
+	max-width: 100%;
+}
+
+.col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+.col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+.col-3 { flex: 0 0 25%; max-width: 25%; }
+.col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+.col-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+.col-6 { flex: 0 0 50%; max-width: 50%; }
+.col-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+.col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+.col-9 { flex: 0 0 75%; max-width: 75%; }
+.col-10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+.col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+.col-12 { flex: 0 0 100%; max-width: 100%; }
+
+/* Grid na różnych rozmiarach ekranów */
+@media (min-width: 576px) {
+.col-1 {
+	flex: 0 0 8.333333%;
+	max-width: 8.333333%;
+}
+.col-2 {
+	flex: 0 0 16.666667%;
+	max-width: 16.666667%;
+}
+.col-3 {
+	flex: 0 0 25%;
+	max-width: 25%;
+}
+.col-4 {
+	flex: 0 0 33.333333%;
+	max-width: 33.333333%;
+}
+.col-5 {
+	flex: 0 0 41.666667%;
+	max-width: 41.666667%;
+}
+.col-6 {
+	flex: 0 0 50%;
+	max-width: 50%;
+}
+.col-7 {
+	flex: 0 0 58.333333%;
+	max-width: 58.333333%;
+}
+.col-8 {
+	flex: 0 0 66.666667%;
+	max-width: 66.666667%;
+}
+.col-9 {
+	flex: 0 0 75%;
+	max-width: 75%;
+}
+.col-10 {
+	flex: 0 0 83.333333%;
+	max-width: 83.333333%;
+}
+.col-11 {
+	flex: 0 0 91.666667%;
+	max-width: 91.666667%;
+}
+.col-12 {
+	flex: 0 0 100%;
+	max-width: 100%;
+}
+
+/* Grid na różnych rozmiarach ekranów */
+@media (min-width: 576px) {
+	.col-sm-1 {
+		flex: 0 0 8.333333%;
+		max-width: 8.333333%;
+	}
+	.col-sm-2 {
+		flex: 0 0 16.666667%;
+		max-width: 16.666667%;
+	}
+	.col-sm-3 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+	.col-sm-4 {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+	}
+	.col-sm-5 {
+		flex: 0 0 41.666667%;
+		max-width: 41.666667%;
+	}
+	.col-sm-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.col-sm-7 {
+		flex: 0 0 58.333333%;
+		max-width: 58.333333%;
+	}
+	.col-sm-8 {
+		flex: 0 0 66.666667%;
+		max-width: 66.666667%;
+	}
+	.col-sm-9 {
+		flex: 0 0 75%;
+		max-width: 75%;
+	}
+	.col-sm-10 {
+		flex: 0 0 83.333333%;
+		max-width: 83.333333%;
+	}
+	.col-sm-11 {
+		flex: 0 0 91.666667%;
+		max-width: 91.666667%;
+	}
+	.col-sm-12 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+@media (min-width: 768px) {
+	.col-md-1 {
+		flex: 0 0 8.333333%;
+		max-width: 8.333333%;
+	}
+	.col-md-2 {
+		flex: 0 0 16.666667%;
+		max-width: 16.666667%;
+	}
+	.col-md-3 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+	.col-md-4 {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+	}
+	.col-md-5 {
+		flex: 0 0 41.666667%;
+		max-width: 41.666667%;
+	}
+	.col-md-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.col-md-7 {
+		flex: 0 0 58.333333%;
+		max-width: 58.333333%;
+	}
+	.col-md-8 {
+		flex: 0 0 66.666667%;
+		max-width: 66.666667%;
+	}
+	.col-md-9 {
+		flex: 0 0 75%;
+		max-width: 75%;
+	}
+	.col-md-10 {
+		flex: 0 0 83.333333%;
+		max-width: 83.333333%;
+	}
+	.col-md-11 {
+		flex: 0 0 91.666667%;
+		max-width: 91.666667%;
+	}
+	.col-md-12 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+@media (min-width: 992px) {
+	.col-lg-1 {
+		flex: 0 0 8.333333%;
+		max-width: 8.333333%;
+	}
+	.col-lg-2 {
+		flex: 0 0 16.666667%;
+		max-width: 16.666667%;
+	}
+	.col-lg-3 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+	.col-lg-4 {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+	}
+	.col-lg-5 {
+		flex: 0 0 41.666667%;
+		max-width: 41.666667%;
+	}
+	.col-lg-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.col-lg-7 {
+		flex: 0 0 58.333333%;
+		max-width: 58.333333%;
+	}
+	.col-lg-8 {
+		flex: 0 0 66.666667%;
+		max-width: 66.666667%;
+	}
+	.col-lg-9 {
+		flex: 0 0 75%;
+		max-width: 75%;
+	}
+	.col-lg-10 {
+		flex: 0 0 83.333333%;
+		max-width: 83.333333%;
+	}
+	.col-lg-11 {
+		flex: 0 0 91.666667%;
+		max-width: 91.666667%;
+	}
+	.col-lg-12 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.col-xl-1 {
+		flex: 0 0 8.333333%;
+		max-width: 8.333333%;
+	}
+	.col-xl-2 {
+		flex: 0 0 16.666667%;
+		max-width: 16.666667%;
+	}
+	.col-xl-3 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+	.col-xl-4 {
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+	}
+	.col-xl-5 {
+		flex: 0 0 41.666667%;
+		max-width: 41.666667%;
+	}
+	.col-xl-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.col-xl-7 {
+		flex: 0 0 58.333333%;
+		max-width: 58.333333%;
+	}
+	.col-xl-8 {
+		flex: 0 0 66.666667%;
+		max-width: 66.666667%;
+	}
+	.col-xl-9 {
+		flex: 0 0 75%;
+		max-width: 75%;
+	}
+	.col-xl-10 {
+		flex: 0 0 83.333333%;
+		max-width: 83.333333%;
+	}
+	.col-xl-11 {
+		flex: 0 0 91.666667%;
+		max-width: 91.666667%;
+	}
+	.col-xl-12 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+/* Wyrównanie kolumn */
+.align-items-start {
+	align-items: flex-start;
+}
+.align-items-center {
+	align-items: center;
+}
+.align-items-end {
+	align-items: flex-end;
+}
+.justify-content-start {
+	justify-content: flex-start;
+}
+.justify-content-center {
+	justify-content: center;
+}
+.justify-content-end {
+	justify-content: flex-end;
+}
+.justify-content-between {
+	justify-content: space-between;
+}
+.justify-content-around {
+	justify-content: space-around;
+}
+
+/* Odstępy między kolumnami */
+.no-gutters {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.no-gutters > .col,
+.no-gutters > [class*="col-"] {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+/* Flexbox Utilities */
+.d-flex {
+	display: flex;
+}
+.flex-row {
+	flex-direction: row;
+}
+.flex-column {
+	flex-direction: column;
+}
+.flex-row-reverse {
+	flex-direction: row-reverse;
+}
+.flex-column-reverse {
+	flex-direction: column-reverse;
+}
+.flex-wrap {
+	flex-wrap: wrap;
+}
+.flex-nowrap {
+	flex-wrap: nowrap;
+}
+.flex-grow-1 {
+	flex-grow: 1;
+}
+.flex-shrink-0 {
+	flex-shrink: 0;
+}
+.flex-shrink-1 {
+	flex-shrink: 1;
+}
+
+/* Układ strony */
+.main-layout {
+	display: flex;
+	min-height: 100vh;
+	width: 100%;
+}
+
+.sidebar {
+	width: 250px;
+	flex-shrink: 0;
+	background-color: #fff;
+	border-right: 1px solid #e9ecef;
+	height: 100vh;
+	position: sticky;
+	top: 0;
+	overflow-y: auto;
+}
+
+.content-area {
+	flex-grow: 1;
+	padding: 20px;
+	background-color: #f8f9fa;
+	min-height: 100vh;
+}
+
+.content-wrapper {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.main-header {
+	height: 60px;
+	background-color: #fff;
+	border-bottom: 1px solid #e9ecef;
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+
+.main-footer {
+	background-color: #343a40;
+	color: #fff;
+	padding: 20px 0;
+}
+
+/* Układ dwukolumnowy */
+.two-column-layout {
+	display: flex;
+	gap: 30px;
+}
+
+.two-column-layout .primary-column {
+	flex: 0 0 70%;
+	max-width: 70%;
+}
+
+.two-column-layout .secondary-column {
+	flex: 0 0 30%;
+	max-width: 30%;
+}
+
+/* Responsywny układ strony */
+@media (max-width: 992px) {
+	.sidebar {
+		position: fixed;
+		left: -250px;
+		z-index: 1000;
+		transition: left 0.3s;
+	}
+
+	.sidebar.show {
+		left: 0;
+	}
+
+	.sidebar-backdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 999;
+		display: none;
+	}
+
+	.sidebar-backdrop.show {
+		display: block;
+	}
+
+	.two-column-layout {
+		flex-direction: column;
+	}
+
+	.two-column-layout .primary-column,
+	.two-column-layout .secondary-column {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+}
+
+/* Pomocnicze klasy dla układu */
+.sticky-top {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+
+.sticky-bottom {
+	position: sticky;
+	bottom: 0;
+	z-index: 100;
+}
+
+.position-relative {
+	position: relative;
+}
+.position-absolute {
+	position: absolute;
+}
+.position-fixed {
+	position: fixed;
+}
+
+.top-0 {
+	top: 0;
+}
+.right-0 {
+	right: 0;
+}
+.bottom-0 {
+	bottom: 0;
+}
+.left-0 {
+	left: 0;
+}
+
+/* Marginesy i odstępy */
+.m-0 {
+	margin: 0;
+}
+.m-1 {
+	margin: 0.25rem;
+}
+.m-2 {
+	margin: 0.5rem;
+}
+.m-3 {
+	margin: 1rem;
+}
+.m-4 {
+	margin: 1.5rem;
+}
+.m-5 {
+	margin: 3rem;
+}
+
+.p-0 {
+	padding: 0;
+}
+.p-1 {
+	padding: 0.25rem;
+}
+.p-2 {
+	padding: 0.5rem;
+}
+.p-3 {
+	padding: 1rem;
+}
+.p-4 {
+	padding: 1.5rem;
+}
+.p-5 {
+	padding: 3rem;
+}

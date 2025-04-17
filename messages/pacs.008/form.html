@@ -1,0 +1,229 @@
+<!-- PACS.008 Message Form - FIToFICustomerCreditTransfer -->
+<div class="form-container">
+    <form id="pacs008-form" class="message-form">
+        <div class="form-header">
+            <h2>PACS.008 - FIToFICustomerCreditTransfer</h2>
+            <p class="form-subtitle">Customer Credit Transfer</p>
+        </div>
+
+        <!-- Group Header Information -->
+        <fieldset class="form-section">
+            <legend>Group Header</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="msgId">Message ID</label>
+                    <input type="text" id="msgId" name="GrpHdr.MsgId" required data-xml-path="GrpHdr/MsgId"
+                        placeholder="e.g., MSGID-2023-10-25-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="creationDateTime">Creation Date Time</label>
+                    <input type="datetime-local" id="creationDateTime" name="GrpHdr.CreDtTm" required
+                        data-xml-path="GrpHdr/CreDtTm">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="numberOfTransactions">Number of Transactions</label>
+                    <input type="number" id="numberOfTransactions" name="GrpHdr.NbOfTxs" required
+                        data-xml-path="GrpHdr/NbOfTxs" min="1" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="settlementMethod">Settlement Method</label>
+                    <select id="settlementMethod" name="GrpHdr.SttlmInf.SttlmMtd" required
+                        data-xml-path="GrpHdr/SttlmInf/SttlmMtd">
+                        <option value="CLRG">Clearing System</option>
+                        <option value="INDA">Instructing Agent</option>
+                        <option value="INGA">Instructed Agent</option>
+                        <option value="COVE">Cover Method</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Credit Transfer Transaction Information -->
+        <fieldset class="form-section">
+            <legend>Credit Transfer Transaction Information</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="endToEndId">End to End ID</label>
+                    <input type="text" id="endToEndId" name="CdtTrfTxInf.PmtId.EndToEndId" required
+                        data-xml-path="CdtTrfTxInf/PmtId/EndToEndId" placeholder="e.g., E2E-REF-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="transactionId">Transaction ID</label>
+                    <input type="text" id="transactionId" name="CdtTrfTxInf.PmtId.TxId" required
+                        data-xml-path="CdtTrfTxInf/PmtId/TxId" placeholder="e.g., TXN-REF-001">
+                </div>
+            </div>
+
+            <!-- Payment Type Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="serviceLevel">Service Level</label>
+                    <select id="serviceLevel" name="CdtTrfTxInf.PmtTpInf.SvcLvl.Cd"
+                        data-xml-path="CdtTrfTxInf/PmtTpInf/SvcLvl/Cd">
+                        <option value="SEPA">SEPA</option>
+                        <option value="URGP">Urgent Payment</option>
+                        <option value="SDVA">Same Day Value</option>
+                        <option value="PRPT">Priority Payment</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="localInstrument">Local Instrument</label>
+                    <input type="text" id="localInstrument" name="CdtTrfTxInf.PmtTpInf.LclInstrm.Cd"
+                        data-xml-path="CdtTrfTxInf/PmtTpInf/LclInstrm/Cd" placeholder="e.g., INST">
+                </div>
+            </div>
+
+            <!-- Amount Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="CdtTrfTxInf.IntrBkSttlmAmt.value" required
+                        data-xml-path="CdtTrfTxInf/IntrBkSttlmAmt" step="0.01" min="0.01" placeholder="e.g., 1000.00">
+                </div>
+
+                <div class="form-group">
+                    <label for="currency">Currency</label>
+                    <select id="currency" name="CdtTrfTxInf.IntrBkSttlmAmt.Ccy" required
+                        data-xml-path="CdtTrfTxInf/IntrBkSttlmAmt@Ccy">
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
+                        <option value="CHF">CHF</option>
+                        <option value="JPY">JPY</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Debtor Information -->
+        <fieldset class="form-section">
+            <legend>Debtor Information</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="debtorName">Debtor Name</label>
+                    <input type="text" id="debtorName" name="CdtTrfTxInf.Dbtr.Nm" required
+                        data-xml-path="CdtTrfTxInf/Dbtr/Nm" placeholder="e.g., John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="debtorPostalAddress">Postal Address</label>
+                    <textarea id="debtorPostalAddress" name="CdtTrfTxInf.Dbtr.PstlAdr.AdrLine"
+                        data-xml-path="CdtTrfTxInf/Dbtr/PstlAdr/AdrLine" placeholder="e.g., 123 Main Street"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="debtorCountry">Country</label>
+                    <input type="text" id="debtorCountry" name="CdtTrfTxInf.Dbtr.PstlAdr.Ctry"
+                        data-xml-path="CdtTrfTxInf/Dbtr/PstlAdr/Ctry" placeholder="e.g., US">
+                </div>
+
+                <div class="form-group">
+                    <label for="debtorAccountId">Debtor Account</label>
+                    <input type="text" id="debtorAccountId" name="CdtTrfTxInf.DbtrAcct.Id.IBAN" required
+                        data-xml-path="CdtTrfTxInf/DbtrAcct/Id/IBAN" placeholder="e.g., DE89370400440532013000">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="debtorAgentBIC">Debtor Agent BIC</label>
+                    <input type="text" id="debtorAgentBIC" name="CdtTrfTxInf.DbtrAgt.FinInstnId.BICFI" required
+                        data-xml-path="CdtTrfTxInf/DbtrAgt/FinInstnId/BICFI" placeholder="e.g., DEUTDEFFXXX">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Creditor Information -->
+        <fieldset class="form-section">
+            <legend>Creditor Information</legend>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="creditorName">Creditor Name</label>
+                    <input type="text" id="creditorName" name="CdtTrfTxInf.Cdtr.Nm" required
+                        data-xml-path="CdtTrfTxInf/Cdtr/Nm" placeholder="e.g., Jane Smith">
+                </div>
+
+                <div class="form-group">
+                    <label for="creditorPostalAddress">Postal Address</label>
+                    <textarea id="creditorPostalAddress" name="CdtTrfTxInf.Cdtr.PstlAdr.AdrLine"
+                        data-xml-path="CdtTrfTxInf/Cdtr/PstlAdr/AdrLine" placeholder="e.g., 456 Oak Avenue"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="creditorCountry">Country</label>
+                    <input type="text" id="creditorCountry" name="CdtTrfTxInf.Cdtr.PstlAdr.Ctry"
+                        data-xml-path="CdtTrfTxInf/Cdtr/PstlAdr/Ctry" placeholder="e.g., DE">
+                </div>
+
+                <div class="form-group">
+                    <label for="creditorAccountId">Creditor Account</label>
+                    <input type="text" id="creditorAccountId" name="CdtTrfTxInf.CdtrAcct.Id.IBAN" required
+                        data-xml-path="CdtTrfTxInf/CdtrAcct/Id/IBAN" placeholder="e.g., FR1420041010050500013M02606">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="creditorAgentBIC">Creditor Agent BIC</label>
+                    <input type="text" id="creditorAgentBIC" name="CdtTrfTxInf.CdtrAgt.FinInstnId.BICFI" required
+                        data-xml-path="CdtTrfTxInf/CdtrAgt/FinInstnId/BICFI" placeholder="e.g., SOGEFRPPXXX">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Remittance Information -->
+        <fieldset class="form-section">
+            <legend>Remittance Information</legend>
+
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label for="remittanceInfo">Unstructured Information</label>
+                    <textarea id="remittanceInfo" name="CdtTrfTxInf.RmtInf.Ustrd"
+                        data-xml-path="CdtTrfTxInf/RmtInf/Ustrd"
+                        placeholder="e.g., Invoice payment #INV-2023-001"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="navigateToMessageSelection()">Back</button>
+            <button type="submit" class="btn btn-primary">Generate XML</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Initialize the form with current date and time
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set default creation date time
+        const now = new Date();
+        const formattedDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDThh:mm
+        document.getElementById('creationDateTime').value = formattedDate;
+
+        // Set default message ID with timestamp
+        const timestamp = now.toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+        document.getElementById('msgId').value = `MSGID-${timestamp}`;
+
+        // Set up form submission handler
+        document.getElementById('pacs008-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            handleFormSubmit(this, 'pacs.008');
+        });
+    });
+</script>

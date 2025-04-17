@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PACS.008 - FIToFICustomerCreditTransfer</title>
+    <link rel="stylesheet" href="../../styles/index.css">
+    <script src="../../js/component-loader.js"></script>
+    <script src="../../js/xml-utils.js"></script>
+    <script src="../../js/script.js"></script>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>PACS.008 Message Generator</h1>
+            <div class="actions">
+                <a href="../../index.html" class="btn btn-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <button id="theme-toggle-btn" class="btn btn-icon" aria-label="Toggle dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="message-info card">
+            <h2>FIToFICustomerCreditTransfer (pacs.008.001.13)</h2>
+            <p>
+                The FIToFICustomerCreditTransfer message is sent by the debtor agent to the creditor agent, directly or
+                through other agents and/or a payment clearing and settlement system.
+                It is used to move funds from a debtor account to a creditor, where both debtor and creditor are
+                financial institutions.
+            </p>
+        </div>
+
+        <div class="tabs-container" id="main-tabs">
+            <div class="tabs">
+                <button class="tab active" data-target="form-tab">Form View</button>
+                <button class="tab" data-target="xml-tab">XML View</button>
+                <button class="tab" data-target="schema-tab">Schema Info</button>
+            </div>
+
+            <div class="tab-content">
+                <div id="form-tab" class="tab-pane active">
+                    <form id="pacs008Form" class="xml-form">
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Generate XML</button>
+                            <button type="button" class="btn btn-secondary" id="fillTestData">Fill Test Data</button>
+                            <button type="reset" class="btn">Reset Form</button>
+                        </div>
+
+                        <!-- Group Header Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3>Group Header</h3>
+                                <button type="button" class="section-toggle" aria-label="Toggle section"></button>
+                            </div>
+                            <div class="section-content">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="msgId">Message ID</label>
+                                        <input type="text" id="msgId" name="msgId" required>
+                                        <div class="field-info">
+                                            <span class="field-path">GrpHdr/MsgId</span>
+                                            <span class="field-desc">Point to point reference assigned by the
+                                                instructing party to unambiguously identify the message.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="creationDate">Creation Date Time</label>
+                                        <input type="datetime-local" id="creationDate" name="creationDate" required>
+                                        <div class="field-info">
+                                            <span class="field-path">GrpHdr/CreDtTm</span>
+                                            <span class="field-desc">Date and time at which the message was
+                                                created.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="numberOfTxs">Number of Transactions</label>
+                                        <input type="number" id="numberOfTxs" name="numberOfTxs" value="1" min="1"
+                                            required>
+                                        <div class="field-info">
+                                            <span class="field-path">GrpHdr/NbOfTxs</span>
+                                            <span class="field-desc">Number of individual transactions contained in the
+                                                message.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settlementMethod">Settlement Method</label>
+                                        <select id="settlementMethod" name="settlementMethod" required>
+                                            <option value="CLRG">Clearing System</option>
+                                            <option value="COVE">Cover Method</option>
+                                            <option value="INDA">Instructed Agent</option>
+                                            <option value="INGA">Instructing Agent</option>
+                                        </select>
+                                        <div class="field-info">
+                                            <span class="field-path">GrpHdr/SttlmInf/SttlmMtd</span>
+                                            <span class="field-desc">Method used to settle the transaction.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="instructingAgentBIC">Instructing Agent BIC</label>
+                                        <input type="text" id="instructingAgentBIC" name="instructingAgentBIC"
+                                            placeholder="e.g. BANKBEBB">
+                                        <div class="field-info">
+                                            <span class="field-path">GrpHdr/InstgAgt/FinInstnId/BICFI</span>
+                                            <span class="field-desc">Financial institution that instructs the next party
+                                                in the chain to carry out the instruction.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="instructedAgentBIC">Instructed Agent BIC</label>
+                                        <input type="text" id="instructedAgentBIC" name="instructedAgentBIC"
+                                            placeholder="e.g. BANKFRPP">
+                                        <div class="field-info">
+                                            <span class="field-path">GrpHdr/InstdAgt/FinInstnId/BICFI</span>
+                                            <span class="field-desc">Financial institution that receives the instruction
+                                                from the instructing agent.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transaction Information Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3>Transaction Information</h3>
+                                <button type="button" class="section-toggle" aria-label="Toggle section"></button>
+                            </div>
+                            <div class="section-content">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="endToEndId">End to End ID</label>
+                                        <input type="text" id="endToEndId" name="endToEndId" required
+                                            placeholder="Unique End to End ID">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/PmtId/EndToEndId</span>
+                                            <span class="field-desc">Unique identification assigned by the initiating
+                                                party to unambiguously identify the transaction.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txId">Transaction ID</label>
+                                        <input type="text" id="txId" name="txId" required
+                                            placeholder="Unique Transaction ID">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/PmtId/TxId</span>
+                                            <span class="field-desc">Unique identification assigned by the first
+                                                instructing agent to unambiguously identify the transaction.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <input type="number" id="amount" name="amount" required step="0.01" min="0.01">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/IntrBkSttlmAmt</span>
+                                            <span class="field-desc">Amount of money moved between the instructing agent
+                                                and the instructed agent.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="currency">Currency</label>
+                                        <select id="currency" name="currency" required>
+                                            <option value="EUR">EUR - Euro</option>
+                                            <option value="USD">USD - US Dollar</option>
+                                            <option value="GBP">GBP - British Pound</option>
+                                            <option value="CHF">CHF - Swiss Franc</option>
+                                            <option value="JPY">JPY - Japanese Yen</option>
+                                        </select>
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/IntrBkSttlmAmt/@Ccy</span>
+                                            <span class="field-desc">Currency of the settlement amount.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Debtor Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3>Debtor Information</h3>
+                                <button type="button" class="section-toggle" aria-label="Toggle section"></button>
+                            </div>
+                            <div class="section-content">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="debtorName">Debtor Name</label>
+                                        <input type="text" id="debtorName" name="debtorName" required>
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/Dbtr/Nm</span>
+                                            <span class="field-desc">Name of the debtor.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="debtorAccountId">Debtor Account ID (IBAN)</label>
+                                        <input type="text" id="debtorAccountId" name="debtorAccountId" required
+                                            placeholder="e.g. DE89370400440532013000">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/DbtrAcct/Id/IBAN</span>
+                                            <span class="field-desc">International Bank Account Number (IBAN) -
+                                                identifier used internationally by financial institutions to uniquely
+                                                identify the account of a customer.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="debtorAgentBIC">Debtor Agent BIC</label>
+                                        <input type="text" id="debtorAgentBIC" name="debtorAgentBIC" required
+                                            placeholder="e.g. DEUTDEFF">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/DbtrAgt/FinInstnId/BICFI</span>
+                                            <span class="field-desc">Financial institution servicing an account for the
+                                                debtor.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Creditor Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3>Creditor Information</h3>
+                                <button type="button" class="section-toggle" aria-label="Toggle section"></button>
+                            </div>
+                            <div class="section-content">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="creditorName">Creditor Name</label>
+                                        <input type="text" id="creditorName" name="creditorName" required>
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/Cdtr/Nm</span>
+                                            <span class="field-desc">Name of the creditor.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="creditorAccountId">Creditor Account ID (IBAN)</label>
+                                        <input type="text" id="creditorAccountId" name="creditorAccountId" required
+                                            placeholder="e.g. FR1420041010050500013M02606">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/CdtrAcct/Id/IBAN</span>
+                                            <span class="field-desc">International Bank Account Number (IBAN) -
+                                                identifier used internationally by financial institutions to uniquely
+                                                identify the account of a customer.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="creditorAgentBIC">Creditor Agent BIC</label>
+                                        <input type="text" id="creditorAgentBIC" name="creditorAgentBIC" required
+                                            placeholder="e.g. BNPAFRPP">
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/CdtrAgt/FinInstnId/BICFI</span>
+                                            <span class="field-desc">Financial institution servicing an account for the
+                                                creditor.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Remittance Information Section -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3>Remittance Information</h3>
+                                <button type="button" class="section-toggle" aria-label="Toggle section"></button>
+                            </div>
+                            <div class="section-content">
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label for="remittanceInfo">Unstructured Information</label>
+                                        <textarea id="remittanceInfo" name="remittanceInfo" rows="3"
+                                            placeholder="Payment details..."></textarea>
+                                        <div class="field-info">
+                                            <span class="field-path">CdtTrfTxInf/RmtInf/Ustrd</span>
+                                            <span class="field-desc">Information supplied to enable the matching of an
+                                                entry with the items that the transfer is intended to settle, e.g.
+                                                commercial invoices in an accounts payable scenario.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Generate XML</button>
+                            <button type="button" class="btn btn-secondary" id="copyXml">Copy XML</button>
+                            <button type="button" class="btn btn-secondary" id="downloadXml">Download XML</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="xml-tab" class="tab-pane">
+                    <div class="xml-container">
+                        <div class="xml-actions">
+                            <button class="btn btn-sm" id="copyXmlBtn">Copy XML</button>
+                            <button class="btn btn-sm" id="downloadXmlBtn">Download</button>
+                            <button class="btn btn-sm" id="validateXmlBtn">Validate</button>
+                        </div>
+                        <pre id="xmlOutput" class="xml-output">
+                            <!-- XML output will be displayed here -->
+                            <code>Generate XML from the form first</code>
+                        </pre>
+                    </div>
+                </div>
+
+                <div id="schema-tab" class="tab-pane">
+                    <div class="schema-info">
+                        <h3>Schema Information</h3>
+                        <p>The PACS.008 message is defined in the ISO 20022 standard and follows the pacs.008.001.13.xsd
+                            schema.</p>
+
+                        <h4>Key Elements</h4>
+                        <ul>
+                            <li><strong>Group Header (GrpHdr)</strong> - Common information for the entire message</li>
+                            <li><strong>Credit Transfer Transaction Information (CdtTrfTxInf)</strong> - Set of elements
+                                providing information on the individual transaction(s)</li>
+                            <li><strong>Payment Identification (PmtId)</strong> - Identification of the payment</li>
+                            <li><strong>Interbank Settlement Amount (IntrBkSttlmAmt)</strong> - Amount of money moved
+                                between financial institutions</li>
+                            <li><strong>Debtor (Dbtr)</strong> - Party that owes an amount of money to the creditor</li>
+                            <li><strong>Creditor (Cdtr)</strong> - Party to which an amount of money is due</li>
+                            <li><strong>Remittance Information (RmtInf)</strong> - Information that enables the matching
+                                of an entry with the items that the payment is intended to settle</li>
+                        </ul>
+
+                        <h4>Schema Version</h4>
+                        <p>This implementation is based on version 13 of the pacs.008.001 schema, which is the latest
+                            version as of this implementation.</p>
+
+                        <a href="../../schemas/pacs.008.001.13.xsd" class="btn btn-link" download>Download XSD
+                            Schema</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2023 PACS Message Generator. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize theme
+            initializeTheme();
+
+            // Theme toggle functionality
+            document.getElementById('theme-toggle-btn').addEventListener('click', function () {
+                toggleTheme();
+            });
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Deactivate all tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+
+                    // Activate clicked tab
+                    button.classList.add('active');
+                    const targetId = button.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // Form section toggle functionality
+            const sectionToggles = document.querySelectorAll('.section-toggle');
+
+            sectionToggles.forEach(toggle => {
+                toggle.addEventListener('click', function () {
+                    const section = toggle.closest('.form-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+
+            // Form submission handler
+            const form = document.getElementById('pacs008Form');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    // Create FormData object
+                    const formData = new FormData(form);
+
+                    // Use xmlUtils to generate XML
+                    try {
+                        const xml = window.xmlUtils.generateXmlFromForm(form, 'pacs008Template');
+
+                        // Display XML in output area
+                        const xmlOutput = document.getElementById('xmlOutput');
+                        if (xmlOutput) {
+                            xmlOutput.innerHTML = '<code>' + window.xmlUtils.escapeXml(xml) + '</code>';
+                        }
+
+                        // Switch to XML tab
+                        document.querySelector('[data-target="xml-tab"]').click();
+
+                        // Show success notification
+                        showNotification('XML generated successfully', 'success');
+                    } catch (error) {
+                        console.error('Error generating XML:', error);
+                        showNotification('Error generating XML: ' + error.message, 'error');
+                    }
+                });
+            }
+
+            // Fill test data button
+            const fillTestDataBtn = document.getElementById('fillTestData');
+            if (fillTestDataBtn) {
+                fillTestDataBtn.addEventListener('click', function () {
+                    // Generate test data
+                    const now = new Date();
+                    document.getElementById('msgId').value = 'MSG' + now.getTime();
+                    document.getElementById('creationDate').value = now.toISOString().slice(0, 16);
+                    document.getElementById('numberOfTxs').value = '1';
+                    document.getElementById('settlementMethod').value = 'CLRG';
+                    document.getElementById('instructingAgentBIC').value = 'DEUTDEFF';
+                    document.getElementById('instructedAgentBIC').value = 'BNPAFRPP';
+                    document.getElementById('endToEndId').value = 'E2E' + now.getTime();
+                    document.getElementById('txId').value = 'TXN' + now.getTime();
+                    document.getElementById('amount').value = '1000.00';
+                    document.getElementById('currency').value = 'EUR';
+                    document.getElementById('debtorName').value = 'Deutsche Bank AG';
+                    document.getElementById('debtorAccountId').value = 'DE89370400440532013000';
+                    document.getElementById('debtorAgentBIC').value = 'DEUTDEFF';
+                    document.getElementById('creditorName').value = 'BNP Paribas S.A.';
+                    document.getElementById('creditorAccountId').value = 'FR1420041010050500013M02606';
+                    document.getElementById('creditorAgentBIC').value = 'BNPAFRPP';
+                    document.getElementById('remittanceInfo').value = 'Payment for invoice #INV-2023-001';
+
+                    showNotification('Test data filled successfully', 'success');
+                });
+            }
+
+            // Copy XML buttons
+            const copyXmlBtns = document.querySelectorAll('#copyXml, #copyXmlBtn');
+            copyXmlBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const xmlOutput = document.getElementById('xmlOutput');
+                    if (xmlOutput && xmlOutput.textContent) {
+                        navigator.clipboard.writeText(xmlOutput.textContent)
+                            .then(() => showNotification('XML copied to clipboard', 'success'))
+                            .catch(err => showNotification('Failed to copy: ' + err, 'error'));
+                    } else {
+                        showNotification('No XML to copy', 'warning');
+                    }
+                });
+            });
+
+            // Download XML buttons
+            const downloadXmlBtns = document.querySelectorAll('#downloadXml, #downloadXmlBtn');
+            downloadXmlBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const xmlOutput = document.getElementById('xmlOutput');
+                    if (xmlOutput && xmlOutput.textContent && xmlOutput.textContent.trim() !== 'Generate XML from the form first') {
+                        const blob = new Blob([xmlOutput.textContent], { type: 'application/xml' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'pacs.008_' + new Date().toISOString().replace(/[:.]/g, '-') + '.xml';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+
+                        showNotification('XML downloaded successfully', 'success');
+                    } else {
+                        showNotification('No XML to download', 'warning');
+                    }
+                });
+            });
+
+            // Validate XML button
+            const validateXmlBtn = document.getElementById('validateXmlBtn');
+            if (validateXmlBtn) {
+                validateXmlBtn.addEventListener('click', function () {
+                    const xmlOutput = document.getElementById('xmlOutput');
+                    if (xmlOutput && xmlOutput.textContent && xmlOutput.textContent.trim() !== 'Generate XML from the form first') {
+                        showNotification('XML validation is not implemented yet', 'info');
+                    } else {
+                        showNotification('No XML to validate', 'warning');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

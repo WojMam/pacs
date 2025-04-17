@@ -1,0 +1,159 @@
+/**
+ * Components CSS - style dla komponentów UI
+ */
+
+/* Pływające menu */
+.floating-menu {
+	position: fixed;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	width: 60px;
+	background-color: var(--menu-bg);
+	box-shadow: 2px 0 10px var(--menu-shadow);
+	border-radius: 0 10px 10px 0;
+	z-index: 1000;
+	overflow: hidden;
+	transition: width 0.3s, background-color 0.3s, box-shadow 0.3s;
+}
+
+.floating-menu:hover {
+	width: 220px;
+}
+
+.menu-header {
+	padding: 15px 0;
+	text-align: center;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.menu-header h3 {
+	margin: 0;
+	white-space: nowrap;
+}
+
+.menu-section {
+	padding: 10px;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.menu-section-title {
+	font-weight: bold;
+	margin-bottom: 10px;
+	white-space: nowrap;
+	font-size: 0.9em;
+	opacity: 0.8;
+}
+
+.menu-btn {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 5px;
+	background-color: transparent;
+	color: var(--text-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	cursor: pointer;
+	text-align: left;
+	display: flex;
+	align-items: center;
+	transition: background-color 0.3s;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.menu-btn:hover {
+	background-color: var(--menu-hover);
+}
+
+.menu-btn:last-child {
+	margin-bottom: 0;
+}
+
+.menu-btn i {
+	margin-right: 10px;
+	min-width: 20px;
+	text-align: center;
+}
+
+/* Przełącznik trybu ciemnego/jasnego */
+.toggle-btn .light-icon {
+	display: none;
+}
+
+.toggle-btn .dark-icon {
+	display: inline-block;
+}
+
+html.dark-mode .toggle-btn .light-icon {
+	display: inline-block;
+}
+
+html.dark-mode .toggle-btn .dark-icon {
+	display: none;
+}
+
+html.dark-mode .toggle-text {
+	content: "Tryb jasny";
+}
+
+/* Dymki i powiadomienia */
+.tooltip {
+	position: absolute;
+	background-color: var(--tooltip-bg);
+	color: var(--tooltip-text);
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	max-width: 500px;
+	z-index: 1001;
+	display: none;
+	font-family: "Courier New", Courier, monospace;
+}
+
+#xmlTooltipContent,
+#treeTooltipContent {
+	margin: 0;
+	white-space: pre-wrap;
+	font-size: 0.9em;
+}
+
+.notification {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	background-color: var(--primary-color);
+	color: white;
+	padding: 15px 25px;
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	z-index: 1002;
+	opacity: 0;
+	transform: translateY(-20px);
+	transition: opacity 0.3s, transform 0.3s;
+}
+
+.notification.visible {
+	opacity: 1;
+	transform: translateY(0);
+	animation: fadeInOut 3s;
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+	15% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	85% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+}

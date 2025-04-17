@@ -1,0 +1,566 @@
+/**
+ * Główny skrypt aplikacji ISO 20022 Generator
+ *
+ * Zawiera funkcje do generowania, przetwarzania i zarządzania dokumentami ISO 20022
+ */
+
+document.addEventListener("DOMContentLoaded", function () {
+	// Inicjalizacja komponentów
+	initApp();
+});
+
+/**
+ * Inicjalizacja aplikacji
+ */
+function initApp() {
+	// Załaduj wszystkie komponenty
+	if (typeof loadAllComponents === "function") {
+		loadAllComponents();
+	}
+
+	// Inicjalizacja słuchaczy zdarzeń
+	initEventListeners();
+
+	// Sprawdzanie stanu lokalnych dokumentów
+	checkLocalStorage();
+
+	console.log("Aplikacja ISO 20022 Generator została zainicjalizowana");
+}
+
+/**
+ * Inicjalizacja globalnych słuchaczy zdarzeń
+ */
+function initEventListeners() {
+	// Nawigacja
+	const navLinks = document.querySelectorAll("[data-nav-target]");
+	navLinks.forEach(link => {
+		link.addEventListener("click", e => {
+			e.preventDefault();
+			const targetId = link.getAttribute("data-nav-target");
+			if (typeof navigateTo === "function") {
+				navigateTo(targetId);
+			}
+		});
+	});
+
+	// Obsługa formularzy
+	document.addEventListener("submit", handleFormSubmit);
+
+	// Obsługa zmiany motywu
+	document.addEventListener("theme:changed", e => {
+		console.log(`Motyw zmieniony na: ${e.detail.theme}`);
+	});
+
+	// Obsługa zapisywania do XML
+	const saveButtons = document.querySelectorAll(".btn-save-xml");
+	saveButtons.forEach(button => {
+		button.addEventListener("click", e => {
+			e.preventDefault();
+			const formId = button.getAttribute("data-form-id");
+			saveFormToXml(formId);
+		});
+	});
+
+	// Obsługa importu XML
+	const importButtons = document.querySelectorAll(".btn-import-xml");
+	importButtons.forEach(button => {
+		button.addEventListener("click", e => {
+			e.preventDefault();
+			promptForXmlImport();
+		});
+	});
+}
+
+/**
+ * Obsługa przesyłania formularzy
+ * @param {Event} e - Zdarzenie formularza
+ */
+function handleFormSubmit(e) {
+	// Jeśli formularz ma klasę xml-form, przetwórz go
+	if (e.target.classList.contains("xml-form")) {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const xmlData = generateXml(formData, e.target.id);
+
+		if (xmlData) {
+			displayXmlResult(xmlData, e.target.id);
+			saveToLocalStorage(e.target.id, xmlData);
+		}
+	}
+}
+
+/**
+ * Generuje dokument XML na podstawie danych formularza
+ * @param {FormData} formData - Dane z formularza
+ * @param {string} formId - Identyfikator formularza
+ * @returns {string} Wygenerowany dokument XML
+ */
+function generateXml(formData, formId) {
+	try {
+		// Pobierz mapowanie pól formularza do tagów XML
+		const mappings = getXmlMappings(formId);
+		if (!mappings) {
+			console.error("Brak mapowania XML dla formularza", formId);
+			return null;
+		}
+
+		// Utwórz obiekt dokumentu XML
+		const xmlDoc = document.implementation.createDocument(
+			null,
+			"Document",
+			null
+		);
+		const root = xmlDoc.documentElement;
+
+		// Dodaj przestrzenie nazw
+		root.setAttribute(
+			"xmlns",
+			"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.13"
+		);
+		root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+		// Iteruj przez pola formularza i twórz strukturę XML
+		for (const [fieldName, fieldValue] of formData.entries()) {
+			if (!mappings[fieldName]) continue;
+
+			const mapping = mappings[fieldName];
+			createXmlNode(xmlDoc, root, mapping.path, fieldValue);
+		}
+
+		// Konwertuj dokument XML na string
+		const serializer = new XMLSerializer();
+		let xmlString = '<?xml version="1.0" encoding="UTF-8"?>\n';
+		xmlString += serializer.serializeToString(xmlDoc);
+
+		// Popraw formatowanie
+		return formatXml(xmlString);
+	} catch (error) {
+		console.error("Błąd podczas generowania XML:", error);
+		alert(
+			"Wystąpił błąd podczas generowania dokumentu XML. Sprawdź logi konsoli."
+		);
+		return null;
+	}
+}
+
+/**
+ * Tworzy węzeł XML na podstawie ścieżki do węzła
+ * @param {XMLDocument} xmlDoc - Dokument XML
+ * @param {Element} root - Element root
+ * @param {string} path - Ścieżka do węzła (np. "FIToFICstmrCdtTrf/GrpHdr/MsgId")
+ * @param {string} value - Wartość węzła
+ */
+function createXmlNode(xmlDoc, root, path, value) {
+	const pathParts = path.split("/");
+	let currentNode = root;
+
+	// Twórz każdy poziom ścieżki
+	for (let i = 0; i < pathParts.length; i++) {
+		const partName = pathParts[i];
+
+		// Sprawdź czy węzeł już istnieje
+		let nextNode = null;
+		for (let j = 0; j < currentNode.childNodes.length; j++) {
+			if (currentNode.childNodes[j].nodeName === partName) {
+				nextNode = currentNode.childNodes[j];
+				break;
+			}
+		}
+
+		// Jeśli nie, utwórz nowy węzeł
+		if (!nextNode) {
+			nextNode = xmlDoc.createElement(partName);
+			currentNode.appendChild(nextNode);
+		}
+
+		// Jeśli to ostatni element ścieżki, ustaw wartość
+		if (i === pathParts.length - 1) {
+			nextNode.textContent = value;
+		}
+
+		currentNode = nextNode;
+	}
+}
+
+/**
+ * Pobiera mapowanie pól formularza do ścieżek XML
+ * @param {string} formId - Identyfikator formularza
+ * @returns {Object} Mapowanie pól na ścieżki XML
+ */
+function getXmlMappings(formId) {
+	// W przyszłości można pobrać to z plików konfiguracyjnych
+	const mappings = {
+		pacs008Form: {
+			msgId: { path: "FIToFICstmrCdtTrf/GrpHdr/MsgId" },
+			creationDate: { path: "FIToFICstmrCdtTrf/GrpHdr/CreDtTm" },
+			numberOfTxs: { path: "FIToFICstmrCdtTrf/GrpHdr/NbOfTxs" },
+			settlementMethod: { path: "FIToFICstmrCdtTrf/GrpHdr/SttlmInf/SttlmMtd" },
+			instructingAgentBIC: {
+				path: "FIToFICstmrCdtTrf/GrpHdr/InstgAgt/FinInstnId/BICFI",
+			},
+			instructedAgentBIC: {
+				path: "FIToFICstmrCdtTrf/GrpHdr/InstdAgt/FinInstnId/BICFI",
+			},
+			endToEndId: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/EndToEndId" },
+			txId: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/PmtId/TxId" },
+			amount: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/IntrBkSttlmAmt" },
+			currency: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/IntrBkSttlmAmt/@Ccy" },
+			debtorName: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/Dbtr/Nm" },
+			debtorAccountId: {
+				path: "FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAcct/Id/IBAN",
+			},
+			debtorAgentBIC: {
+				path: "FIToFICstmrCdtTrf/CdtTrfTxInf/DbtrAgt/FinInstnId/BICFI",
+			},
+			creditorName: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/Cdtr/Nm" },
+			creditorAccountId: {
+				path: "FIToFICstmrCdtTrf/CdtTrfTxInf/CdtrAcct/Id/IBAN",
+			},
+			creditorAgentBIC: {
+				path: "FIToFICstmrCdtTrf/CdtTrfTxInf/CdtrAgt/FinInstnId/BICFI",
+			},
+			remittanceInfo: { path: "FIToFICstmrCdtTrf/CdtTrfTxInf/RmtInf/Ustrd" },
+		},
+	};
+
+	return mappings[formId] || null;
+}
+
+/**
+ * Wyświetla wynik XML
+ * @param {string} xmlString - Wygenerowany dokument XML
+ * @param {string} sourceId - Identyfikator źródłowego formularza
+ */
+function displayXmlResult(xmlString, sourceId) {
+	const resultId = `${sourceId}-result`;
+	const resultElement = document.getElementById(resultId);
+
+	if (resultElement) {
+		// Pokaż wynik
+		const preElement =
+			resultElement.querySelector("pre") || document.createElement("pre");
+		preElement.textContent = xmlString;
+
+		// Jeśli pre nie jest częścią resultElement, dodaj je
+		if (!resultElement.contains(preElement)) {
+			resultElement.appendChild(preElement);
+		}
+
+		// Pokaż element wyniku
+		resultElement.style.display = "block";
+
+		// Przewiń do wyniku
+		resultElement.scrollIntoView({ behavior: "smooth" });
+	} else {
+		console.warn(`Element wyniku o ID ${resultId} nie został znaleziony`);
+
+		// Utwórz element modalny z wynikiem
+		const modal = document.createElement("div");
+		modal.className = "modal";
+		modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Wygenerowany dokument XML</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <pre>${xmlString}</pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary copy-xml">Kopiuj</button>
+                    <button class="btn btn-secondary download-xml">Pobierz</button>
+                    <button class="btn close-modal">Zamknij</button>
+                </div>
+            </div>
+        `;
+
+		document.body.appendChild(modal);
+
+		// Obsługa zamykania modalu
+		modal.querySelectorAll(".close-modal").forEach(button => {
+			button.addEventListener("click", () => {
+				modal.remove();
+			});
+		});
+
+		// Obsługa kopiowania XML
+		modal.querySelector(".copy-xml").addEventListener("click", () => {
+			navigator.clipboard
+				.writeText(xmlString)
+				.then(() => alert("XML skopiowany do schowka"))
+				.catch(err => console.error("Błąd podczas kopiowania:", err));
+		});
+
+		// Obsługa pobierania XML
+		modal.querySelector(".download-xml").addEventListener("click", () => {
+			downloadXml(
+				xmlString,
+				`${sourceId}_${new Date().toISOString().replace(/:/g, "-")}.xml`
+			);
+		});
+
+		// Pokaż modal
+		setTimeout(() => modal.classList.add("show"), 50);
+	}
+}
+
+/**
+ * Formatuje dokument XML (dodaje wcięcia)
+ * @param {string} xmlString - Nieformatowany XML
+ * @returns {string} Sformatowany XML
+ */
+function formatXml(xmlString) {
+	let formatted = "";
+	let indent = "";
+	const tab = "  "; // Dwa znaki spacji jako wcięcie
+
+	xmlString.split(/>\s*</).forEach(node => {
+		if (node.match(/^\/\w/)) {
+			// Zamykający tag
+			indent = indent.substring(tab.length);
+		}
+
+		formatted += indent + "<" + node + ">\n";
+
+		if (node.match(/^<?\w[^>]*[^\/]$/) && !node.startsWith("?")) {
+			// Otwierający tag, nie samozamykający
+			indent += tab;
+		}
+	});
+
+	return formatted.substring(1, formatted.length - 2);
+}
+
+/**
+ * Pobiera dokument XML jako plik
+ * @param {string} xmlString - Dokument XML do pobrania
+ * @param {string} filename - Nazwa pliku
+ */
+function downloadXml(xmlString, filename) {
+	const blob = new Blob([xmlString], { type: "application/xml" });
+	const url = URL.createObjectURL(blob);
+
+	const a = document.createElement("a");
+	a.style.display = "none";
+	a.href = url;
+	a.download = filename;
+
+	document.body.appendChild(a);
+	a.click();
+
+	setTimeout(() => {
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	}, 100);
+}
+
+/**
+ * Zapisuje dokument XML do localStorage
+ * @param {string} formId - Identyfikator formularza
+ * @param {string} xmlData - Dokument XML
+ */
+function saveToLocalStorage(formId, xmlData) {
+	try {
+		// Pobierz istniejącą listę dokumentów lub utwórz nową
+		const savedDocs = JSON.parse(localStorage.getItem("savedXmlDocs")) || {};
+
+		// Dodaj nowy dokument
+		savedDocs[formId] = {
+			timestamp: new Date().toISOString(),
+			xml: xmlData,
+		};
+
+		// Zapisz z powrotem do localStorage
+		localStorage.setItem("savedXmlDocs", JSON.stringify(savedDocs));
+
+		console.log(
+			`Dokument z formularza ${formId} zapisany do lokalnego magazynu`
+		);
+	} catch (error) {
+		console.error("Błąd podczas zapisywania do localStorage:", error);
+	}
+}
+
+/**
+ * Sprawdza localStorage pod kątem zapisanych dokumentów
+ */
+function checkLocalStorage() {
+	try {
+		const savedDocs = JSON.parse(localStorage.getItem("savedXmlDocs")) || {};
+		const count = Object.keys(savedDocs).length;
+
+		if (count > 0) {
+			console.log(
+				`Znaleziono ${count} zapisanych dokumentów XML w lokalnym magazynie`
+			);
+
+			// Tutaj można dodać powiadomienie dla użytkownika
+			const savedDocsButton = document.getElementById("saved-docs-button");
+			if (savedDocsButton) {
+				savedDocsButton.innerText = `Zapisane dokumenty (${count})`;
+				savedDocsButton.classList.remove("hidden");
+			}
+		}
+	} catch (error) {
+		console.error("Błąd podczas sprawdzania localStorage:", error);
+	}
+}
+
+/**
+ * Zapisuje aktualny formularz do pliku XML
+ * @param {string} formId - Identyfikator formularza
+ */
+function saveFormToXml(formId) {
+	const form = document.getElementById(formId);
+	if (!form) {
+		console.error(`Formularz o ID ${formId} nie został znaleziony`);
+		return;
+	}
+
+	const formData = new FormData(form);
+	const xmlData = generateXml(formData, formId);
+
+	if (xmlData) {
+		// Generuj nazwę pliku na podstawie ID formularza i daty
+		const filename = `${formId}_${new Date()
+			.toISOString()
+			.replace(/:/g, "-")}.xml`;
+		downloadXml(xmlData, filename);
+
+		// Zapisz również w localStorage
+		saveToLocalStorage(formId, xmlData);
+	}
+}
+
+/**
+ * Wyświetla okno wyboru pliku do importu XML
+ */
+function promptForXmlImport() {
+	const input = document.createElement("input");
+	input.type = "file";
+	input.accept = ".xml";
+
+	input.addEventListener("change", e => {
+		if (e.target.files.length > 0) {
+			const file = e.target.files[0];
+			const reader = new FileReader();
+
+			reader.onload = e => {
+				const xmlContent = e.target.result;
+				importXmlDocument(xmlContent);
+			};
+
+			reader.readAsText(file);
+		}
+	});
+
+	input.click();
+}
+
+/**
+ * Importuje dokument XML i wypełnia odpowiedni formularz
+ * @param {string} xmlContent - Treść dokumentu XML
+ */
+function importXmlDocument(xmlContent) {
+	try {
+		// Parsuj dokument XML
+		const parser = new DOMParser();
+		const xmlDoc = parser.parseFromString(xmlContent, "application/xml");
+
+		// Sprawdź typ dokumentu
+		const rootName = xmlDoc.documentElement.nodeName;
+		if (rootName !== "Document") {
+			throw new Error(
+				`Nieprawidłowy format dokumentu XML. Oczekiwano 'Document', otrzymano '${rootName}'`
+			);
+		}
+
+		// Identyfikuj typ wiadomości ISO 20022
+		let messageType = "";
+		if (xmlDoc.querySelector("FIToFICstmrCdtTrf")) {
+			messageType = "pacs.008";
+		} else {
+			throw new Error("Nieobsługiwany typ wiadomości ISO 20022");
+		}
+
+		// Przejdź do odpowiedniego formularza
+		if (typeof navigateTo === "function") {
+			navigateTo(`${messageType}-form`);
+		}
+
+		// Pobierz formularz
+		const formId = `${messageType.replace(".", "")}Form`;
+		const form = document.getElementById(formId);
+
+		if (!form) {
+			throw new Error(
+				`Formularz dla typu ${messageType} nie został znaleziony`
+			);
+		}
+
+		// Pobierz mapowanie pól
+		const mappings = getXmlMappings(formId);
+		if (!mappings) {
+			throw new Error(`Brak mapowania dla formularza ${formId}`);
+		}
+
+		// Wypełnij formularz na podstawie mapowania XML
+		for (const fieldName in mappings) {
+			const mapping = mappings[fieldName];
+			const path = mapping.path.split("/");
+
+			// Znajdź wartość w XML
+			const value = extractValueFromXml(xmlDoc, path);
+
+			// Znajdź pole w formularzu
+			const field = form.elements[fieldName];
+			if (field && value !== null) {
+				field.value = value;
+			}
+		}
+
+		// Powiadom użytkownika
+		alert(
+			`Dokument XML typu ${messageType} został zaimportowany i formularz wypełniony.`
+		);
+	} catch (error) {
+		console.error("Błąd podczas importu XML:", error);
+		alert(`Wystąpił błąd podczas importu dokumentu XML: ${error.message}`);
+	}
+}
+
+/**
+ * Wyciąga wartość z dokumentu XML na podstawie ścieżki
+ * @param {Document} xmlDoc - Dokument XML
+ * @param {Array} pathArray - Ścieżka do węzła jako tablica
+ * @returns {string|null} - Znaleziona wartość lub null
+ */
+function extractValueFromXml(xmlDoc, pathArray) {
+	let currentNode = xmlDoc;
+
+	// Przejdź przez ścieżkę
+	for (let i = 0; i < pathArray.length; i++) {
+		let part = pathArray[i];
+
+		// Sprawdź, czy jest to atrybut
+		if (part.startsWith("@")) {
+			const attrName = part.substring(1);
+			return currentNode.getAttribute(attrName);
+		}
+
+		// Znajdź węzeł potomny
+		const childNodes = currentNode.getElementsByTagName(part);
+		if (childNodes.length === 0) {
+			return null;
+		}
+
+		currentNode = childNodes[0];
+
+		// Jeśli to ostatni element ścieżki, zwróć wartość
+		if (i === pathArray.length - 1) {
+			return currentNode.textContent;
+		}
+	}
+
+	return null;
+}

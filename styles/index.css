@@ -1,0 +1,15 @@
+/**
+ * Main CSS file - importuje wszystkie pliki stylów
+ */
+
+@import "base.css";
+@import "layout.css";
+@import "buttons.css";
+@import "forms.css";
+@import "tables.css";
+@import "cards.css";
+@import "modals.css";
+@import "components/notifications.css";
+
+/* Inne style specyficzne dla projektu */
+/* Można dodać tutaj dodatkowe style */

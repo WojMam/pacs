@@ -1,0 +1,529 @@
+<!-- 
+  pacs.008 Message Form Template 
+  Customer Credit Transfer form with all required fields
+-->
+<div class="message-container">
+    <header class="message-header">
+        <div class="message-title">
+            <h1><i class="icon-arrow-right"></i> PACS.008</h1>
+            <span class="badge">Customer Credit Transfer</span>
+        </div>
+        <div class="message-actions">
+            <button id="generate-btn" class="btn btn-primary btn-icon"><i class="icon-code"></i> Generate XML</button>
+            <button id="validate-btn" class="btn btn-secondary btn-icon" disabled><i class="icon-check-circle"></i>
+                Validate</button>
+            <button id="save-btn" class="btn btn-light btn-icon"><i class="icon-save"></i> Save Draft</button>
+        </div>
+    </header>
+
+    <div class="message-content">
+        <div class="form-container">
+            <form id="message-form" data-message-type="pacs.008">
+                <!-- Group Header Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Group Header</h2>
+                        <button type="button" class="btn-icon section-toggle"><i class="icon-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="messageId">Message ID</label>
+                                <input type="text" id="messageId" name="GrpHdr.MsgId" class="form-control" required>
+                                <div class="form-hint">Unique message identification</div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="creationDateTime">Creation Date Time</label>
+                                <input type="datetime-local" id="creationDateTime" name="GrpHdr.CreDtTm"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="numberOfTransactions">Number of Transactions</label>
+                                <input type="number" id="numberOfTransactions" name="GrpHdr.NbOfTxs" value="1" min="1"
+                                    class="form-control" required data-validation="number">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="settlementMethod">Settlement Method</label>
+                                <select id="settlementMethod" name="GrpHdr.SttlmInf.SttlmMtd" class="form-control"
+                                    required>
+                                    <option value="CLRG">Clearing System</option>
+                                    <option value="INGA">Instructing Agent</option>
+                                    <option value="INDA">Instructed Agent</option>
+                                    <option value="COVE">Cover Method</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credit Transaction Information Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Credit Transfer Transaction Information</h2>
+                        <button type="button" class="btn-icon section-toggle"><i class="icon-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="transactionId">Payment ID</label>
+                                <input type="text" id="transactionId" name="CdtTrfTxInf.PmtId.InstrId"
+                                    class="form-control" required>
+                                <div class="form-hint">Unique transaction identification</div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="endToEndId">End to End ID</label>
+                                <input type="text" id="endToEndId" name="CdtTrfTxInf.PmtId.EndToEndId"
+                                    class="form-control" required>
+                                <div class="form-hint">End-to-end reference number</div>
+                            </div>
+                        </div>
+
+                        <!-- Amount Information -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="amount">Amount</label>
+                                <input type="text" id="amount" name="CdtTrfTxInf.IntrBkSttlmAmt.value"
+                                    class="form-control" required data-validation="currency">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="currency">Currency</label>
+                                <select id="currency" name="CdtTrfTxInf.IntrBkSttlmAmt.Ccy" class="form-control"
+                                    required>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="CHF">CHF - Swiss Franc</option>
+                                    <option value="JPY">JPY - Japanese Yen</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Payment Type Information -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="serviceLevel">Service Level</label>
+                                <select id="serviceLevel" name="CdtTrfTxInf.PmtTpInf.SvcLvl.Cd" class="form-control">
+                                    <option value="SEPA">SEPA</option>
+                                    <option value="URGP">Urgent Payment</option>
+                                    <option value="SDVA">Same Day Value</option>
+                                    <option value="PRPT">Priority Payment</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="categoryPurpose">Category Purpose</label>
+                                <select id="categoryPurpose" name="CdtTrfTxInf.PmtTpInf.CtgyPurp.Cd"
+                                    class="form-control">
+                                    <option value="">-- Select Category Purpose --</option>
+                                    <option value="CASH">Cash Management Transfer</option>
+                                    <option value="CORT">Trade Settlement Payment</option>
+                                    <option value="DVPM">Delivery vs Payment</option>
+                                    <option value="INTC">Intra Company Payment</option>
+                                    <option value="SALA">Salary Payment</option>
+                                    <option value="TREA">Treasury Payment</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Charge Bearer -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="chargeBearer">Charge Bearer</label>
+                                <select id="chargeBearer" name="CdtTrfTxInf.ChrgBr" class="form-control" required>
+                                    <option value="DEBT">Borne By Debtor</option>
+                                    <option value="CRED">Borne By Creditor</option>
+                                    <option value="SHAR">Shared</option>
+                                    <option value="SLEV">Following Service Level</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Debtor Information Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Debtor Information</h2>
+                        <button type="button" class="btn-icon section-toggle"><i class="icon-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="debtorName">Debtor Name</label>
+                                <input type="text" id="debtorName" name="CdtTrfTxInf.Dbtr.Nm" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="debtorLEI">Legal Entity Identifier (LEI)</label>
+                                <input type="text" id="debtorLEI" name="CdtTrfTxInf.Dbtr.Id.OrgId.LEI"
+                                    class="form-control" data-validation="lei">
+                                <div class="form-hint">20-character LEI code</div>
+                            </div>
+                        </div>
+
+                        <!-- Debtor Address -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="debtorStreetName">Street Name</label>
+                                <input type="text" id="debtorStreetName" name="CdtTrfTxInf.Dbtr.PstlAdr.StrtNm"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="debtorBuildingNumber">Building Number</label>
+                                <input type="text" id="debtorBuildingNumber" name="CdtTrfTxInf.Dbtr.PstlAdr.BldgNb"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="debtorPostCode">Post Code</label>
+                                <input type="text" id="debtorPostCode" name="CdtTrfTxInf.Dbtr.PstlAdr.PstCd"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="debtorTownName">Town Name</label>
+                                <input type="text" id="debtorTownName" name="CdtTrfTxInf.Dbtr.PstlAdr.TwnNm"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="debtorCountry">Country</label>
+                                <select id="debtorCountry" name="CdtTrfTxInf.Dbtr.PstlAdr.Ctry" class="form-control">
+                                    <option value="">-- Select Country --</option>
+                                    <option value="AT">Austria</option>
+                                    <option value="BE">Belgium</option>
+                                    <option value="BG">Bulgaria</option>
+                                    <option value="HR">Croatia</option>
+                                    <option value="CY">Cyprus</option>
+                                    <option value="CZ">Czech Republic</option>
+                                    <option value="DK">Denmark</option>
+                                    <option value="EE">Estonia</option>
+                                    <option value="FI">Finland</option>
+                                    <option value="FR">France</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="GR">Greece</option>
+                                    <option value="HU">Hungary</option>
+                                    <option value="IE">Ireland</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="LV">Latvia</option>
+                                    <option value="LT">Lithuania</option>
+                                    <option value="LU">Luxembourg</option>
+                                    <option value="MT">Malta</option>
+                                    <option value="NL">Netherlands</option>
+                                    <option value="PL">Poland</option>
+                                    <option value="PT">Portugal</option>
+                                    <option value="RO">Romania</option>
+                                    <option value="SK">Slovakia</option>
+                                    <option value="SI">Slovenia</option>
+                                    <option value="ES">Spain</option>
+                                    <option value="SE">Sweden</option>
+                                    <option value="GB">United Kingdom</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Debtor Account -->
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="debtorAccountType">Account Type</label>
+                                <select id="debtorAccountType" class="form-control"
+                                    onchange="toggleDebtorAccountFields()">
+                                    <option value="IBAN">IBAN</option>
+                                    <option value="OTHR">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row debtor-iban-fields">
+                            <div class="form-group col-md-12">
+                                <label for="debtorIBAN">IBAN</label>
+                                <input type="text" id="debtorIBAN" name="CdtTrfTxInf.DbtrAcct.Id.IBAN"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row debtor-other-fields" style="display: none;">
+                            <div class="form-group col-md-12">
+                                <label for="debtorOtherAccount">Account Number</label>
+                                <input type="text" id="debtorOtherAccount" name="CdtTrfTxInf.DbtrAcct.Id.Othr.Id"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Debtor Agent -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="debtorAgentBIC">Debtor Agent BIC</label>
+                                <input type="text" id="debtorAgentBIC" name="CdtTrfTxInf.DbtrAgt.FinInstnId.BICFI"
+                                    class="form-control" required data-validation="bicfi">
+                                <div class="form-hint">BIC code of the debtor's bank</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Creditor Information Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Creditor Information</h2>
+                        <button type="button" class="btn-icon section-toggle"><i class="icon-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="creditorName">Creditor Name</label>
+                                <input type="text" id="creditorName" name="CdtTrfTxInf.Cdtr.Nm" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="creditorLEI">Legal Entity Identifier (LEI)</label>
+                                <input type="text" id="creditorLEI" name="CdtTrfTxInf.Cdtr.Id.OrgId.LEI"
+                                    class="form-control" data-validation="lei">
+                                <div class="form-hint">20-character LEI code</div>
+                            </div>
+                        </div>
+
+                        <!-- Creditor Address -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="creditorStreetName">Street Name</label>
+                                <input type="text" id="creditorStreetName" name="CdtTrfTxInf.Cdtr.PstlAdr.StrtNm"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="creditorBuildingNumber">Building Number</label>
+                                <input type="text" id="creditorBuildingNumber" name="CdtTrfTxInf.Cdtr.PstlAdr.BldgNb"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="creditorPostCode">Post Code</label>
+                                <input type="text" id="creditorPostCode" name="CdtTrfTxInf.Cdtr.PstlAdr.PstCd"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="creditorTownName">Town Name</label>
+                                <input type="text" id="creditorTownName" name="CdtTrfTxInf.Cdtr.PstlAdr.TwnNm"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="creditorCountry">Country</label>
+                                <select id="creditorCountry" name="CdtTrfTxInf.Cdtr.PstlAdr.Ctry" class="form-control">
+                                    <option value="">-- Select Country --</option>
+                                    <option value="AT">Austria</option>
+                                    <option value="BE">Belgium</option>
+                                    <option value="BG">Bulgaria</option>
+                                    <option value="HR">Croatia</option>
+                                    <option value="CY">Cyprus</option>
+                                    <option value="CZ">Czech Republic</option>
+                                    <option value="DK">Denmark</option>
+                                    <option value="EE">Estonia</option>
+                                    <option value="FI">Finland</option>
+                                    <option value="FR">France</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="GR">Greece</option>
+                                    <option value="HU">Hungary</option>
+                                    <option value="IE">Ireland</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="LV">Latvia</option>
+                                    <option value="LT">Lithuania</option>
+                                    <option value="LU">Luxembourg</option>
+                                    <option value="MT">Malta</option>
+                                    <option value="NL">Netherlands</option>
+                                    <option value="PL">Poland</option>
+                                    <option value="PT">Portugal</option>
+                                    <option value="RO">Romania</option>
+                                    <option value="SK">Slovakia</option>
+                                    <option value="SI">Slovenia</option>
+                                    <option value="ES">Spain</option>
+                                    <option value="SE">Sweden</option>
+                                    <option value="GB">United Kingdom</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Creditor Account -->
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="creditorAccountType">Account Type</label>
+                                <select id="creditorAccountType" class="form-control"
+                                    onchange="toggleCreditorAccountFields()">
+                                    <option value="IBAN">IBAN</option>
+                                    <option value="OTHR">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row creditor-iban-fields">
+                            <div class="form-group col-md-12">
+                                <label for="creditorIBAN">IBAN</label>
+                                <input type="text" id="creditorIBAN" name="CdtTrfTxInf.CdtrAcct.Id.IBAN"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row creditor-other-fields" style="display: none;">
+                            <div class="form-group col-md-12">
+                                <label for="creditorOtherAccount">Account Number</label>
+                                <input type="text" id="creditorOtherAccount" name="CdtTrfTxInf.CdtrAcct.Id.Othr.Id"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Creditor Agent -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="creditorAgentBIC">Creditor Agent BIC</label>
+                                <input type="text" id="creditorAgentBIC" name="CdtTrfTxInf.CdtrAgt.FinInstnId.BICFI"
+                                    class="form-control" required data-validation="bicfi">
+                                <div class="form-hint">BIC code of the creditor's bank</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remittance Information Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Remittance Information</h2>
+                        <button type="button" class="btn-icon section-toggle"><i class="icon-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="remittanceInfo">Unstructured Remittance Information</label>
+                                <textarea id="remittanceInfo" name="CdtTrfTxInf.RmtInf.Ustrd" class="form-control"
+                                    rows="3"></textarea>
+                                <div class="form-hint">Payment details, invoice numbers, etc.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="purposeCode">Purpose Code</label>
+                                <select id="purposeCode" name="CdtTrfTxInf.Purp.Cd" class="form-control">
+                                    <option value="">-- Select Purpose Code --</option>
+                                    <option value="CASH">Cash Management Transfer</option>
+                                    <option value="CORT">Trade Settlement Payment</option>
+                                    <option value="DVPM">Delivery vs Payment</option>
+                                    <option value="INTC">Intra Company Payment</option>
+                                    <option value="SALA">Salary Payment</option>
+                                    <option value="SUPP">Supplier Payment</option>
+                                    <option value="TREA">Treasury Payment</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">Generate XML</button>
+                    <button type="button" class="btn btn-secondary btn-lg"
+                        onclick="window.location.reload()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="xml-preview">
+            <div class="xml-preview-header">
+                <h3>XML Output</h3>
+                <div class="xml-preview-actions">
+                    <button type="button" class="btn btn-sm btn-icon btn-light xml-expand-btn">
+                        <i class="icon-expand"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="xml-output" class="xml-content">
+                <div class="xml-placeholder">
+                    <i class="icon-code"></i>
+                    <p>XML output will be displayed here after form submission</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle the debtor account fields based on selection
+    function toggleDebtorAccountFields() {
+        const accountType = document.getElementById('debtorAccountType').value;
+        const ibanFields = document.querySelectorAll('.debtor-iban-fields');
+        const otherFields = document.querySelectorAll('.debtor-other-fields');
+
+        if (accountType === 'IBAN') {
+            ibanFields.forEach(field => field.style.display = 'flex');
+            otherFields.forEach(field => field.style.display = 'none');
+            document.getElementById('debtorIBAN').setAttribute('required', '');
+            const otherAccount = document.getElementById('debtorOtherAccount');
+            if (otherAccount) otherAccount.removeAttribute('required');
+        } else {
+            ibanFields.forEach(field => field.style.display = 'none');
+            otherFields.forEach(field => field.style.display = 'flex');
+            document.getElementById('debtorIBAN').removeAttribute('required');
+            const otherAccount = document.getElementById('debtorOtherAccount');
+            if (otherAccount) otherAccount.setAttribute('required', '');
+        }
+    }
+
+    // Toggle the creditor account fields based on selection
+    function toggleCreditorAccountFields() {
+        const accountType = document.getElementById('creditorAccountType').value;
+        const ibanFields = document.querySelectorAll('.creditor-iban-fields');
+        const otherFields = document.querySelectorAll('.creditor-other-fields');
+
+        if (accountType === 'IBAN') {
+            ibanFields.forEach(field => field.style.display = 'flex');
+            otherFields.forEach(field => field.style.display = 'none');
+            document.getElementById('creditorIBAN').setAttribute('required', '');
+            const otherAccount = document.getElementById('creditorOtherAccount');
+            if (otherAccount) otherAccount.removeAttribute('required');
+        } else {
+            ibanFields.forEach(field => field.style.display = 'none');
+            otherFields.forEach(field => field.style.display = 'flex');
+            document.getElementById('creditorIBAN').removeAttribute('required');
+            const otherAccount = document.getElementById('creditorOtherAccount');
+            if (otherAccount) otherAccount.setAttribute('required', '');
+        }
+    }
+
+    // Set current date time for creation date field
+    document.addEventListener('DOMContentLoaded', function () {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+        const creationDateTimeField = document.getElementById('creationDateTime');
+        if (creationDateTimeField) {
+            creationDateTimeField.value = formattedDateTime;
+        }
+
+        // Set up XML expand button
+        const expandBtn = document.querySelector('.xml-expand-btn');
+        if (expandBtn) {
+            expandBtn.addEventListener('click', function () {
+                document.querySelector('.xml-preview').classList.toggle('expanded');
+                const icon = expandBtn.querySelector('i');
+                if (icon.classList.contains('icon-expand')) {
+                    icon.classList.remove('icon-expand');
+                    icon.classList.add('icon-collapse');
+                } else {
+                    icon.classList.remove('icon-collapse');
+                    icon.classList.add('icon-expand');
+                }
+            });
+        }
+    });
+</script>

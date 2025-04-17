@@ -1,0 +1,365 @@
+/**
+ * Card Styles
+ * Provides styling for cards, boxes, and containers
+ */
+
+/* Base card styles */
+.card {
+	background-color: var(--card-bg);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow-sm);
+	margin-bottom: 1.5rem;
+	overflow: hidden;
+	transition: transform 0.2s, box-shadow 0.2s;
+	border: 1px solid var(--border-color);
+}
+
+.card:hover {
+	box-shadow: var(--shadow-md);
+}
+
+.card-interactive:hover {
+	transform: translateY(-5px);
+}
+
+/* Card header */
+.card-header {
+	padding: 1rem 1.5rem;
+	border-bottom: 1px solid var(--border-color);
+	background-color: var(--card-header-bg);
+}
+
+.card-header:first-child {
+	border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.card-title {
+	margin: 0;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--heading-color);
+}
+
+.card-subtitle {
+	margin-top: 0.25rem;
+	margin-bottom: 0;
+	color: var(--text-muted);
+}
+
+.card-text:last-child {
+	margin-bottom: 0;
+}
+
+/* Card body */
+.card-body {
+	padding: 1.5rem;
+}
+
+/* Card footer */
+.card-footer {
+	padding: 1rem 1.5rem;
+	background-color: var(--card-footer-bg);
+	border-top: 1px solid var(--border-color);
+}
+
+.card-footer:last-child {
+	border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+/* Card images */
+.card-img-top {
+	width: 100%;
+	border-top-left-radius: var(--border-radius);
+	border-top-right-radius: var(--border-radius);
+}
+
+.card-img-bottom {
+	width: 100%;
+	border-bottom-right-radius: var(--border-radius);
+	border-bottom-left-radius: var(--border-radius);
+}
+
+.card-img-overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 1.5rem;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+}
+
+.card-img-cover {
+	object-fit: cover;
+	height: 200px;
+}
+
+/* Card groups */
+.card-group {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -0.75rem;
+}
+
+.card-group .card {
+	flex: 1 0 calc(33.333% - 1.5rem);
+	margin: 0 0.75rem 1.5rem;
+}
+
+/* Card variants */
+.card-primary {
+	border-top: 3px solid var(--color-primary);
+}
+
+.card-success {
+	border-top: 3px solid var(--color-success);
+}
+
+.card-info {
+	border-top: 3px solid var(--color-info);
+}
+
+.card-warning {
+	border-top: 3px solid var(--color-warning);
+}
+
+.card-danger {
+	border-top: 3px solid var(--color-danger);
+}
+
+/* Card with icon */
+.card-icon {
+	position: relative;
+	padding-left: 5rem;
+}
+
+.card-icon .icon {
+	position: absolute;
+	left: 1.5rem;
+	top: 1.5rem;
+	width: 2.5rem;
+	height: 2.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	background-color: var(--color-primary);
+	color: white;
+	border-radius: 50%;
+}
+
+.card-icon-sm .icon {
+	width: 2rem;
+	height: 2rem;
+	font-size: 1.25rem;
+}
+
+.card-icon-lg .icon {
+	width: 3.5rem;
+	height: 3.5rem;
+	font-size: 2rem;
+}
+
+.card-icon-success .icon {
+	background-color: var(--color-success);
+}
+
+.card-icon-info .icon {
+	background-color: var(--color-info);
+}
+
+.card-icon-warning .icon {
+	background-color: var(--color-warning);
+}
+
+.card-icon-danger .icon {
+	background-color: var(--color-danger);
+}
+
+/* Card actions */
+.card-actions {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+/* Card with dropdown action menu */
+.card-action-dropdown {
+	position: relative;
+}
+
+/* Card grid for message selection */
+.card-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+/* Message card styles */
+.message-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	cursor: pointer;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.message-card:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-md);
+}
+
+.message-card.disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.message-card .card-body {
+	flex: 1;
+}
+
+.message-card h3 {
+	margin-top: 0;
+	margin-bottom: 0.5rem;
+}
+
+.message-card p {
+	color: var(--text-muted);
+	margin-bottom: 0.5rem;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .card {
+	background-color: var(--dark-card-bg);
+	border-color: var(--dark-border-color);
+}
+
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .card-footer {
+	background-color: var(--dark-card-header-bg);
+	border-color: var(--dark-border-color);
+}
+
+/* Badge styles */
+.badge {
+	display: inline-block;
+	padding: 0.25em 0.75em;
+	font-size: 0.75em;
+	font-weight: 600;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 10rem;
+	background-color: var(--color-primary);
+	color: white;
+}
+
+.badge-success {
+	background-color: var(--color-success);
+}
+
+.badge-warning {
+	background-color: var(--color-warning);
+}
+
+.badge-danger {
+	background-color: var(--color-danger);
+}
+
+.badge-info {
+	background-color: var(--color-info);
+}
+
+.badge-light {
+	background-color: var(--color-light);
+	color: var(--text-color);
+}
+
+.badge-dark {
+	background-color: var(--color-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.card-group .card {
+		flex: 1 0 calc(50% - 1.5rem);
+	}
+
+	.card-grid {
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	}
+}
+
+@media (max-width: 576px) {
+	.card-group .card {
+		flex: 1 0 100%;
+	}
+}
+
+/* XML display area */
+.xml-display {
+	background-color: var(--code-bg);
+	color: var(--code-color);
+	border-radius: var(--border-radius);
+	padding: 1rem;
+	white-space: pre-wrap;
+	overflow-x: auto;
+	font-family: "Courier New", monospace;
+	font-size: 0.9rem;
+	line-height: 1.4;
+	height: 300px;
+	max-height: 500px;
+}
+
+/* Message output container */
+.message-output {
+	background-color: var(--card-bg);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow-md);
+	margin-bottom: 2rem;
+}
+
+/* Message form container */
+.message-form-container {
+	background-color: var(--card-bg);
+	border-radius: var(--border-radius);
+	box-shadow: var(--shadow-md);
+	padding: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+/* App header and footer */
+.app-header {
+	background-color: var(--color-primary);
+	color: white;
+	padding: 1rem 0;
+	margin-bottom: 2rem;
+	box-shadow: var(--shadow-md);
+}
+
+.app-header h1 {
+	margin: 0;
+	font-size: 1.75rem;
+}
+
+.app-header .container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.app-footer {
+	margin-top: 3rem;
+	padding: 1.5rem 0;
+	background-color: var(--footer-bg);
+	color: var(--footer-color);
+	border-top: 1px solid var(--border-color);
+}
+
+.theme-toggle {
+	display: flex;
+	align-items: center;
+}

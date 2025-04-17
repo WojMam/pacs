@@ -1,0 +1,355 @@
+/**
+ * Buttons CSS - style dla przycisków i elementów akcji
+ */
+
+/* Podstawowe przyciski */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 16px;
+	border-radius: 4px;
+	font-weight: 500;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	border: 1px solid transparent;
+	font-size: 14px;
+	line-height: 1.5;
+	text-decoration: none;
+}
+
+.btn:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.3);
+}
+
+.btn:disabled {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+/* Warianty przycisków */
+.btn-primary {
+	background-color: var(--primary-color);
+	color: white;
+}
+
+.btn-primary:hover {
+	background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+	background-color: var(--secondary-color);
+	color: white;
+}
+
+.btn-secondary:hover {
+	background-color: var(--secondary-dark);
+}
+
+.btn-success {
+	background-color: var(--success-color);
+	color: white;
+}
+
+.btn-success:hover {
+	background-color: var(--success-dark);
+}
+
+.btn-warning {
+	background-color: var(--warning-color);
+	color: #212529;
+}
+
+.btn-warning:hover {
+	background-color: var(--warning-dark);
+}
+
+.btn-danger {
+	background-color: var(--danger-color);
+	color: white;
+}
+
+.btn-danger:hover {
+	background-color: var(--danger-dark);
+}
+
+.btn-info {
+	background-color: var(--info-color);
+	color: white;
+}
+
+.btn-info:hover {
+	background-color: var(--info-dark);
+}
+
+.btn-light {
+	background-color: #f8f9fa;
+	color: #212529;
+	border-color: #f8f9fa;
+}
+
+.btn-light:hover {
+	background-color: #e2e6ea;
+	border-color: #dae0e5;
+}
+
+.btn-dark {
+	background-color: #343a40;
+	color: white;
+}
+
+.btn-dark:hover {
+	background-color: #23272b;
+}
+
+/* Warianty z obramowaniem */
+.btn-outline-primary {
+	border-color: var(--primary-color);
+	color: var(--primary-color);
+	background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+	background-color: var(--primary-color);
+	color: white;
+}
+
+.btn-outline-secondary {
+	border-color: var(--secondary-color);
+	color: var(--secondary-color);
+	background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+	background-color: var(--secondary-color);
+	color: white;
+}
+
+.btn-outline-success {
+	border-color: var(--success-color);
+	color: var(--success-color);
+	background-color: transparent;
+}
+
+.btn-outline-success:hover {
+	background-color: var(--success-color);
+	color: white;
+}
+
+.btn-outline-danger {
+	border-color: var(--danger-color);
+	color: var(--danger-color);
+	background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+	background-color: var(--danger-color);
+	color: white;
+}
+
+/* Rozmiary przycisków */
+.btn-sm {
+	padding: 4px 12px;
+	font-size: 12px;
+}
+
+.btn-lg {
+	padding: 12px 24px;
+	font-size: 16px;
+}
+
+.btn-xl {
+	padding: 16px 32px;
+	font-size: 18px;
+}
+
+/* Przyciski z ikonami */
+.btn-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-icon svg,
+.btn-icon i {
+	margin-right: 8px;
+}
+
+.btn-icon-only {
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+}
+
+.btn-icon-only.btn-sm {
+	width: 30px;
+	height: 30px;
+}
+
+.btn-icon-only.btn-lg {
+	width: 44px;
+	height: 44px;
+}
+
+/* Przyciski zaokrąglone */
+.btn-rounded {
+	border-radius: 30px;
+}
+
+.btn-icon-only.btn-rounded {
+	border-radius: 50%;
+}
+
+/* Grupa przycisków */
+.btn-group {
+	display: inline-flex;
+	position: relative;
+}
+
+.btn-group .btn {
+	position: relative;
+	border-radius: 0;
+}
+
+.btn-group .btn:hover {
+	z-index: 1;
+}
+
+.btn-group .btn:first-child {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+.btn-group .btn:last-child {
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+.btn-group .btn:not(:first-child) {
+	margin-left: -1px;
+}
+
+/* Przyciski z pełną szerokością */
+.btn-block {
+	display: flex;
+	width: 100%;
+}
+
+.btn-group-block {
+	display: flex;
+	width: 100%;
+}
+
+.btn-group-block .btn {
+	flex: 1;
+}
+
+/* Przyciski z podpowiedziami na hover */
+.btn-tooltip {
+	position: relative;
+}
+
+.btn-tooltip::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #333;
+	color: white;
+	padding: 5px 10px;
+	border-radius: 4px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.2s;
+	margin-bottom: 5px;
+	font-size: 12px;
+}
+
+.btn-tooltip:hover::after {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* Proste animacje dla przycisków */
+.btn-pulse {
+	animation: btn-pulse 1.5s infinite;
+}
+
+@keyframes btn-pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4);
+	}
+	70% {
+		box-shadow: 0 0 0 10px rgba(var(--primary-rgb), 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0);
+	}
+}
+
+/* Przyciski tekstowe */
+.btn-text {
+	background: none;
+	border: none;
+	color: var(--primary-color);
+	padding: 5px;
+	font-weight: 500;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.btn-text:hover {
+	text-decoration: underline;
+}
+
+.btn-text-danger {
+	color: var(--danger-color);
+}
+
+.btn-text-secondary {
+	color: var(--secondary-color);
+}
+
+/* Przyciski z różnymi efektami */
+.btn-float {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	transition: all 0.2s;
+}
+
+.btn-float:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Przyciski typu 'cta' (call to action) */
+.btn-cta {
+	padding: 14px 28px;
+	font-size: 16px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	background-color: var(--primary-color);
+	color: white;
+	border: none;
+	border-radius: 4px;
+	transition: all 0.3s;
+}
+
+.btn-cta:hover {
+	background-color: var(--primary-dark);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cta:active {
+	transform: translateY(1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

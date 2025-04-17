@@ -1,0 +1,44 @@
+/**
+ * Variables CSS - zmienne dla motywów kolorystycznych
+ */
+
+/* Zmienne dla trybu jasnego */
+:root {
+	--bg-color: #f4f4f4;
+	--container-bg: #fff;
+	--text-color: #333;
+	--border-color: #ddd;
+	--primary-color: #4caf50;
+	--primary-hover: #45a049;
+	--secondary-color: #2196f3;
+	--secondary-hover: #0b7dda;
+	--form-bg: #f9f9f9;
+	--tooltip-bg: #333;
+	--tooltip-text: #fff;
+	--menu-bg: #fff;
+	--menu-shadow: rgba(0, 0, 0, 0.1);
+	--menu-hover: #f0f0f0;
+	--header-bg: linear-gradient(135deg, #2196f3, #4caf50);
+	--header-text: #fff;
+	--container-width: 1200px;
+}
+
+/* Zmienne dla trybu ciemnego */
+html.dark-mode {
+	--bg-color: #222;
+	--container-bg: #333;
+	--text-color: #eee;
+	--border-color: #555;
+	--primary-color: #5bc15e;
+	--primary-hover: #4caf50;
+	--secondary-color: #3aa0f3;
+	--secondary-hover: #2196f3;
+	--form-bg: #444;
+	--tooltip-bg: #111;
+	--tooltip-text: #eee;
+	--menu-bg: #333;
+	--menu-shadow: rgba(0, 0, 0, 0.3);
+	--menu-hover: #444;
+	--header-bg: linear-gradient(135deg, #104a7a, #2d7a30);
+	--header-text: #fff;
+}

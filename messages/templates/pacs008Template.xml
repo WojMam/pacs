@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.13" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>${msgId}</MsgId>
+      <CreDtTm>${creationDate}</CreDtTm>
+      <NbOfTxs>${numberOfTxs}</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>${settlementMethod}</SttlmMtd>
+      </SttlmInf>
+      <!-- IF instructingAgentBIC -->
+      <InstgAgt>
+        <FinInstnId>
+          <BICFI>${instructingAgentBIC}</BICFI>
+        </FinInstnId>
+      </InstgAgt>
+      <!-- ENDIF -->
+      <!-- IF instructedAgentBIC -->
+      <InstdAgt>
+        <FinInstnId>
+          <BICFI>${instructedAgentBIC}</BICFI>
+        </FinInstnId>
+      </InstdAgt>
+      <!-- ENDIF -->
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <InstrId>${txId}</InstrId>
+        <EndToEndId>${endToEndId}</EndToEndId>
+        <UETR>c2777651-ff24-4e06-a497-${txId}</UETR>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="${currency}">${amount}</IntrBkSttlmAmt>
+      <IntrBkSttlmDt>2023-09-30</IntrBkSttlmDt>
+      <ChrgBr>SLEV</ChrgBr>
+      <Dbtr>
+        <Nm>${debtorName}</Nm>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <IBAN>${debtorAccountId}</IBAN>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>${debtorAgentBIC}</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>${creditorAgentBIC}</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>${creditorName}</Nm>
+      </Cdtr>
+      <CdtrAcct>
+        <Id>
+          <IBAN>${creditorAccountId}</IBAN>
+        </Id>
+      </CdtrAcct>
+      <!-- IF remittanceInfo -->
+      <RmtInf>
+        <Ustrd>${remittanceInfo}</Ustrd>
+      </RmtInf>
+      <!-- ENDIF -->
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document> 

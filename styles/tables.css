@@ -1,0 +1,393 @@
+/**
+ * Table Styles
+ * Provides styling for tables and tabular data displays
+ */
+
+/* Base table styles */
+.table {
+	width: 100%;
+	margin-bottom: 1.5rem;
+	background-color: var(--table-bg);
+	border-collapse: collapse;
+	font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+	padding: 0.75rem;
+	vertical-align: top;
+	border-top: 1px solid var(--border-color);
+	text-align: left;
+}
+
+.table thead th {
+	vertical-align: bottom;
+	border-bottom: 2px solid var(--border-color);
+	background-color: var(--table-header-bg);
+	color: var(--table-header-color);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.table tbody + tbody {
+	border-top: 2px solid var(--border-color);
+}
+
+/* Table variations */
+.table-sm th,
+.table-sm td {
+	padding: 0.3rem;
+}
+
+.table-bordered {
+	border: 1px solid var(--border-color);
+}
+
+.table-bordered th,
+.table-bordered td {
+	border: 1px solid var(--border-color);
+}
+
+.table-borderless th,
+.table-borderless td,
+.table-borderless thead th,
+.table-borderless tbody + tbody {
+	border: 0;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+	background-color: var(--table-striped-bg);
+}
+
+.table-hover tbody tr:hover {
+	background-color: var(--table-hover-bg);
+}
+
+/* Contextual table styles */
+.table-primary,
+.table-primary > th,
+.table-primary > td {
+	background-color: rgba(var(--primary-rgb), 0.1);
+}
+
+.table-secondary,
+.table-secondary > th,
+.table-secondary > td {
+	background-color: rgba(var(--secondary-rgb), 0.1);
+}
+
+.table-success,
+.table-success > th,
+.table-success > td {
+	background-color: rgba(var(--success-rgb), 0.1);
+}
+
+.table-info,
+.table-info > th,
+.table-info > td {
+	background-color: rgba(var(--info-rgb), 0.1);
+}
+
+.table-warning,
+.table-warning > th,
+.table-warning > td {
+	background-color: rgba(var(--warning-rgb), 0.1);
+}
+
+.table-danger,
+.table-danger > th,
+.table-danger > td {
+	background-color: rgba(var(--danger-rgb), 0.1);
+}
+
+.table-light,
+.table-light > th,
+.table-light > td {
+	background-color: rgba(var(--light-rgb), 0.1);
+}
+
+.table-dark,
+.table-dark > th,
+.table-dark > td {
+	background-color: rgba(var(--dark-rgb), 0.1);
+}
+
+/* Table with card styling */
+.table-card {
+	box-shadow: var(--shadow-sm);
+	border-radius: var(--border-radius);
+	overflow: hidden;
+}
+
+.table-card .table {
+	margin-bottom: 0;
+}
+
+/* Responsive tables */
+.table-responsive {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.table-responsive-sm {
+	max-width: 640px;
+}
+
+.table-responsive-md {
+	max-width: 768px;
+}
+
+.table-responsive-lg {
+	max-width: 1024px;
+}
+
+.table-responsive-xl {
+	max-width: 1280px;
+}
+
+/* Table with fixed headers */
+.table-fixed-header {
+	position: relative;
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+.table-fixed-header thead {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.table-fixed-header thead th {
+	background-color: var(--table-header-bg);
+}
+
+/* Table with fixed columns */
+.table-fixed-column {
+	table-layout: fixed;
+}
+
+.table-fixed-column th,
+.table-fixed-column td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Table footer */
+.table tfoot th,
+.table tfoot td {
+	border-top: 2px solid var(--border-color);
+	font-weight: 600;
+	background-color: var(--table-footer-bg);
+}
+
+/* Table captions */
+.table caption {
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+	color: var(--text-muted);
+	text-align: left;
+	caption-side: bottom;
+}
+
+/* Table utilities */
+.table .actions {
+	white-space: nowrap;
+	text-align: right;
+}
+
+.table-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.table-search {
+	position: relative;
+	max-width: 300px;
+}
+
+.table-search input {
+	padding-right: 2.5rem;
+}
+
+.table-search-icon {
+	position: absolute;
+	right: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--text-muted);
+}
+
+/* Table pagination */
+.table-pagination {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 1rem;
+}
+
+.table-pagination .pagination-item {
+	padding: 0.5rem 0.75rem;
+	margin: 0 0.25rem;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	color: var(--text-color);
+	text-decoration: none;
+}
+
+.table-pagination .pagination-item.active {
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
+	color: white;
+}
+
+.table-pagination .pagination-item:hover:not(.active) {
+	background-color: var(--input-bg);
+}
+
+/* Table sorting */
+.table-sortable th {
+	cursor: pointer;
+	position: relative;
+}
+
+.table-sortable th::after {
+	content: "";
+	position: absolute;
+	right: 0.5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 0;
+	height: 0;
+	opacity: 0.5;
+}
+
+.table-sortable th.sort-asc::after {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-bottom: 4px solid var(--table-header-color);
+	opacity: 1;
+}
+
+.table-sortable th.sort-desc::after {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid var(--table-header-color);
+	opacity: 1;
+}
+
+/* Table with row selection */
+.table-selectable tbody tr {
+	cursor: pointer;
+}
+
+.table-selectable tbody tr.selected {
+	background-color: rgba(var(--primary-rgb), 0.1);
+}
+
+/* Data tables with various cell types */
+.table-data-cell-icon {
+	display: flex;
+	align-items: center;
+}
+
+.table-data-cell-icon .icon {
+	margin-right: 0.5rem;
+}
+
+.table-data-cell-progress {
+	width: 100%;
+	height: 0.5rem;
+	background-color: var(--input-bg);
+	border-radius: 0.25rem;
+	overflow: hidden;
+}
+
+.table-data-cell-progress-bar {
+	height: 100%;
+	background-color: var(--color-primary);
+}
+
+.table-data-cell-badge {
+	display: inline-block;
+	padding: 0.25rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 0.25rem;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .table {
+	color: var(--dark-text-color);
+	background-color: var(--dark-table-bg);
+}
+
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td {
+	border-color: var(--dark-border-color);
+}
+
+[data-theme="dark"] .table thead th {
+	background-color: var(--dark-table-header-bg);
+	color: var(--dark-table-header-color);
+	border-color: var(--dark-border-color);
+}
+
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+	background-color: var(--dark-table-striped-bg);
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+	background-color: var(--dark-table-hover-bg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.table-responsive-cards {
+		display: block;
+	}
+
+	.table-responsive-cards thead {
+		display: none;
+	}
+
+	.table-responsive-cards tbody,
+	.table-responsive-cards tr,
+	.table-responsive-cards td {
+		display: block;
+		width: 100%;
+	}
+
+	.table-responsive-cards tr {
+		margin-bottom: 1rem;
+		border: 1px solid var(--border-color);
+		border-radius: var(--border-radius);
+		padding: 0.5rem;
+	}
+
+	.table-responsive-cards td {
+		padding: 0.5rem 0;
+		border-top: none;
+		position: relative;
+		padding-left: 50%;
+		text-align: right;
+	}
+
+	.table-responsive-cards td::before {
+		content: attr(data-label);
+		position: absolute;
+		left: 0;
+		width: 45%;
+		padding-right: 0.5rem;
+		font-weight: 600;
+		text-align: left;
+	}
+}

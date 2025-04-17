@@ -1,0 +1,11 @@
+/**
+ * Main CSS - główny plik importujący style
+ */
+
+/* Importuj arkusze stylów */
+@import "variables.css"; /* Zmienne dla motywów kolorystycznych */
+@import "base.css"; /* Podstawowe style */
+@import "components.css"; /* Style dla komponentów UI (przyciski, menu, itd.) */
+@import "forms.css"; /* Style dla formularzy */
+@import "layout.css"; /* Style dla układu strony */
+@import "responsive.css"; /* Style responsywne */

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.13" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>{{msgId}}</MsgId>
+      <CreDtTm>{{creationDate}}</CreDtTm>
+      <NbOfTxs>{{numberOfTxs}}</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>{{settlementMethod}}</SttlmMtd>
+      </SttlmInf>
+      <InstgAgt>
+        <FinInstnId>
+          <BICFI>{{instructingAgentBIC}}</BICFI>
+        </FinInstnId>
+      </InstgAgt>
+      <InstdAgt>
+        <FinInstnId>
+          <BICFI>{{instructedAgentBIC}}</BICFI>
+        </FinInstnId>
+      </InstdAgt>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>{{endToEndId}}</EndToEndId>
+        <TxId>{{txId}}</TxId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="{{currency}}">{{amount}}</IntrBkSttlmAmt>
+      <Dbtr>
+        <Nm>{{debtorName}}</Nm>
+        {{#if debtorLei}}
+        <Id>
+          <OrgId>
+            <LEI>{{debtorLei}}</LEI>
+          </OrgId>
+        </Id>
+        {{/if}}
+        {{#if debtorCountry}}
+        <CtryOfRes>{{debtorCountry}}</CtryOfRes>
+        {{/if}}
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <IBAN>{{debtorAccountId}}</IBAN>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>{{debtorAgentBIC}}</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <Cdtr>
+        <Nm>{{creditorName}}</Nm>
+        {{#if creditorLei}}
+        <Id>
+          <OrgId>
+            <LEI>{{creditorLei}}</LEI>
+          </OrgId>
+        </Id>
+        {{/if}}
+        {{#if creditorCountry}}
+        <CtryOfRes>{{creditorCountry}}</CtryOfRes>
+        {{/if}}
+      </Cdtr>
+      <CdtrAcct>
+        <Id>
+          <IBAN>{{creditorAccountId}}</IBAN>
+        </Id>
+      </CdtrAcct>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>{{creditorAgentBIC}}</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      {{#if purpose}}
+      <Purp>
+        <Cd>{{purpose}}</Cd>
+      </Purp>
+      {{/if}}
+      {{#if remittanceInfo}}
+      <RmtInf>
+        <Ustrd>{{remittanceInfo}}</Ustrd>
+      </RmtInf>
+      {{/if}}
+      {{#if regulatoryAuthority}}
+      <RgltryRptg>
+        <DbtCdtRptgInd>CRED</DbtCdtRptgInd>
+        <Authrty>
+          <Nm>{{regulatoryAuthority}}</Nm>
+        </Authrty>
+        {{#if regulatoryDetails}}
+        <Dtls>
+          <Inf>{{regulatoryDetails}}</Inf>
+        </Dtls>
+        {{/if}}
+      </RgltryRptg>
+      {{/if}}
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document> 
