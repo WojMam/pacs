@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pl" class="light-mode">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konwerter formatów - ISO20022 Tools</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="format-converter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/mdn-like.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Konwerter formatów</h1>
+                    <p class="tagline">Narzędzie do konwersji między formatami danych</p>
+                </div>
+            </div>
+            <div class="header-description">
+                <p>To narzędzie umożliwia konwersję danych między formatami XML, JSON, CSV i YAML.</p>
+                <p>Możesz importować dane, dostosować mapowanie pól i wyeksportować wynik w wybranym formacie.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Floating Menu -->
+    <div class="floating-menu">
+        <div class="menu-header">
+            <h3>Menu</h3>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Plik</div>
+            <button id="newFile" class="menu-btn">
+                <i class="fas fa-file"></i> Nowy
+            </button>
+            <button id="loadFile" class="menu-btn">
+                <i class="fas fa-folder-open"></i> Wczytaj
+            </button>
+            <button id="saveFile" class="menu-btn">
+                <i class="fas fa-save"></i> Zapisz
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Konwersja</div>
+            <button id="convertData" class="menu-btn primary-btn">
+                <i class="fas fa-exchange-alt"></i> Konwertuj
+            </button>
+            <button id="swapFormats" class="menu-btn">
+                <i class="fas fa-sync"></i> Zamień formaty
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Szablony</div>
+            <button id="loadTemplate" class="menu-btn">
+                <i class="fas fa-puzzle-piece"></i> Wczytaj szablon
+            </button>
+            <button id="saveTemplate" class="menu-btn">
+                <i class="fas fa-save"></i> Zapisz jako szablon
+            </button>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-section-title">Ustawienia</div>
+            <button id="toggleTheme" class="menu-btn toggle-btn">
+                <i class="fas fa-sun light-icon"></i>
+                <i class="fas fa-moon dark-icon"></i>
+                <span class="toggle-text">Tryb ciemny</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to Main -->
+    <div class="back-to-main">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Powrót do strony głównej
+        </a>
+    </div>
+
+    <div class="container converter-container">
+        <div class="format-selector-container">
+            <div class="format-selector source-format">
+                <label for="sourceFormat">Format źródłowy:</label>
+                <div class="select-wrapper">
+                    <select id="sourceFormat">
+                        <option value="xml">XML</option>
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                        <option value="yaml">YAML</option>
+                    </select>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            <div class="conversion-direction">
+                <button id="convertDirection">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="format-selector target-format">
+                <label for="targetFormat">Format docelowy:</label>
+                <div class="select-wrapper">
+                    <select id="targetFormat">
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                        <option value="csv">CSV</option>
+                        <option value="yaml">YAML</option>
+                    </select>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="workspace">
+            <!-- Left Panel - Source Data -->
+            <div class="panel source-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-file-import"></i> Dane źródłowe</h3>
+                    <div class="panel-controls">
+                        <button id="formatSource" class="panel-btn" title="Formatuj kod">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button id="clearSource" class="panel-btn" title="Wyczyść">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                        <button id="loadSourceExample" class="panel-btn" title="Wczytaj przykład">
+                            <i class="fas fa-lightbulb"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea id="sourceEditor" class="code-editor"></textarea>
+                </div>
+            </div>
+
+            <!-- Middle Panel - Mapping Configuration -->
+            <div class="panel mapping-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-project-diagram"></i> Mapowanie</h3>
+                    <div class="panel-controls">
+                        <button id="resetMapping" class="panel-btn" title="Resetuj mapowanie">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div id="mappingContainer" class="mapping-container">
+                        <div class="info-message">
+                            <i class="fas fa-info-circle"></i> Wprowadź dane źródłowe i kliknij "Konwertuj" aby
+                            wygenerować mapowanie pól.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Target Data -->
+            <div class="panel target-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-file-export"></i> Dane wynikowe</h3>
+                    <div class="panel-controls">
+                        <button id="formatTarget" class="panel-btn" title="Formatuj kod">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button id="copyTarget" class="panel-btn" title="Kopiuj do schowka">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea id="targetEditor" class="code-editor"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Options Panel -->
+        <div class="options-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-cogs"></i> Opcje konwersji</h3>
+                <div class="panel-controls">
+                    <button id="toggleOptions" class="panel-btn" title="Pokaż/ukryj opcje">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="options-form">
+                    <div class="options-section">
+                        <h4>Ogólne</h4>
+                        <div class="option-row">
+                            <label for="indentSize">Wcięcie:</label>
+                            <div class="select-wrapper small">
+                                <select id="indentSize">
+                                    <option value="2">2 spacje</option>
+                                    <option value="4">4 spacje</option>
+                                    <option value="tab">Tab</option>
+                                </select>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="option-row">
+                            <label for="sortKeys">Sortuj klucze:</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="sortKeys">
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="options-section format-specific" id="xmlOptions">
+                        <h4>Opcje XML</h4>
+                        <div class="option-row">
+                            <label for="rootElement">Element główny:</label>
+                            <input type="text" id="rootElement" value="root">
+                        </div>
+                        <div class="option-row">
+                            <label for="useAttributes">Używaj atrybutów:</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="useAttributes">
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="options-section format-specific" id="csvOptions">
+                        <h4>Opcje CSV</h4>
+                        <div class="option-row">
+                            <label for="delimiter">Separator:</label>
+                            <div class="select-wrapper small">
+                                <select id="delimiter">
+                                    <option value=",">Przecinek (,)</option>
+                                    <option value=";">Średnik (;)</option>
+                                    <option value="\t">Tab</option>
+                                </select>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="option-row">
+                            <label for="includeHeaders">Nagłówki:</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="includeHeaders" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Templates Modal -->
+    <div id="templatesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wybierz szablon</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="templates-list">
+                    <div class="template-item" data-template="contact-xml-json">
+                        <div class="template-title">Kontakty: XML → JSON</div>
+                        <div class="template-description">Konwersja danych kontaktowych z XML do JSON.</div>
+                    </div>
+                    <div class="template-item" data-template="invoice-json-xml">
+                        <div class="template-title">Faktury: JSON → XML</div>
+                        <div class="template-description">Konwersja struktury faktury z JSON do XML.</div>
+                    </div>
+                    <div class="template-item" data-template="csv-json">
+                        <div class="template-title">Tabela danych: CSV → JSON</div>
+                        <div class="template-description">Konwersja tabeli CSV na tablicę obiektów JSON.</div>
+                    </div>
+                    <div class="template-item" data-template="config-yaml-json">
+                        <div class="template-title">Konfiguracja: YAML → JSON</div>
+                        <div class="template-description">Konwersja pliku konfiguracyjnego YAML na JSON.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Input for importing -->
+    <input type="file" id="fileInput" style="display: none;">
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationMessage">Operacja zakończona pomyślnie</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/yaml/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="format-converter.js"></script>
+</body>
+
+</html>
