@@ -42,6 +42,59 @@
 	border-radius: 3px 0 0 3px;
 }
 
+/* Other tools specific styles */
+.other-tools-container {
+	background-color: rgba(var(--secondary-color-rgb), 0.05);
+	padding: 30px;
+	border-radius: 8px;
+	margin-top: 30px;
+	border: 1px solid rgba(var(--secondary-color-rgb), 0.2);
+}
+
+.other-tools-container .section-title-other {
+	color: var(--secondary-color);
+	margin-top: 0;
+	padding-top: 0;
+	border-top: none;
+}
+
+.other-tools-container .section-title-other::after {
+	background: linear-gradient(
+		to right,
+		var(--secondary-color),
+		var(--secondary-hover)
+	);
+}
+
+.other-tools-container .tile {
+	background: linear-gradient(
+		to bottom right,
+		var(--container-bg),
+		rgba(var(--secondary-color-rgb), 0.05)
+	);
+}
+
+.other-tools-container .tile::before {
+	background: linear-gradient(
+		to bottom,
+		var(--secondary-color),
+		var(--secondary-hover)
+	);
+}
+
+.other-tools-container .tile:hover {
+	border-color: var(--secondary-color);
+	box-shadow: 0 8px 18px rgba(var(--secondary-color-rgb), 0.2);
+}
+
+.other-tools-container .tile-icon {
+	color: var(--secondary-color);
+}
+
+.other-tools-container .tile-description {
+	color: var(--secondary-color);
+}
+
 .tile-icon {
 	font-size: 2.5rem;
 	margin-bottom: 20px;
@@ -135,6 +188,17 @@
 	border-top: 1px solid var(--border-color);
 }
 
+/* Add RGB variables for gradient and opacity */
+:root {
+	--primary-color-rgb: 76, 175, 80;
+	--secondary-color-rgb: 33, 150, 243;
+}
+
+html.dark-mode {
+	--primary-color-rgb: 91, 193, 94;
+	--secondary-color-rgb: 58, 160, 243;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
 	.tiles-container {
@@ -150,5 +214,9 @@
 
 	.theme-toggle-container .toggle-btn {
 		width: 80%;
+	}
+
+	.other-tools-container {
+		padding: 20px;
 	}
 }
